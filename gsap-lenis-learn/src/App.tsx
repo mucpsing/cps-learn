@@ -2,7 +2,7 @@
  * @Author: capsion_surfacePro7 capsion@surfacePro2.com
  * @Date: 2025-03-05 20:58:38
  * @LastEditors: cpasion-office-win10 373704015@qq.com
- * @LastEditTime: 2025-03-06 17:02:03
+ * @LastEditTime: 2025-03-07 09:06:42
  * @FilePath: \gsap-lenis-learn\src\App.tsx
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
  */
@@ -12,7 +12,7 @@ import "./App.css";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { useGSAP } from "@gsap/react";
-import { ReactLenis, useLenis } from "lenis/react";
+import { ReactLenis, useLenis, type LenisRef } from "lenis/react";
 import "lenis/dist/lenis.css";
 
 import { DEFAULT_SUB_COLOR } from "./store/config";
