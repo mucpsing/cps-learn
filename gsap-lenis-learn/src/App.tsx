@@ -2,7 +2,7 @@
  * @Author: capsion_surfacePro7 capsion@surfacePro2.com
  * @Date: 2025-03-05 20:58:38
  * @LastEditors: cpasion-office-win10 373704015@qq.com
- * @LastEditTime: 2025-03-07 09:06:42
+ * @LastEditTime: 2025-03-21 08:43:41
  * @FilePath: \gsap-lenis-learn\src\App.tsx
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
  */
@@ -12,7 +12,7 @@ import "./App.css";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { useGSAP } from "@gsap/react";
-import { ReactLenis, useLenis, type LenisRef } from "lenis/react";
+import { ReactLenis, useLenis } from "lenis/react";
 import "lenis/dist/lenis.css";
 
 import { DEFAULT_SUB_COLOR } from "./store/config";
@@ -31,34 +31,37 @@ gsap.defaults({
 });
 
 function App() {
+  const lenisRef = useRef<HTMLDivElement>(null);
   const [count, setCount] = useState(0);
   const mainRef = useRef<HTMLDivElement>(null);
   const trackWarp = useRef<HTMLDivElement>(null);
 
-  useGSAP(
-    (_context, contextSafe) => {
-      gsap.to(trackWarp.current, {
-        x: () => {
-          const res = (DEFAULT_SUB_COLOR.length - 1) * window.innerWidth;
-          console.log({ res });
-          return `-${res}`;
-        },
-        scrollTrigger: {
-          trigger: trackWarp.current,
-          start: "center center",
-          end: () => "+=" + (trackWarp.current.scrollWidth - window.innerWidth),
-          scrub: 1,
-          pin: true,
-          invalidateOnRefresh: true,
-          id: "id-one",
-        },
-      });
-    },
-    { scope: mainRef }
-  );
+  // useGSAP(
+  //   (_context, _contextSafe) => {
+  //     gsap.to(trackWarp.current, {
+  //       x: () => {
+  //         const res = (DEFAULT_SUB_COLOR.length - 1) * window.innerWidth;
+  //         console.log({ res });
+  //         return `-${res}`;
+  //       },
+  //       scrollTrigger: {
+  //         trigger: trackWarp.current,
+  //         start: 'center center',
+  //         end: () => '+=' + (trackWarp.current.scrollWidth - window.innerWidth),
+  //         scrub: 1,
+  //         pin: true,
+  //         invalidateOnRefresh: true,
+  //         id: 'id-one',
+  //       },
+  //     });
+  //   },
+  //   { scope: mainRef }
+  // );
+
+  useEffect(() => {});
 
   return (
-    <ReactLenis root>
+    <ReactLenis root ref={lenisRef}>
       <main ref={mainRef} className="main h-screen relative w-screen">
         <header className="bg-red-300 w-[100vw] h-[100vh]">测试2</header>
 
