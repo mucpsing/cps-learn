@@ -2,7 +2,7 @@
  * @Author: cpasion-office-win10 373704015@qq.com
  * @Date: 2025-03-13 10:14:49
  * @LastEditors: Capsion 373704015@qq.com
- * @LastEditTime: 2025-03-24 21:10:45
+ * @LastEditTime: 2025-03-25 00:00:43
  * @FilePath: \gsap-lenis-learn\src\App.tsx
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
  */
@@ -14,15 +14,14 @@
  * @FilePath: \gsap-lenis-learn\src\App.tsx
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
  */
-import { useState, useRef, useEffect } from "react";
+import { useState, useRef } from "react";
 import "./App.css";
 
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { useGSAP } from "@gsap/react";
-import { ReactLenis, useLenis } from "lenis/react";
+import { ReactLenis } from "lenis/react";
 import "lenis/dist/lenis.css";
-import { throttle, debounce } from "lodash";
 
 import { DEFAULT_SUB_COLOR } from "./store/config";
 
@@ -42,24 +41,26 @@ gsap.defaults({
 });
 
 function App() {
-  const lenisRef = useRef<HTMLDivElement>(null);
   const [count, setCount] = useState(0);
   const mainRef = useRef<HTMLDivElement>(null);
-  const trackWarp = useRef<HTMLDivElement>(null);
+  const trackWarpRef = useRef<HTMLDivElement>(null);
   const testRef = useRef<HTMLDivElement>(null);
 
   useGSAP(
     (_context, _contextSafe) => {
-      gsap.to(trackWarp.current, {
+      if (!trackWarpRef.current) return;
+      const offset = trackWarpRef.current.scrollWidth - window.innerWidth;
+
+      gsap.to(trackWarpRef.current, {
         x: () => {
           const res = (DEFAULT_SUB_COLOR.length - 1) * window.innerWidth;
 
           return `-${res}`;
         },
         scrollTrigger: {
-          trigger: trackWarp.current,
+          trigger: trackWarpRef.current,
           start: "center center",
-          end: () => "+=" + (trackWarp.current.scrollWidth - window.innerWidth),
+          end: () => "+=" + (offset - window.innerWidth),
           scrub: 2,
           pin: true,
           invalidateOnRefresh: true,
@@ -71,7 +72,7 @@ function App() {
   );
 
   return (
-    <ReactLenis root ref={lenisRef}>
+    <ReactLenis root>
       <main ref={mainRef} className="main h-screen relative w-screen">
         <header className="bg-red-300 w-[100vw] h-[100vh]">
           测试2
@@ -80,7 +81,7 @@ function App() {
             <MouseTracker />
           </div>
         </header>
-        <section ref={trackWarp} className={["track", "flex-nowrap h-full items-center justify-center inline-flex relative bg-gray-500"].join(" ")}>
+        <section ref={trackWarpRef} className={["track", "flex-nowrap h-full items-center justify-center inline-flex relative bg-gray-500"].join(" ")}>
           {DEFAULT_SUB_COLOR.map((item, key) => {
             return (
               <div key={key} className="retracklative w-screen h-[80vh]">

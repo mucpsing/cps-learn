@@ -2,9 +2,9 @@
  * @Author: Capsion 373704015@qq.com
  * @Date: 2025-03-24 20:41:58
  * @LastEditors: Capsion 373704015@qq.com
- * @LastEditTime: 2025-03-24 22:50:49
+ * @LastEditTime: 2025-03-25 00:15:21
  * @FilePath: \gsap-lenis-learn\src\components\MouseFlowerElCreator\test.tsx
- * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
+ * @Description: 这是一个仿照gsap官方文档网站中跟随鼠标生成元素的组件
  */
 
 import React, { useState, useEffect, useRef } from "react";
@@ -40,31 +40,6 @@ const MouseTracker: React.FC<MouseTrackerProps> = ({ threshold = 120, count = 25
   const pointPool = useRef<HTMLDivElement[]>([]);
 
   const size = 30;
-
-  useEffect(() => {
-    const pointContainerRef = (document.getElementById(pointContainerId) as HTMLDivElement) || document.createElement("div");
-    pointContainerRef.id = pointContainerId;
-    Object.assign(pointContainerRef.style, { position: "absolute", top: 0, left: 0 });
-
-    const pointInitStyle = {
-      position: "absolute",
-      pointerEvents: "none",
-      width: `${size}px`,
-      height: `${size}px`,
-      opacity: "0",
-      backgroundColor: "#ff6b6b",
-      zIndex: 30,
-    };
-
-    for (let i = 1; i <= count; i++) {
-      const eachPointRef = document.createElement("div");
-      Object.assign(eachPointRef.style, pointInitStyle);
-      pointPool.current.push(eachPointRef);
-      pointContainerRef.appendChild(eachPointRef);
-    }
-
-    document.body.appendChild(pointContainerRef);
-  }, []);
 
   // 创建粒子动画
   CustomEase.create("c1", "0.475, -0.210, 0.000, 1.240");
@@ -139,6 +114,36 @@ const MouseTracker: React.FC<MouseTrackerProps> = ({ threshold = 120, count = 25
 
     lastPoint.current = currentPoint;
   };
+
+  useEffect(() => {
+    const pointContainerRef = (document.getElementById(pointContainerId) as HTMLDivElement) || document.createElement("div");
+    pointContainerRef.id = pointContainerId;
+    Object.assign(pointContainerRef.style, { position: "absolute", top: 0, left: 0 });
+
+    const pointInitStyle = {
+      position: "absolute",
+      pointerEvents: "none",
+      width: `${size}px`,
+      height: `${size}px`,
+      opacity: "0",
+      backgroundColor: "#ff6b6b",
+      zIndex: 30,
+    };
+
+    pointPool.current.length = 0;
+    for (let i = 1; i <= count; i++) {
+      const eachPointRef = document.createElement("div");
+      Object.assign(eachPointRef.style, pointInitStyle);
+      pointPool.current.push(eachPointRef);
+      pointContainerRef.appendChild(eachPointRef);
+    }
+
+    document.body.appendChild(pointContainerRef);
+
+    return () => {
+      document.getElementById(pointContainerId)?.remove();
+    };
+  }, []);
 
   return (
     // 触发区域
