@@ -1,8 +1,8 @@
 /*
  * @Author: cpasion-office-win10 373704015@qq.com
  * @Date: 2025-03-13 10:14:49
- * @LastEditors: cpasion-office-win10 373704015@qq.com
- * @LastEditTime: 2025-03-21 16:09:37
+ * @LastEditors: Capsion 373704015@qq.com
+ * @LastEditTime: 2025-03-24 21:10:45
  * @FilePath: \gsap-lenis-learn\src\App.tsx
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
  */
@@ -26,7 +26,7 @@ import { throttle, debounce } from "lodash";
 
 import { DEFAULT_SUB_COLOR } from "./store/config";
 
-import MouseTracker from "./components/CapsionText/test";
+import MouseTracker from "./components/MouseTracker";
 
 gsap.registerPlugin(useGSAP, ScrollTrigger);
 ScrollTrigger.defaults({
@@ -47,16 +47,6 @@ function App() {
   const mainRef = useRef<HTMLDivElement>(null);
   const trackWarp = useRef<HTMLDivElement>(null);
   const testRef = useRef<HTMLDivElement>(null);
-
-  // const lastPos = useRef({ x: 0, y: 0 });
-  // const rafId = useRef<number | undefined>(undefined);
-
-  // 合并配置
-  // const poolSize = 20;
-  // const spread = 15;
-  // const duration = 0.8;
-  // const color = "#ff6b6b";
-  // const size = 50;
 
   useGSAP(
     (_context, _contextSafe) => {
@@ -79,78 +69,6 @@ function App() {
     },
     { scope: mainRef }
   );
-
-  // const pool = useRef<HTMLDivElement[]>([]);
-  // const poolCount = 20;
-
-  // useEffect(() => {
-  //   if (!testRef.current) return;
-
-  //   for (let i = 0; i < poolCount; i++) {
-  //     const el = document.createElement("div");
-  //     Object.assign(el.style, {
-  //       position: "absolute",
-  //       pointerEvents: "none",
-  //       borderRadius: "100%",
-  //       opacity: "0",
-  //       width: `${size}px`,
-  //       height: `${size}px`,
-  //       background: "red",
-  //     });
-
-  //     testRef.current.appendChild(el);
-  //     pool.current.push(el);
-  //   }
-  // }, []);
-
-  // useEffect(() => {
-  //   const handleMouseMove = (e: MouseEvent) => {
-  //     if (!testRef.current) return;
-
-  //     const currtPos = { x: e.clientX, y: e.clientY };
-
-  //     if (!lastPos.current.x || lastPos.current.y) {
-  //       lastPos.current = { x: e.clientX, y: e.clientY };
-  //     }
-
-  //     if (currtPos.x - lastPos.current.x > size && currtPos.y - lastPos.current.y > size) {
-  //       requestAnimationFrame(() => {
-  //         createParticleAnimation();
-  //       });
-  //     }
-  //   };
-
-  //   if (testRef.current) {
-  //     testRef.current.addEventListener("mousemove", handleMouseMove);
-  //   }
-  // }, []);
-
-  // // 创建粒子动画
-  // const createParticleAnimation = () => {
-  //   const availableParticle = pool.current.find((el) => el.style.opacity === "0");
-  //   if (!availableParticle || !testRef.current) return;
-  //   const rect = testRef.current.getBoundingClientRect();
-
-  //   // 设置初始样式
-  //   gsap.set(availableParticle, {
-  //     x: lastPos.current.x,
-  //     y: lastPos.current.y,
-  //     opacity: 1,
-  //     scale: 0.5,
-  //   });
-
-  //   // 动画参数
-  //   gsap.to(availableParticle, {
-  //     y: window.innerHeight + 100,
-  //     opacity: 0,
-  //     scale: 1.2,
-  //     duration,
-  //     ease: "power2.in",
-  //     onComplete: () => {
-  //       gsap.set(availableParticle, { opacity: 0 });
-  //     },
-  //   });
-  // };
 
   return (
     <ReactLenis root ref={lenisRef}>

@@ -11,8 +11,8 @@
   },
   "dependencies": {
     "@gsap/react": "^2.1.2",
-    "@studio-freight/lenis": "^1.0.42",
     "@tailwindcss/vite": "^4.0.9",
+    "@types/gsap": "^3.0.0",
     "gsap": "^3.12.7",
     "lenis": "^1.2.1",
     "lodash": "^4.17.21",
