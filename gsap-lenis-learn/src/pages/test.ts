@@ -1,5 +1,8 @@
 import { useRef, useEffect } from "react";
 import { gsap } from "gsap";
+// import customEase from "gsap/customEase";
+
+// gsap.registerPlugin(customEase);
 
 type TrailConfig = {
   interval?: number; // 轨迹处理间隔(ms)
