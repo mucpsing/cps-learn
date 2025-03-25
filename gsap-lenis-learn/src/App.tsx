@@ -1,8 +1,8 @@
 /*
  * @Author: cpasion-office-win10 373704015@qq.com
  * @Date: 2025-03-13 10:14:49
- * @LastEditors: Capsion 373704015@qq.com
- * @LastEditTime: 2025-03-25 00:00:43
+ * @LastEditors: cpasion-office-win10 373704015@qq.com
+ * @LastEditTime: 2025-03-25 16:43:36
  * @FilePath: \gsap-lenis-learn\src\App.tsx
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
  */
@@ -26,6 +26,7 @@ import "lenis/dist/lenis.css";
 import { DEFAULT_SUB_COLOR } from "./store/config";
 
 import MouseTracker from "./components/MouseTracker";
+import CapsionText from "./components/CapsionText";
 
 gsap.registerPlugin(useGSAP, ScrollTrigger);
 ScrollTrigger.defaults({
@@ -44,7 +45,6 @@ function App() {
   const [count, setCount] = useState(0);
   const mainRef = useRef<HTMLDivElement>(null);
   const trackWarpRef = useRef<HTMLDivElement>(null);
-  const testRef = useRef<HTMLDivElement>(null);
 
   useGSAP(
     (_context, _contextSafe) => {
@@ -75,11 +75,7 @@ function App() {
     <ReactLenis root>
       <main ref={mainRef} className="main h-screen relative w-screen">
         <header className="bg-red-300 w-[100vw] h-[100vh]">
-          测试2
-          <div>Capsion</div>
-          <div ref={testRef} className="bg-amber-200 w-3/5 mx-auto h-[500px] ">
-            <MouseTracker />
-          </div>
+          <CapsionText text={"Capsion.top"}></CapsionText>
         </header>
         <section ref={trackWarpRef} className={["track", "flex-nowrap h-full items-center justify-center inline-flex relative bg-gray-500"].join(" ")}>
           {DEFAULT_SUB_COLOR.map((item, key) => {

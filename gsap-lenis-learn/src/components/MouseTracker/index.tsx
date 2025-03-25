@@ -1,10 +1,17 @@
 /*
  * @Author: Capsion 373704015@qq.com
  * @Date: 2025-03-24 20:41:58
- * @LastEditors: Capsion 373704015@qq.com
- * @LastEditTime: 2025-03-25 00:15:21
+ * @LastEditors: cpasion-office-win10 373704015@qq.com
+ * @LastEditTime: 2025-03-25 10:41:42
  * @FilePath: \gsap-lenis-learn\src\components\MouseFlowerElCreator\test.tsx
  * @Description: 这是一个仿照gsap官方文档网站中跟随鼠标生成元素的组件
+ * @example:
+ * 
+ * import MouseTracker from "./components/MouseTracker";
+ * 
+ * <div ref={testRef} className="bg-amber-200 w-3/5 mx-auto h-[500px] ">
+      <MouseTracker />
+   </div>
  */
 
 import React, { useState, useEffect, useRef } from "react";
@@ -29,7 +36,7 @@ declare global {
 
 const pointContainerId = "__MouseTracker_Container";
 
-const MouseTracker: React.FC<MouseTrackerProps> = ({ threshold = 120, count = 25 }) => {
+const MouseTracker: React.FC<MouseTrackerProps> = ({ threshold = 120, count = 30 }) => {
   const lastPoint = useRef<Point | null>(null);
   const distanceTraveled = useRef<number>(0);
   const recordedPoints = useRef<Point[]>([]);
