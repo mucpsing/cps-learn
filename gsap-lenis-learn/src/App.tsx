@@ -2,7 +2,7 @@
  * @Author: cpasion-office-win10 373704015@qq.com
  * @Date: 2025-03-13 10:14:49
  * @LastEditors: Capsion 373704015@qq.com
- * @LastEditTime: 2025-03-26 19:48:59
+ * @LastEditTime: 2025-03-27 23:06:35
  * @FilePath: \gsap-lenis-learn\src\App.tsx
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
  */
@@ -16,6 +16,7 @@
  */
 import { useState, useRef } from "react";
 import "./App.css";
+import './assets/font/fonts.css'
 
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
@@ -27,6 +28,7 @@ import { DEFAULT_SUB_COLOR } from "./store/config";
 
 import MouseTracker from "./components/MouseTracker";
 import CapsionText from "./components/CapsionText";
+import BackgroundBubble from "./components/BackgroundBubble";
 
 gsap.registerPlugin(useGSAP, ScrollTrigger);
 ScrollTrigger.defaults({
@@ -41,12 +43,22 @@ gsap.defaults({
   ease: "none",
 });
 
+// 手动定义有首页有多少step
+// step_0 加载状态
+// step_1 首页1
+const ALL_STEP = ["step_0", "step_1", "step_2", "step_3"] as const;
+type StepT = (typeof ALL_STEP)[number];
+
 function App() {
   const [count, setCount] = useState(0);
   const mainRef = useRef<HTMLDivElement>(null);
+  const mainTextRef = useRef<HTMLDivElement>(null);
+
   const trackWarpRef = useRef<HTMLDivElement>(null);
 
   const [title, setTitle] = useState("capsion.top");
+
+  const [pageStep, setPageStep] = useState<StepT>("step_0");
 
   useGSAP(
     (_context, _contextSafe) => {
@@ -76,8 +88,8 @@ function App() {
   return (
     <ReactLenis root>
       <main ref={mainRef} className="main h-screen relative w-screen">
-        <header className="bg-red-300 w-[100vw] h-[100vh]">
-          <CapsionText text={title}></CapsionText>
+        <header className="__home_main_text w-[100vw] h-[100vh] bg-red-100 relative">
+          <CapsionText text={title} step={pageStep}></CapsionText>
         </header>
 
         <input
