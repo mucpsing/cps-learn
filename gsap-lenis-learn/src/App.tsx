@@ -1,8 +1,8 @@
 /*
  * @Author: cpasion-office-win10 373704015@qq.com
  * @Date: 2025-03-13 10:14:49
- * @LastEditors: Capsion 373704015@qq.com
- * @LastEditTime: 2025-03-27 23:06:35
+ * @LastEditors: cpasion-office-win10 373704015@qq.com
+ * @LastEditTime: 2025-03-28 16:36:51
  * @FilePath: \gsap-lenis-learn\src\App.tsx
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
  */
@@ -16,7 +16,7 @@
  */
 import { useState, useRef } from "react";
 import "./App.css";
-import './assets/font/fonts.css'
+import "./assets/font/fonts.css";
 
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
@@ -28,6 +28,8 @@ import { DEFAULT_SUB_COLOR } from "./store/config";
 
 import MouseTracker from "./components/MouseTracker";
 import CapsionText from "./components/CapsionText";
+import CapsionTextTest from "./components/CapsionText/test";
+import DocsText from "./components/DocsText";
 import BackgroundBubble from "./components/BackgroundBubble";
 
 gsap.registerPlugin(useGSAP, ScrollTrigger);
@@ -56,15 +58,16 @@ function App() {
 
   const trackWarpRef = useRef<HTMLDivElement>(null);
 
-  const [title, setTitle] = useState("capsion.top");
+  const [mainText, setTMainText] = useState(["WELLCOME TO", "< CAPSION HUB / >"]);
+  const [subText, setTSubText] = useState(["CAPSION.TOP"]);
 
-  const [pageStep, setPageStep] = useState<StepT>("step_0");
+  const [pageStep, setPageStep] = useState<number>(0);
 
   useGSAP(
     (_context, _contextSafe) => {
       if (!trackWarpRef.current) return;
       const offset = trackWarpRef.current.scrollWidth - window.innerWidth;
-
+      gsap.set(trackWarpRef.current, { x: 0, y: 0 });
       gsap.to(trackWarpRef.current, {
         x: () => {
           const res = (DEFAULT_SUB_COLOR.length - 1) * window.innerWidth;
@@ -89,20 +92,9 @@ function App() {
     <ReactLenis root>
       <main ref={mainRef} className="main h-screen relative w-screen">
         <header className="__home_main_text w-[100vw] h-[100vh] bg-red-100 relative">
-          <CapsionText text={title} step={pageStep}></CapsionText>
+          <CapsionText step={pageStep}></CapsionText>
+          {/* <CapsionTextTest texts={["First Text", "Second Text", "Third Text"]}></CapsionTextTest> */}
         </header>
-
-        <input
-          type="text"
-          onInput={(e) => {
-            if (!e.target) return;
-            const target = e.target as HTMLInputElement;
-            console.log(target.value);
-            if (target.value && target.value !== title) {
-              setTitle(target.value);
-            }
-          }}
-        />
 
         <section ref={trackWarpRef} className={["track", "flex-nowrap h-full items-center justify-center inline-flex relative bg-gray-500"].join(" ")}>
           {DEFAULT_SUB_COLOR.map((item, key) => {
@@ -113,6 +105,7 @@ function App() {
             );
           })}
         </section>
+
         <footer className={["flex flex-col items-center justify-center w-full py-10"].join(" ")}>
           <h1>Vite + React</h1>
           <div className="card">
