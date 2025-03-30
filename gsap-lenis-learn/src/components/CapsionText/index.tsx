@@ -2,7 +2,7 @@
  * @Author: Capsion 373704015@qq.com
  * @Date: 2025-03-25 20:12:12
  * @LastEditors: Capsion 373704015@qq.com
- * @LastEditTime: 2025-03-30 21:12:21
+ * @LastEditTime: 2025-03-31 00:08:37
  * @FilePath: \gsap-lenis-learn\src\components\CapsionText\index.tsx
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
  */
@@ -42,24 +42,32 @@ const CapsionTextLogo: React.FC<any> = ({ texts = ["111111111", "2222222222", "3
     if (texts.length < 2) return console.log("传入的字符串只有一行，不足以触发滚动动画");
     if (!animation.current) {
       animation.current = gsap
-        .timeline({ paused: true, repeat: -1, repeatDelay: 1 })
+        .timeline({
+          paused: true,
+          repeat: -1,
+          repeatDelay: 1,
+          onRepeat: () => {
+            // 修改字体
+            setTextIndex((prev) => {
+              const nextIndex = (prev + 1) % texts.length;
+              setCurrentText(texts[nextIndex]);
+              setNextText(texts[(nextIndex + 1) % texts.length]);
+              return nextIndex;
+            });
+          },
+        })
         .to(
           ".__eachCurrentChar",
           {
             yPercent: -100,
             duration: 0.6,
             ease: "power2.inOut",
-            onComplete: () => {
-              // 修改字体
-            },
           },
           0
         )
         .set(".__eachCurrentChar", {
           yPercent: 100,
-          onComplete: () => {
-            // 修改字体
-          },
+          onComplete: () => {},
         })
         .to(
           ".__eachNextChar",
@@ -148,8 +156,8 @@ const CapsionTextLogo: React.FC<any> = ({ texts = ["111111111", "2222222222", "3
   );
 
   return (
-    <section ref={capsionTextLogoRef} className={["text-left w-fit overflow-y-hidden", "xl:h-[100px]", "lg:h-[100px]"].join(" ")}>
-      <div ref={textContainerRef} className={["overflow-hidden text-[100px] leading-none"].join(" ")}>
+    <section ref={capsionTextLogoRef} className={["text-left w-fit overflow-y-hidden overflow-x-hidden", "xl:h-[100px]", "lg:h-[100px]"].join(" ")}>
+      <div ref={textContainerRef} className={["overflow-hidden text-[100px] leading-none mix-blend-difference text-black"].join(" ")}>
         <div ref={currentTextRef} className={["up"].join(" ")}>
           <div className={["text flex font-sans "].join(" ")}>
             {currentText.split("").map((item, index) => {
