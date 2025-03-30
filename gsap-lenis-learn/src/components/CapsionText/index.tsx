@@ -1,8 +1,8 @@
 /*
  * @Author: Capsion 373704015@qq.com
  * @Date: 2025-03-25 20:12:12
- * @LastEditors: cpasion-office-win10 373704015@qq.com
- * @LastEditTime: 2025-03-28 16:45:05
+ * @LastEditors: Capsion 373704015@qq.com
+ * @LastEditTime: 2025-03-30 21:12:21
  * @FilePath: \gsap-lenis-learn\src\components\CapsionText\index.tsx
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
  */
@@ -16,7 +16,7 @@ import { ScrollTrigger } from "gsap/ScrollTrigger";
 
 gsap.registerPlugin(useGSAP, ScrollTrigger);
 
-const CapsionTextLogo: React.FC<any> = ({ texts = ["111111111", "2222222222"], step = 0 }) => {
+const CapsionTextLogo: React.FC<any> = ({ texts = ["111111111", "2222222222", "3333333333333", "4444444444444"], step = 0 }) => {
   const capsionTextLogoRef = useRef<HTMLDivElement>(null);
   const textContainerRef = useRef<HTMLDivElement>(null);
 
@@ -24,26 +24,27 @@ const CapsionTextLogo: React.FC<any> = ({ texts = ["111111111", "2222222222"], s
   const nextTextRef = useRef<HTMLDivElement>(null);
 
   const animation = useRef<gsap.core.Timeline>(null);
-  const [currentIndex, setCurrentIndex] = useState(0);
 
-  const [currentText, setCurrentText] = useState<string>(texts[0]);
-  const [nextText, setNextText] = useState<string | null>(texts.length > 1 ? texts[1] : null);
+  const [textIndex, setTextIndex] = useState<number>(0);
+
+  const [currentText, setCurrentText] = useState<string>(texts[textIndex]);
+  const [nextText, setNextText] = useState<string | null>(texts.length > 1 ? texts[textIndex + 1] : null);
 
   const [gather, setGather] = useState(true);
 
   const { contextSafe } = useGSAP({ scope: textContainerRef });
 
+  const testRef = useRef<string>("testRef");
+  const [testState, setTestState] = useState<string>("testState");
+
   const onClick = contextSafe(() => {
     console.log(gather, "gather");
     if (texts.length < 2) return console.log("传入的字符串只有一行，不足以触发滚动动画");
     if (!animation.current) {
-      // 设置宽度
-
-      console.log("123");
       animation.current = gsap
         .timeline({ paused: true, repeat: -1, repeatDelay: 1 })
         .to(
-          currentTextRef.current,
+          ".__eachCurrentChar",
           {
             yPercent: -100,
             duration: 0.6,
@@ -54,9 +55,14 @@ const CapsionTextLogo: React.FC<any> = ({ texts = ["111111111", "2222222222"], s
           },
           0
         )
-        .set(currentTextRef.current, { yPercent: 100 })
+        .set(".__eachCurrentChar", {
+          yPercent: 100,
+          onComplete: () => {
+            // 修改字体
+          },
+        })
         .to(
-          nextTextRef.current,
+          ".__eachNextChar",
           {
             yPercent: -100,
             duration: 0.6,
@@ -66,7 +72,7 @@ const CapsionTextLogo: React.FC<any> = ({ texts = ["111111111", "2222222222"], s
         )
         .addLabel("step_1")
         .to(
-          currentTextRef.current,
+          ".__eachCurrentChar",
           {
             yPercent: 0,
             duration: 0.6,
@@ -75,7 +81,7 @@ const CapsionTextLogo: React.FC<any> = ({ texts = ["111111111", "2222222222"], s
           2
         )
         .to(
-          nextTextRef.current,
+          ".__eachNextChar",
           {
             yPercent: -200,
             duration: 0.6,
@@ -83,7 +89,7 @@ const CapsionTextLogo: React.FC<any> = ({ texts = ["111111111", "2222222222"], s
           },
           2
         )
-        .set(nextTextRef.current, { yPercent: 0 })
+        .set(".__eachNextChar", { yPercent: 0 })
         .eventCallback("onComplete", () => {
           console.log("all done");
         });
@@ -142,13 +148,13 @@ const CapsionTextLogo: React.FC<any> = ({ texts = ["111111111", "2222222222"], s
   );
 
   return (
-    <section ref={capsionTextLogoRef} className={["bg-gray-700 text-left w-fit", "xl:h-[100px]", "lg:h-[100px]"].join(" ")}>
-      <div ref={textContainerRef} className={["bg-gray-300 overflow-hidden relative"].join(" ")}>
+    <section ref={capsionTextLogoRef} className={["text-left w-fit overflow-y-hidden", "xl:h-[100px]", "lg:h-[100px]"].join(" ")}>
+      <div ref={textContainerRef} className={["overflow-hidden text-[100px] leading-none"].join(" ")}>
         <div ref={currentTextRef} className={["up"].join(" ")}>
-          <div className={["text flex font-sans text-[6vw]"].join(" ")}>
+          <div className={["text flex font-sans "].join(" ")}>
             {currentText.split("").map((item, index) => {
               return (
-                <div key={index} className={["eachChar inline-block"].join(" ")}>
+                <div key={index} className={["eachChar __eachCurrentChar"].join(" ")}>
                   {item}
                 </div>
               );
@@ -157,11 +163,11 @@ const CapsionTextLogo: React.FC<any> = ({ texts = ["111111111", "2222222222"], s
         </div>
 
         {nextText && (
-          <div ref={nextTextRef} className={["down absolute top-0 translate-y-full"].join(" ")}>
-            <div className={["text flex font-sans text-[6vw]"].join(" ")}>
+          <div ref={nextTextRef} className={["down"].join(" ")}>
+            <div className={["text flex font-sans"].join(" ")}>
               {nextText.split("").map((item, index) => {
                 return (
-                  <div key={index} className={["eachChar"].join(" ")}>
+                  <div key={index} className={["eachChar __eachNextChar"].join(" ")}>
                     {item}
                   </div>
                 );
@@ -171,9 +177,36 @@ const CapsionTextLogo: React.FC<any> = ({ texts = ["111111111", "2222222222"], s
         )}
       </div>
 
-      <button className={["absolute bottom-0 left-0", "text-start text-[5px] w-[40px] h-[20px]"].join(" ")} onClick={() => onClick()}>
-        test
-      </button>
+      <div className="absolute left-0 bottom-0">
+        <button className={["text-start text-[2px] w-[40px] h-[20px]"].join(" ")} onClick={() => onClick()}>
+          test
+        </button>
+        <div>
+          {testRef.current.split("").map((char, index) => {
+            return <span key={index}>{char}</span>;
+          })}
+        </div>
+        <div>
+          {testState.split("").map((char, index) => {
+            return <span key={index}>{char}</span>;
+          })}
+        </div>
+
+        <input
+          type="text"
+          onChange={(e) => {
+            const target = e.target as HTMLInputElement;
+
+            console.log(target.value);
+            console.log(target.value.length);
+
+            if (target.value.length > 0 && target.value !== testState) {
+              // setTestState(target.value);
+              testRef.current = target.value;
+            }
+          }}
+        />
+      </div>
     </section>
   );
 };
