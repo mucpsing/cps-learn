@@ -1,8 +1,8 @@
 /*
  * @Author: Capsion 373704015@qq.com
  * @Date: 2025-03-25 20:12:12
- * @LastEditors: Capsion 373704015@qq.com
- * @LastEditTime: 2025-03-31 13:06:23
+ * @LastEditors: cpasion-office-win10 373704015@qq.com
+ * @LastEditTime: 2025-03-31 15:59:50
  * @FilePath: \gsap-lenis-learn\src\components\CapsionText\index.tsx
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
  */
@@ -16,7 +16,7 @@ import { ScrollTrigger } from "gsap/ScrollTrigger";
 
 gsap.registerPlugin(useGSAP, ScrollTrigger);
 
-const CapsionTextLogo: React.FC<{ texts: string[]; step?: number }> = ({ texts = ["111111111", "2222222222", "3333333333333", "4444444444444", "555", "666666666", "7777777777", "888"], step = 0 }) => {
+const CapsionTextLogo: React.FC<{ texts: string[]; step?: number; className?: string[] }> = ({ texts = ["111111111", "2222222222", "3333333333333", "4444444444444", "555", "666666666", "7777777777", "888"], step = 0, className = [] }) => {
   const capsionTextLogoRef = useRef<HTMLDivElement>(null);
   const textContainerRef = useRef<HTMLDivElement>(null);
 
@@ -70,7 +70,7 @@ const CapsionTextLogo: React.FC<{ texts: string[]; step?: number }> = ({ texts =
 
   const onClick = contextSafe(() => {
     console.log(gather, "gather");
-    if (texts.length < 2) return console.log("传入的字符串只有一行，不足以触发滚动动画");
+    if (texts.length < 2) return console.log("传入的字符串只有一行，不足以触发滚动动画: ", texts.length);
 
     if (animation.current) {
       const _gsap = animation.current;
@@ -78,7 +78,7 @@ const CapsionTextLogo: React.FC<{ texts: string[]; step?: number }> = ({ texts =
       if (_gsap.isActive()) {
         _gsap.pause();
       } else {
-        _gsap.play();
+        _gsap.restart();
       }
     }
   });
@@ -98,8 +98,8 @@ const CapsionTextLogo: React.FC<{ texts: string[]; step?: number }> = ({ texts =
       switch (step) {
         case 0:
           gsap.set(capsionTextLogoRef.current, {
-            x: window.innerWidth * 0.1,
-            y: window.innerHeight * 0.2,
+            x: window.innerWidth * 0.07,
+            y: window.innerHeight * 0.15,
           });
 
           gsap.from(capsionTextLogoRef.current, {
@@ -126,28 +126,29 @@ const CapsionTextLogo: React.FC<{ texts: string[]; step?: number }> = ({ texts =
   );
 
   return (
-    <section ref={capsionTextLogoRef} className={["text-left overflow-hidden w-full", "xl:h-[100px]", "lg:h-[100px]"].join(" ")}>
-      <div ref={textContainerRef} className={["overflow-hidden text-[100px] leading-none mix-blend-difference text-black", ""].join(" ")}>
+    <section ref={capsionTextLogoRef} className={[...className, "text-left overflow-hidden w-full", "xl:h-[70px]", "lg:h-[70px]", "text-[70px]"].join(" ")}>
+      <div ref={textContainerRef} className={["overflow-hidden leading-none", "text-black mix-blend-difference"].join(" ")}>
         <div ref={currentTextRef} className={["up"].join(" ")}>
-          <div className={["text flex font-sans"].join(" ")}>
-            {texts[currentIndex].split("").map((item, index) => {
-              console.log(index, item);
-              let eachChar = item;
-              if (item == " ") eachChar = "    ";
+          <div className={["text flex"].join(" ")}>
+            {texts[currentIndex].split(" ").map((item, index) => {
               return (
-                <div key={index} className="overflow-hidden">
-                  <div className={["eachChar __eachCurrentChar"].join(" ")}>{eachChar}</div>
+                <div key={index} className="overflow-hidden flex mr-3">
+                  {item.split("").map((eachChar, index) => {
+                    return (
+                      <div key={index} className={["eachChar __eachCurrentChar"].join(" ")}>
+                        {eachChar}
+                      </div>
+                    );
+                  })}
                 </div>
               );
             })}
           </div>
-
-          {/* <div className={["eachChar __eachCurrentChar", "text flex font-sans"].join(" ")}>{texts[currentIndex]}</div> */}
         </div>
 
         {texts.length > 1 && (
           <div ref={nextTextRef} className={["down absolute"].join(" ")}>
-            <div className={["text flex font-sans"].join(" ")}>
+            <div className={["text flex"].join(" ")}>
               {texts[nextIndex].split("").map((item, index) => {
                 return (
                   <div key={index} className="overflow-hidden">
@@ -158,12 +159,6 @@ const CapsionTextLogo: React.FC<{ texts: string[]; step?: number }> = ({ texts =
             </div>
           </div>
         )}
-      </div>
-
-      <div className="left-0 top-0 absolute z-10">
-        <button className={["text-start text-[2px] w-[40px] h-[20px]"].join(" ")} onClick={() => onClick()}>
-          test
-        </button>
       </div>
     </section>
   );

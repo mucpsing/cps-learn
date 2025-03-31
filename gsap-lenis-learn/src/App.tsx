@@ -1,19 +1,12 @@
 /*
  * @Author: cpasion-office-win10 373704015@qq.com
  * @Date: 2025-03-13 10:14:49
- * @LastEditors: Capsion 373704015@qq.com
- * @LastEditTime: 2025-03-31 12:58:18
- * @FilePath: \gsap-lenis-learn\src\App.tsx
- * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
- */
-/*
- * @Author: capsion_surfacePro7 capsion@surfacePro2.com
- * @Date: 2025-03-05 20:58:38
  * @LastEditors: cpasion-office-win10 373704015@qq.com
- * @LastEditTime: 2025-03-21 10:41:18
+ * @LastEditTime: 2025-03-31 16:08:54
  * @FilePath: \gsap-lenis-learn\src\App.tsx
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
  */
+
 import { useState, useRef } from "react";
 import "./App.css";
 import "./assets/font/fonts.css";
@@ -24,11 +17,13 @@ import { useGSAP } from "@gsap/react";
 import { ReactLenis } from "lenis/react";
 import "lenis/dist/lenis.css";
 
-import { DEFAULT_SUB_COLOR } from "./store/config";
+import { mainTexts, subTexts, DEFAULT_SUB_COLOR } from "./store";
 
 import MouseTracker from "./components/MouseTracker";
-import CapsionText from "./components/CapsionText";
-import CapsionTextTest from "./components/CapsionText/test";
+
+import MainText from "./components/mainText";
+import SubText from "./components/SubText";
+
 import DocsText from "./components/DocsText";
 import BackgroundBubble from "./components/BackgroundBubble";
 
@@ -90,13 +85,11 @@ function App() {
 
   return (
     <ReactLenis root>
-      <main ref={mainRef} className="main h-screen relative w-screen">
-        <header className="__home_main_text w-[100vw] h-[100vh] bg-white">
-          <CapsionText texts={["WELLCOME TO"]} step={pageStep}></CapsionText>
-
-          <CapsionText texts={["Capsion's Hub"]} step={pageStep}></CapsionText>
-
-          {/* <CapsionTextTest texts={["First Text", "Second Text", "Third Text"]}></CapsionTextTest> */}
+      <main ref={mainRef} className="main h-screen relative w-screen z-2">
+        <header className="__home_main_text w-[100vw] h-[100vh]">
+          <SubText texts={subTexts} step={pageStep}></SubText>
+          <div className="my-6"></div>
+          <MainText texts={mainTexts} step={pageStep}></MainText>
         </header>
 
         <section ref={trackWarpRef} className={["track", "flex-nowrap h-full items-center justify-center inline-flex relative bg-gray-500"].join(" ")}>
@@ -120,6 +113,7 @@ function App() {
           <p className="read-the-docs">Click on the Vite and React logos to learn more</p>
         </footer>
       </main>
+      <BackgroundBubble></BackgroundBubble>
     </ReactLenis>
   );
 }

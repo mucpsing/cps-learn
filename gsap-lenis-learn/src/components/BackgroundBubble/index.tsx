@@ -1,8 +1,8 @@
 /*
  * @Author: Capsion 373704015@qq.com
  * @Date: 2025-03-27 21:14:24
- * @LastEditors: Capsion 373704015@qq.com
- * @LastEditTime: 2025-03-27 21:16:57
+ * @LastEditors: cpasion-office-win10 373704015@qq.com
+ * @LastEditTime: 2025-03-31 15:48:47
  * @FilePath: \gsap-lenis-learn\src\components\BackgroundBubble\index.tsx
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
  */
@@ -57,6 +57,7 @@ export default function GlowBackground({ bgColor = "rgba(255,255,255,0)", glowCo
         pointerEvents: "none",
         overflow: "hidden",
       }}
+      className="z-0"
     >
       <div
         style={{
@@ -72,6 +73,8 @@ export default function GlowBackground({ bgColor = "rgba(255,255,255,0)", glowCo
           borderRadius: "50%",
         }}
       />
+
+      <div className={["h-[200%] w-[500px] bg-red-400 -top-1/2 right-[10%] absolute", "rotate-15"].join(" ")}></div>
     </div>
   );
 }
