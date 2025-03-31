@@ -12,7 +12,8 @@
     "baseUrl": ".",
     "jsx": "react-jsx",
     "paths": {
-      "@src/*": ["src/*"]
+      "@src/*": ["src/*"],
+      "@site/*": ["./*"]
     },
     "strict": true
   }

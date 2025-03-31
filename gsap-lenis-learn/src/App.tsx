@@ -1,8 +1,8 @@
 /*
  * @Author: cpasion-office-win10 373704015@qq.com
  * @Date: 2025-03-13 10:14:49
- * @LastEditors: cpasion-office-win10 373704015@qq.com
- * @LastEditTime: 2025-03-31 16:08:54
+ * @LastEditors: Capsion 373704015@qq.com
+ * @LastEditTime: 2025-03-31 22:48:01
  * @FilePath: \gsap-lenis-learn\src\App.tsx
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
  */
@@ -58,30 +58,30 @@ function App() {
 
   const [pageStep, setPageStep] = useState<number>(0);
 
-  useGSAP(
-    (_context, _contextSafe) => {
-      if (!trackWarpRef.current) return;
-      const offset = trackWarpRef.current.scrollWidth - window.innerWidth;
-      gsap.set(trackWarpRef.current, { x: 0, y: 0 });
-      gsap.to(trackWarpRef.current, {
-        x: () => {
-          const res = (DEFAULT_SUB_COLOR.length - 1) * window.innerWidth;
+  // useGSAP(
+  //   (_context, _contextSafe) => {
+  //     if (!trackWarpRef.current) return;
+  //     const offset = trackWarpRef.current.scrollWidth - window.innerWidth;
+  //     gsap.set(trackWarpRef.current, { x: 0, y: 0 });
+  //     gsap.to(trackWarpRef.current, {
+  //       x: () => {
+  //         const res = (DEFAULT_SUB_COLOR.length - 1) * window.innerWidth;
 
-          return `-${res}`;
-        },
-        scrollTrigger: {
-          trigger: trackWarpRef.current,
-          start: "center center",
-          end: () => "+=" + (offset - window.innerWidth),
-          scrub: 2,
-          pin: true,
-          invalidateOnRefresh: true,
-          id: "id-one",
-        },
-      });
-    },
-    { scope: mainRef }
-  );
+  //         return `-${res}`;
+  //       },
+  //       scrollTrigger: {
+  //         trigger: trackWarpRef.current,
+  //         start: "center center",
+  //         end: () => "+=" + (offset - window.innerWidth),
+  //         scrub: 2,
+  //         pin: true,
+  //         invalidateOnRefresh: true,
+  //         id: "id-one",
+  //       },
+  //     });
+  //   },
+  //   { scope: mainRef }
+  // );
 
   return (
     <ReactLenis root>
@@ -90,9 +90,11 @@ function App() {
           <SubText texts={subTexts} step={pageStep}></SubText>
           <div className="my-6"></div>
           <MainText texts={mainTexts} step={pageStep}></MainText>
+
+          {/* <div className="w-1/2 h-1/2 bg-amber-300"></div> */}
         </header>
 
-        <section ref={trackWarpRef} className={["track", "flex-nowrap h-full items-center justify-center inline-flex relative bg-gray-500"].join(" ")}>
+        {/* <section ref={trackWarpRef} className={["track", "flex-nowrap h-full w-screen items-center justify-center inline-flex relative bg-gray-500"].join(" ")}>
           {DEFAULT_SUB_COLOR.map((item, key) => {
             return (
               <div key={key} className="retracklative w-screen h-[80vh]">
@@ -100,7 +102,7 @@ function App() {
               </div>
             );
           })}
-        </section>
+        </section> */}
 
         <footer className={["flex flex-col items-center justify-center w-full py-10"].join(" ")}>
           <h1>Vite + React</h1>

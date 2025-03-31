@@ -1,12 +1,14 @@
 /*
  * @Author: Capsion 373704015@qq.com
  * @Date: 2025-03-27 21:14:24
- * @LastEditors: cpasion-office-win10 373704015@qq.com
- * @LastEditTime: 2025-03-31 15:48:47
+ * @LastEditors: Capsion 373704015@qq.com
+ * @LastEditTime: 2025-03-31 23:27:23
  * @FilePath: \gsap-lenis-learn\src\components\BackgroundBubble\index.tsx
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
  */
 import { useState, useEffect } from "react";
+import { hexToRgba } from "@src/utils";
+import { PerspectiveTransform, type Points } from "react-perspective-transform";
 
 interface GlowBackgroundProps {
   bgColor?: string; // 背景颜色/透明度
@@ -16,65 +18,56 @@ interface GlowBackgroundProps {
   parallaxIntensity?: number; // 视差强度
 }
 
-export default function GlowBackground({ bgColor = "rgba(255,255,255,0)", glowColor = "rgba(255, 0, 0, 0.15)", sizeRatio = 0.4, blur = 70, parallaxIntensity = 0.15 }: GlowBackgroundProps) {
-  const [position, setPosition] = useState({ x: 50, y: 50 });
-  let timeoutId: NodeJS.Timeout;
+function ControlledExample() {
+  const [points, setPoints] = useState<Points>({
+    topLeft: { x: 50, y: 50 },
+    topRight: { x: 250, y: 50 },
+    bottomRight: { x: 250, y: 200 },
+    bottomLeft: { x: 50, y: 200 },
+  });
 
-  // 鼠标移动处理
+  const [editable, setEditable] = useState(false);
+
   useEffect(() => {
-    const handleMouseMove = (e: MouseEvent) => {
-      // 计算基于视口中心的对立坐标
-      const centerX = window.innerWidth / 2;
-      const centerY = window.innerHeight / 2;
-      const dx = (e.clientX - centerX) / centerX;
-      const dy = (e.clientY - centerY) / centerY;
-
-      setPosition({
-        x: 50 - dx * parallaxIntensity * 100,
-        y: 50 - dy * parallaxIntensity * 100,
+    setTimeout(() => {
+      setPoints({
+        topLeft: { x: 50, y: 50 },
+        topRight: { x: 250, y: 50 },
+        bottomRight: { x: 500, y: 500 },
+        bottomLeft: { x: 50, y: 200 },
       });
-
-      // 重置计时器
-      clearTimeout(timeoutId);
-      timeoutId = setTimeout(() => {
-        setPosition({ x: 50, y: 50 });
-      }, 3000);
-    };
-
-    window.addEventListener("mousemove", handleMouseMove);
-    return () => window.removeEventListener("mousemove", handleMouseMove);
-  }, [parallaxIntensity]);
+    }, 1000);
+  });
 
   return (
-    <div
-      style={{
-        position: "fixed",
-        top: 0,
-        left: 0,
-        right: 0,
-        bottom: 0,
-        backgroundColor: bgColor,
-        pointerEvents: "none",
-        overflow: "hidden",
-      }}
-      className="z-0"
-    >
+    <PerspectiveTransform points={points} onPointsChange={setPoints} editable={editable} onEditableChange={setEditable}>
+      <div className={["h-screen w-[500px] bg-red-400", "transition-all duration-1000"].join(" ")}></div>
+    </PerspectiveTransform>
+  );
+}
+
+export default function GlowBackground({ glowColor = "#FC1E4F", sizeRatio = 0.3, blur = 90 }: GlowBackgroundProps) {
+  useEffect(() => {
+    console.log("GlowBackground init");
+  }, []);
+
+  return (
+    <div className="z-0 overflow-hidden absolute top-0 left-0 w-screen h-screen pointer-events-none">
+      <button className="z-20" onClick={() => console.log(2222)}>
+        1111111111
+      </button>
       <div
         style={{
           position: "absolute",
-          left: `${position.x}%`,
-          top: `${position.y}%`,
           width: `${sizeRatio * 100}vw`,
           height: `${sizeRatio * 100}vw`,
-          background: `radial-gradient(circle, ${glowColor} 0%, transparent 70%)`,
+          background: `radial-gradient(circle, ${hexToRgba(glowColor, 0.5)} 10%, transparent 60%)`,
           filter: `blur(${blur}px)`,
-          transform: "translate(-50%, -50%)",
-          transition: "all 0.3s ease-out",
-          borderRadius: "50%",
+          borderRadius: "60%",
         }}
       />
-
-      <div className={["h-[200%] w-[500px] bg-red-400 -top-1/2 right-[10%] absolute", "rotate-15"].join(" ")}></div>
+      {/* <div className={["h-screen w-[500px] bg-red-400 right-0 absolute", ""].join(" ")}></div> */}
+      <ControlledExample></ControlledExample>
     </div>
   );
 }

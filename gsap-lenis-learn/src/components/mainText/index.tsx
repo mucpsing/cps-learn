@@ -1,8 +1,8 @@
 /*
  * @Author: Capsion 373704015@qq.com
  * @Date: 2025-03-25 20:12:12
- * @LastEditors: cpasion-office-win10 373704015@qq.com
- * @LastEditTime: 2025-03-31 15:59:26
+ * @LastEditors: Capsion 373704015@qq.com
+ * @LastEditTime: 2025-03-31 22:50:56
  * @FilePath: \gsap-lenis-learn\src\components\CapsionText\index.tsx
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
  */
@@ -13,6 +13,7 @@ import { useGSAP } from "@gsap/react";
 import "./CapsionText.css";
 
 import { ScrollTrigger } from "gsap/ScrollTrigger";
+import { mainTexts, subTexts, DEFAULT_SUB_COLOR } from "@site/src/store";
 
 gsap.registerPlugin(useGSAP, ScrollTrigger);
 
@@ -112,12 +113,12 @@ const CapsionTextLogo: React.FC<{ texts: string[]; step?: number; className?: st
 
   return (
     <section ref={capsionTextLogoRef} className={[...className, "text-left overflow-hidden w-full", "xl:h-[100px]", "lg:h-[100px]", "text-[100px]"].join(" ")}>
-      <div ref={textContainerRef} className={["overflow-hidden leading-none", "text-black mix-blend-difference"].join(" ")}>
+      <div ref={textContainerRef} className={["overflow-hidden leading-none", "mix-blend-difference text-black"].join(" ")}>
         <div ref={currentTextRef} className={["up"].join(" ")}>
           <div className={["text flex"].join(" ")}>
             {texts[currentIndex].split(" ").map((item, index) => {
               return (
-                <div key={index} className="overflow-hidden flex mr-5">
+                <div key={index} className="overflow-hidden flex mr-5" style={{ color: index == 0 ? DEFAULT_SUB_COLOR[0] : "" }}>
                   {item.split("").map((eachChar, index) => {
                     return (
                       <div key={index} className={["eachChar __eachCurrentChar"].join(" ")}>
