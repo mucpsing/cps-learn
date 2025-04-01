@@ -20,7 +20,9 @@ function setTransformStyleName() {
   _transformOriginDomStyleName = `-${stylePrefix.toLowerCase()}-transform-origin`;
 }
 
-export default class PerspectiveTransform {
+setTransformStyleName();
+
+export class PerspectiveTransform {
   element: HTMLElement;
   style: CSSStyleDeclaration;
   computedStyle: CSSStyleDeclaration;
@@ -37,12 +39,9 @@ export default class PerspectiveTransform {
   static dpr = 1;
 
   constructor(element: HTMLElement, width: number, height: number, useBackFacing?: boolean) {
-    setTransformStyleName();
-
     this.element = element;
     this.style = element.style;
     this.computedStyle = window.getComputedStyle(element);
-    console.log(this.computedStyle);
     this.width = width;
     this.height = height;
     this.useBackFacing = !!useBackFacing;
@@ -59,15 +58,13 @@ export default class PerspectiveTransform {
     return 0;
   }
 
-  update(offset: string): string {
-    console.log("update");
+  update(): string {
     const width = this.width;
     const height = this.height;
 
     let offsetX = 0;
     let offsetY = 0;
-    // const offset = this.computedStyle.getPropertyValue(_transformOriginDomStyleName);
-    console.log({ offset });
+    const offset = this.computedStyle.getPropertyValue(_transformOriginDomStyleName);
 
     if (offset.includes("px")) {
       const parts = offset.split("px");
@@ -140,8 +137,7 @@ export default class PerspectiveTransform {
       style = `scale(${dpr},${dpr})perspective(1000px)${style}translateZ(${(1 - dpr) * 1000}px)`;
     }
 
-    console.log("_transformStyleName: ", _transformStyleName);
-    // (this.style as any)[_transformStyleName] = style;
+    (this.style as any)[_transformStyleName] = style;
     return style;
   }
 
@@ -189,3 +185,5 @@ export default class PerspectiveTransform {
     return false;
   }
 }
+
+export default PerspectiveTransform;
