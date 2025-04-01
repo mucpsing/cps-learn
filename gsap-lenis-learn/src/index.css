@@ -32,6 +32,7 @@ body {
   min-height: 100vh;
   background-color: #fff;
   z-index: -1;
+  overflow: hidden;
 }
 
 h1 {

@@ -1,8 +1,8 @@
 /*
  * @Author: cpasion-office-win10 373704015@qq.com
  * @Date: 2025-03-13 10:14:49
- * @LastEditors: Capsion 373704015@qq.com
- * @LastEditTime: 2025-03-31 22:48:01
+ * @LastEditors: cpasion-office-win10 373704015@qq.com
+ * @LastEditTime: 2025-04-01 11:16:38
  * @FilePath: \gsap-lenis-learn\src\App.tsx
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
  */
@@ -86,7 +86,7 @@ function App() {
   return (
     <ReactLenis root>
       <main ref={mainRef} className="main h-screen relative w-screen z-2">
-        <header className="__home_main_text w-[100vw] h-[100vh]">
+        <header className="__home_main_text w-full h-full">
           <SubText texts={subTexts} step={pageStep}></SubText>
           <div className="my-6"></div>
           <MainText texts={mainTexts} step={pageStep}></MainText>
