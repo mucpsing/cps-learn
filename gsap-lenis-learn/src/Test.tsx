@@ -1,8 +1,18 @@
+/*
+ * @Author: Capsion 373704015@qq.com
+ * @Date: 2025-04-01 18:37:49
+ * @LastEditors: Capsion 373704015@qq.com
+ * @LastEditTime: 2025-04-01 18:49:46
+ * @FilePath: \gsap-lenis-learn\src\Test.tsx
+ * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
+ */
 import { useState, useRef, useEffect } from "react";
 import PerspectiveTransform from "@site/src/utils/PerspectiveTransform";
+import MatrixCSS from "@site/src/utils/MatrixCSS";
+
 export default function App() {
   const testRef = useRef<HTMLDivElement>(null);
-  const ms = useRef<PerspectiveTransform>(null);
+  const ms = useRef<MatrixCSS>(null);
 
   const [leftTop, setLeftTop] = useState({ w: 180, h: 180, offset: 10 });
   const [rightTop, setRightTop] = useState({ w: 180, h: 180, offset: 0 });
@@ -13,12 +23,10 @@ export default function App() {
     if (!testRef.current) return;
     console.log(testRef.current);
 
-    ms.current = new PerspectiveTransform(testRef.current, 200, 200, true);
-    if (ms.current) {
-      const tr = ms.current.update();
-      console.log(tr);
-      console.log(ms.current.checkError());
-    }
+    const { width, height } = testRef.current.getBoundingClientRect();
+
+    ms.current = new MatrixCSS({ element: testRef.current, width, height });
+
     // console.log(ms.current);
 
     return () => {
