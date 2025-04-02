@@ -2,8 +2,8 @@ import PerspectiveTransform from "./PerspectiveTransform";
 
 export interface MatrixCSSOptions {
   element: HTMLElement;
-  img_width: number;
-  img_height: number;
+  width: number;
+  height: number;
   bg_width?: number;
   bg_height?: number;
   ratio?: number;
@@ -31,20 +31,20 @@ export class MatrixCSS {
   private transform: PerspectiveTransform;
 
   constructor(options: MatrixCSSOptions) {
-    const { element, img_width, img_height, bg_width, bg_height, ratio } = options;
+    const { element, width, height, bg_width, bg_height, ratio } = options;
 
     this.element = element;
     this.style = element.style;
-    this.width = img_width;
-    this.height = img_height;
-    this.ratio = ratio || (bg_width && img_width ? bg_width / img_width : 1);
+    this.width = width;
+    this.height = height;
+    this.ratio = ratio || (bg_width && width ? bg_width / width : 1);
 
     this._setTransformStyleName();
 
     this.transform = new PerspectiveTransform(
       element, // 根据之前重构的 PerspectiveTransform 构造函数参数添加
-      img_width,
-      img_height,
+      width,
+      height,
       true
     );
   }
