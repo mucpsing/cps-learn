@@ -1,8 +1,8 @@
 /*
  * @Author: cpasion-office-win10 373704015@qq.com
  * @Date: 2025-04-02 10:12:57
- * @LastEditors: Capsion 373704015@qq.com
- * @LastEditTime: 2025-04-03 01:13:28
+ * @LastEditors: capsion_surfacePro7 capsion@surfacePro2.com
+ * @LastEditTime: 2025-04-05 09:42:01
  * @FilePath: \gsap-lenis-learn\src\components\BlurBalls.tsx
  * @Description: 这是一个液态球体的组件，内部会有液态跟随鼠标流出的效果
  */
@@ -93,11 +93,11 @@ export default function BlurBalls() {
             );
           })}
 
-        <div
+        {/* <div
           ref={bigBallRef}
           style={{ width: `${BASE_CONFIG.bigBallSize}px`, height: `${BASE_CONFIG.bigBallSize}px` }}
           className={["__BlurBall_balls_big ___BlurBall_ball]", "bg-black blur-[10px]", "absolute rounded-full"].join(" ")}
-        ></div>
+        ></div> */}
       </div>
     </div>
   );
