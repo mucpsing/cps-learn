@@ -41,6 +41,7 @@ export default function BlurBalls() {
   }, [bigBallRef.current]);
 
   // 小球的运动
+  // 需要优化，这里使用了圆心计算，其实不用，将触发区域使用元素
   const moveSmallBalls = (x: number, y: number) => {
     if (!smallBallRef.current) return;
     if (!bigBallRef.current) return;
@@ -93,11 +94,7 @@ export default function BlurBalls() {
             );
           })}
 
-        <div
-          ref={bigBallRef}
-          style={{ width: `${BASE_CONFIG.bigBallSize}px`, height: `${BASE_CONFIG.bigBallSize}px` }}
-          className={["__BlurBall_balls_big ___BlurBall_ball]", "bg-black blur-[10px]", "absolute rounded-full"].join(" ")}
-        ></div>
+        <div ref={bigBallRef} style={{ width: `${BASE_CONFIG.bigBallSize}px`, height: `${BASE_CONFIG.bigBallSize}px` }} className={["__BlurBall_balls_big ___BlurBall_ball]", "bg-black blur-[10px]", "absolute rounded-full"].join(" ")}></div>
       </div>
     </div>
   );
