@@ -86,24 +86,27 @@ export default function Loading() {
     </svg>
   );
   return (
-    <div
-      style={{
-        position: "absolute",
-        top: 0,
-        left: 0,
-        width: "100%",
-        height: "100vh",
-        backgroundColor: "#fff",
-        display: "flex",
-        justifyContent: "center",
-        alignItems: "center",
-        flexFlow: "column",
-      }}
-    >
-      <div style={{ width: "220px", height: "30px", display: "flex", justifyContent: "center", alignItems: "center" }}>
-        <LoadingText></LoadingText>
-      </div>
-      <p style={{ fontSize: "0.5rem" }}>Page Loading ...</p>
+    <div id="__cps_loading-warp">
+      <span id="__cps_loading-char">&lt;</span>
+      <span id="__cps_loading-char">&nbsp;</span>
+      <span id="__cps_loading-char">C</span>
+      <span id="__cps_loading-char">a</span>
+      <span id="__cps_loading-char">p</span>
+      <span id="__cps_loading-char">s</span>
+      <span id="__cps_loading-char">i</span>
+      <span id="__cps_loading-char">o</span>
+      <span id="__cps_loading-char">n</span>
+      <span id="__cps_loading-char">'</span>
+      <span id="__cps_loading-char">s</span>
+      <span id="__cps_loading-char">&nbsp;</span>
+      <span id="__cps_loading-char">H</span>
+      <span id="__cps_loading-char">u</span>
+      <span id="__cps_loading-char">b</span>
+      <span id="__cps_loading-char">&nbsp;</span>
+      <span id="__cps_loading-char" className="__cps_loading-colorSlash">
+        <strong id="__cps_loading-colorSlash">/</strong>
+      </span>
+      <span id="__cps_loading-char">&gt;</span>
     </div>
   );
 }
