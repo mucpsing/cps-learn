@@ -1,15 +1,15 @@
 /*
  * @Author: cpasion-office-win10 373704015@qq.com
  * @Date: 2025-03-13 10:14:49
- * @LastEditors: cpasion-office-win10 373704015@qq.com
- * @LastEditTime: 2025-04-01 11:16:38
+ * @LastEditors: Capsion 373704015@qq.com
+ * @LastEditTime: 2025-04-16 00:18:15
  * @FilePath: \gsap-lenis-learn\src\App.tsx
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
  */
 
-import { useState, useRef } from "react";
-import "./App.css";
-import "./assets/font/fonts.css";
+import { useState, useRef, useEffect } from "react";
+
+import "@site/src/assets/font/fonts.css";
 
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
@@ -17,15 +17,15 @@ import { useGSAP } from "@gsap/react";
 import { ReactLenis } from "lenis/react";
 import "lenis/dist/lenis.css";
 
-import { mainTexts, subTexts, DEFAULT_SUB_COLOR } from "./store";
+import { mainTexts, subTexts } from "@site/src/store";
 
-import MouseTracker from "./components/MouseTracker";
+// import MouseTracker from "./components/MouseIconsTracker";
 
-import MainText from "./components/mainText";
-import SubText from "./components/SubText";
+import MainText from "@site/src/components/mainText";
+import SubText from "@site/src/components/SubText";
 
-import DocsText from "./components/DocsText";
-import BackgroundBubble from "./components/BackgroundBubble";
+import DocsText from "@site/src/components/DocsText";
+import BackgroundBubble from "@site/src/components/BackgroundBubble";
 
 gsap.registerPlugin(useGSAP, ScrollTrigger);
 ScrollTrigger.defaults({
@@ -53,10 +53,16 @@ function App() {
 
   const trackWarpRef = useRef<HTMLDivElement>(null);
 
-  const [mainText, setTMainText] = useState(["WELLCOME TO", "< CAPSION HUB / >"]);
-  const [subText, setTSubText] = useState(["CAPSION.TOP"]);
+  // const [mainText, setTMainText] = useState(["WELLCOME TO", "< CAPSION HUB / >"]);
+  // const [subText, setTSubText] = useState(["CAPSION.TOP2", "CAPSION.TOP1"]);
 
   const [pageStep, setPageStep] = useState<number>(0);
+
+  useEffect(() => {
+    setTimeout(() => {
+      setPageStep(1);
+    }, 1200);
+  });
 
   // useGSAP(
   //   (_context, _contextSafe) => {
@@ -103,19 +109,15 @@ function App() {
             );
           })}
         </section> */}
-
-        <footer className={["flex flex-col items-center justify-center w-full py-10"].join(" ")}>
-          <h1>Vite + React</h1>
-          <div className="card">
-            <button onClick={() => setCount((count) => count + 1)}>count is {count}</button>
-            <p>
-              Edit <code>src/App.tsx</code> and save to test HMR
-            </p>
-          </div>
-          <p className="read-the-docs">Click on the Vite and React logos to learn more</p>
-        </footer>
       </main>
-      <BackgroundBubble></BackgroundBubble>
+
+      <BackgroundBubble
+        bubble={[
+          { x: "20%", y: "25%", blur: 25, color: "#FC1E4F", size: 500, depth: "20%", opacity: 0.2 },
+          { x: "80%", y: "70%", blur: 25, color: "#FC1E4F", size: 350, depth: "30%", opacity: 0.1 },
+          { x: "20%", y: "80%", blur: 25, color: "#FC1E4F", size: 360, depth: "40%", opacity: 0.1 },
+        ]}
+      ></BackgroundBubble>
     </ReactLenis>
   );
 }

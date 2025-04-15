@@ -1,3 +1,11 @@
+/*
+ * @Author: Capsion 373704015@qq.com
+ * @Date: 2025-04-02 12:14:23
+ * @LastEditors: Capsion 373704015@qq.com
+ * @LastEditTime: 2025-04-14 21:41:01
+ * @FilePath: \gsap-lenis-learn\src\components\MatrixCSS\index.tsx
+ * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
+ */
 import { useState, useRef, useEffect } from "react";
 import PerspectiveTransform from "./PerspectiveTransform";
 export default function App() {
@@ -9,6 +17,7 @@ export default function App() {
   const [rightDown, setRightDown] = useState({ w: 180, h: 180, offset: 0 });
   const [leftDown, setLeftDown] = useState({ w: 180, h: 180, offset: 0 });
   const cc = "flex gap-2 justify-between";
+
   useEffect(() => {
     if (!testRef.current) return;
     console.log(testRef.current);

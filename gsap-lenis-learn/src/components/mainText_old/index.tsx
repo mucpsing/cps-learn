@@ -2,7 +2,7 @@
  * @Author: Capsion 373704015@qq.com
  * @Date: 2025-03-25 20:12:12
  * @LastEditors: Capsion 373704015@qq.com
- * @LastEditTime: 2025-04-14 21:55:33
+ * @LastEditTime: 2025-04-14 22:13:31
  * @FilePath: \gsap-lenis-learn\src\components\CapsionText\index.tsx
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
  */
@@ -13,6 +13,7 @@ import { useGSAP } from "@gsap/react";
 import "./CapsionText.css";
 
 import { ScrollTrigger } from "gsap/ScrollTrigger";
+import { mainTexts, subTexts, DEFAULT_SUB_COLOR } from "@site/src/store";
 
 gsap.registerPlugin(useGSAP, ScrollTrigger);
 
@@ -37,8 +38,8 @@ const CapsionTextLogo: React.FC<{ texts: string[]; step?: number; className?: st
   const { contextSafe } = useGSAP({ scope: textContainerRef });
 
   const upDownAnimation = () => {
-    console.log("upDownAnimation");
-
+    if (!nextTextRef.current) return console.log("warn: nextTextRef not found");
+    if (!currentTextRef.current) return console.log("warn: currentTextRef not found");
     if (!animation.current) {
       animation.current = gsap
         .timeline({ paused: true, repeat: -1, repeatDelay: 1 })
@@ -74,21 +75,6 @@ const CapsionTextLogo: React.FC<{ texts: string[]; step?: number; className?: st
     return animation.current;
   };
 
-  const onClick = contextSafe(() => {
-    console.log(gather, "gather");
-    if (texts.length < 2) return console.log("传入的字符串只有一行，不足以触发滚动动画: ", texts.length);
-
-    if (animation.current) {
-      const _gsap = animation.current;
-
-      if (_gsap.isActive()) {
-        _gsap.pause();
-      } else {
-        _gsap.restart();
-      }
-    }
-  });
-
   // useEffect((): any => {
   //   if (texts.length <= 1) return;
   //   if (!animation.current) upDownAnimation();
@@ -101,7 +87,6 @@ const CapsionTextLogo: React.FC<{ texts: string[]; step?: number; className?: st
 
   useGSAP(
     () => {
-      console.log({ step });
       switch (step) {
         case 0:
           gsap.set(capsionTextLogoRef.current, {
@@ -135,13 +120,18 @@ const CapsionTextLogo: React.FC<{ texts: string[]; step?: number; className?: st
   );
 
   return (
-    <section ref={capsionTextLogoRef} className={[...className, "text-left overflow-hidden w-full", "xl:h-[70px]", "lg:h-[70px]", "text-[70px]"].join(" ")}>
-      <div ref={textContainerRef} className={["overflow-hidden leading-none", "text-black mix-blend-difference"].join(" ")}>
+    <section ref={capsionTextLogoRef} className={[...className, "text-left overflow-hidden w-full", "xl:h-[100px]", "lg:h-[100px]", "text-[100px]"].join(" ")}>
+      <div ref={textContainerRef} className={["overflow-hidden leading-none", "mix-blend-difference text-black"].join(" ")}>
         <div ref={currentTextRef} className={["up"].join(" ")}>
           <div className={["text flex"].join(" ")}>
-            {texts[currentIndex].split(" ").map((item, index) => {
+            <div className={["eachChar __eachCurrentChar"].join(" ")}>{texts[currentIndex]}</div>
+
+            {/* {texts[currentIndex].split(" ").map((item, index) => {
+              if (texts[currentIndex].toLocaleLowerCase().indexOf("capsion") != -1) 
+              
+              const style = { color: item == "/" ? DEFAULT_SUB_COLOR[0] : "" };
               return (
-                <div key={index} className="overflow-hidden flex mr-3">
+                <div key={index} className="overflow-hidden flex mr-5" style={style}>
                   {item.split("").map((eachChar, index) => {
                     return (
                       <div key={index} className={["eachChar __eachCurrentChar"].join(" ")}>
@@ -151,23 +141,30 @@ const CapsionTextLogo: React.FC<{ texts: string[]; step?: number; className?: st
                   })}
                 </div>
               );
-            })}
+            })} */}
           </div>
         </div>
-
         {texts.length > 1 && (
+          <div ref={nextTextRef} className={["down absolute"].join(" ")}>
+            <div className={["text flex"].join(" ")}>
+              <div className={["eachChar __eachNextChar"].join(" ")}>{texts[nextIndex]}</div>
+            </div>
+          </div>
+        )}
+
+        {/* {texts.length > 1 && (
           <div ref={nextTextRef} className={["down absolute"].join(" ")}>
             <div className={["text flex"].join(" ")}>
               {texts[nextIndex].split("").map((item, index) => {
                 return (
-                  <div key={index} className="overflow-hidden">
+                  <div key={index} className="overflow-hidden1">
                     <div className={["eachChar __eachNextChar"].join(" ")}>{item}</div>
                   </div>
                 );
               })}
             </div>
           </div>
-        )}
+        )} */}
       </div>
     </section>
   );
