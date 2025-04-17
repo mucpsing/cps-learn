@@ -3,3 +3,7 @@
   font-weight: bold;
   /* font-family: EmerlandRegular, Geneva, Tahoma, sans-serif; */
 }
+
+.eachMainChar {
+  min-width: 2rem; /* 确保空字符有宽度 */
+}

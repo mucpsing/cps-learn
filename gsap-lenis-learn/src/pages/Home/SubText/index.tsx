@@ -2,7 +2,7 @@
  * @Author: Capsion 373704015@qq.com
  * @Date: 2025-03-25 20:12:12
  * @LastEditors: Capsion 373704015@qq.com
- * @LastEditTime: 2025-04-14 21:55:33
+ * @LastEditTime: 2025-04-17 23:41:08
  * @FilePath: \gsap-lenis-learn\src\components\CapsionText\index.tsx
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
  */
@@ -17,7 +17,7 @@ import { ScrollTrigger } from "gsap/ScrollTrigger";
 gsap.registerPlugin(useGSAP, ScrollTrigger);
 
 const CapsionTextLogo: React.FC<{ texts: string[]; step?: number; className?: string[] }> = ({
-  texts = ["111111111", "2222222222", "3333333333333", "4444444444444", "555", "666666666", "7777777777", "888"],
+  texts = ["WELLCOME TO", "This is My blog", "I'm Capsion", "I'm a Front-end Developer", "I'm a Designer", "I'm a Gamer"],
   step = 0,
   className = [],
 }) => {
@@ -74,44 +74,23 @@ const CapsionTextLogo: React.FC<{ texts: string[]; step?: number; className?: st
     return animation.current;
   };
 
-  const onClick = contextSafe(() => {
-    console.log(gather, "gather");
-    if (texts.length < 2) return console.log("传入的字符串只有一行，不足以触发滚动动画: ", texts.length);
-
-    if (animation.current) {
-      const _gsap = animation.current;
-
-      if (_gsap.isActive()) {
-        _gsap.pause();
-      } else {
-        _gsap.restart();
-      }
-    }
+  useEffect(() => {
+    return () => {};
   });
-
-  // useEffect((): any => {
-  //   if (texts.length <= 1) return;
-  //   if (!animation.current) upDownAnimation();
-
-  //   return () => {
-  //     animation.current?.kill();
-  //     animation.current = null;
-  //   };
-  // }, [step]);
 
   useGSAP(
     () => {
       console.log({ step });
       switch (step) {
         case 0:
-          gsap.set(capsionTextLogoRef.current, {
-            x: window.innerWidth * 0.07,
-            y: window.innerHeight * 0.15,
-          });
+          // gsap.from(capsionTextLogoRef.current, {
+          //   x: window.innerWidth * 0.07,
+          //   y: window.innerHeight * 0.15,
+          // });
 
-          gsap.from(capsionTextLogoRef.current, {
-            xPercent: -100,
-          });
+          // gsap.to(capsionTextLogoRef.current, {
+          //   xPercent: -100,
+          // });
 
           // 文字循环
           break;
@@ -135,7 +114,7 @@ const CapsionTextLogo: React.FC<{ texts: string[]; step?: number; className?: st
   );
 
   return (
-    <section ref={capsionTextLogoRef} className={[...className, "text-left overflow-hidden w-full", "xl:h-[70px]", "lg:h-[70px]", "text-[70px]"].join(" ")}>
+    <section ref={capsionTextLogoRef} className={[...className, "text-left overflow-hidden w-full relative", , "xl:h-[80px]", "lg:h-[80px]", "text-[70px]"].join(" ")}>
       <div ref={textContainerRef} className={["overflow-hidden leading-none", "text-black mix-blend-difference"].join(" ")}>
         <div ref={currentTextRef} className={["up"].join(" ")}>
           <div className={["text flex"].join(" ")}>
@@ -144,9 +123,9 @@ const CapsionTextLogo: React.FC<{ texts: string[]; step?: number; className?: st
                 <div key={index} className="overflow-hidden flex mr-3">
                   {item.split("").map((eachChar, index) => {
                     return (
-                      <div key={index} className={["eachChar __eachCurrentChar"].join(" ")}>
+                      <span key={index} className={["eachChar __eachCurrentChar"].join(" ")}>
                         {eachChar}
-                      </div>
+                      </span>
                     );
                   })}
                 </div>
@@ -160,9 +139,9 @@ const CapsionTextLogo: React.FC<{ texts: string[]; step?: number; className?: st
             <div className={["text flex"].join(" ")}>
               {texts[nextIndex].split("").map((item, index) => {
                 return (
-                  <div key={index} className="overflow-hidden">
-                    <div className={["eachChar __eachNextChar"].join(" ")}>{item}</div>
-                  </div>
+                  <span key={index} className="overflow-hidden">
+                    <span className={["eachChar __eachNextChar"].join(" ")}>{item}</span>
+                  </span>
                 );
               })}
             </div>

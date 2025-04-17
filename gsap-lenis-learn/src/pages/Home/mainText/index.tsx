@@ -2,7 +2,7 @@
  * @Author: Capsion 373704015@qq.com
  * @Date: 2025-03-25 20:12:12
  * @LastEditors: Capsion 373704015@qq.com
- * @LastEditTime: 2025-04-16 00:17:46
+ * @LastEditTime: 2025-04-17 23:35:35
  * @FilePath: \gsap-lenis-learn\src\components\CapsionText\index.tsx
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
  */
@@ -16,11 +16,7 @@ import { mainTexts, subTexts, DEFAULT_SUB_COLOR } from "@site/src/store";
 
 gsap.registerPlugin(useGSAP);
 
-const CapsionTextLogo: React.FC<{ texts: string[]; step?: number; className?: string[] }> = ({
-  texts = ["111111111", "2222222222", "3333333333333", "4444444444444", "555", "666666666", "7777777777", "888"],
-  step = 0,
-  className = [],
-}) => {
+const CapsionTextLogo: React.FC<{ texts: string[]; step?: number; className?: string[] }> = ({ step = 0, className = [] }) => {
   const capsionTextLogoRef = useRef<HTMLDivElement>(null);
   const textContainerRef = useRef<HTMLDivElement>(null);
 
@@ -31,22 +27,22 @@ const CapsionTextLogo: React.FC<{ texts: string[]; step?: number; className?: st
     (context) => {
       switch (step) {
         case 0:
-          gsap.set(".eachMainChar", { y: 100, opacity: 0 });
-          gsap.set(capsionTextLogoRef.current, {
-            x: window.innerWidth * 0.07,
-            y: window.innerHeight * 0.15,
-          });
+          // gsap.set(".eachMainChar", { y: 100, opacity: 0 });
+          // gsap.set(capsionTextLogoRef.current, {
+          //   x: window.innerWidth * 0.07,
+          //   y: window.innerHeight * 0.15,
+          // });
 
           // 文字循环
           break;
         case 1:
-          gsap.to(".eachMainChar", {
-            stagger: 0.06,
-            y: 0,
-            direction: 1.2,
-            ease: "back.out",
-            opacity: 1,
-          });
+          // gsap.to(".eachMainChar", {
+          //   stagger: 0.06,
+          //   y: 0,
+          //   direction: 1.2,
+          //   ease: "back.out",
+          //   opacity: 1,
+          // });
 
           break;
       }
@@ -71,6 +67,7 @@ const CapsionTextLogo: React.FC<{ texts: string[]; step?: number; className?: st
               })}
 
               {"'s Hub".split("").map((char, index) => {
+                char === " " ? "\u00A0" : char;
                 return (
                   <span key={index} className={["eachMainChar", "inline-block"].join(" ")}>
                     {char}
