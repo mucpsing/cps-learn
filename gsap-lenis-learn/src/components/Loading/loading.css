@@ -1,8 +1,12 @@
+<<<<<<< HEAD
 html {
   font-size: 16px;
 }
 
 #__cps_loading-background {
+=======
+#__cps_loading-warp {
+>>>>>>> c3b4187aa9430f034b319736ac7d17c6e6f6eaf4
   position: fixed;
   display: flex;
   flex-flow: column;

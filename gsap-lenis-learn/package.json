@@ -13,6 +13,7 @@
     "@gsap/react": "^2.1.2",
     "@tailwindcss/vite": "^4.0.9",
     "@types/gsap": "^3.0.0",
+    "clean-css": "^5.3.3",
     "gsap": "^3.12.7",
     "html-minifier": "^4.0.0",
     "lenis": "^1.2.1",
