@@ -2,7 +2,7 @@
  * @Author: cpasion-office-win10 373704015@qq.com
  * @Date: 2025-03-13 10:14:49
  * @LastEditors: Capsion 373704015@qq.com
- * @LastEditTime: 2025-04-18 07:57:47
+ * @LastEditTime: 2025-04-20 10:51:25
  * @FilePath: \gsap-lenis-learn\src\App.tsx
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
  */
@@ -17,15 +17,17 @@ import { useGSAP } from "@gsap/react";
 import { ReactLenis } from "lenis/react";
 import "lenis/dist/lenis.css";
 
-import { mainTexts, subTexts } from "@site/src/store";
+import { mainTexts, subTexts, bubbleList } from "@site/src/store";
 
 // import MouseTracker from "./components/MouseIconsTracker";
 
-import MainText from "@site/src/pages/Home/mainText";
-import SubText from "@site/src/pages/Home/SubText";
+import MainText from "./mainText";
+import SubText from "./SubText";
+import HomeButtonBar from "./HomeButtonBar";
 
-import DocsText from "@site/src/pages/Home/DocsText";
-import BackgroundBubble from "@site/src/pages/Home/BackgroundBubble";
+import DocsText from "./DocsText";
+import BackgroundBubble from "./BackgroundBubble";
+import BackgroundRect from "./BackgroundRect";
 
 gsap.registerPlugin(useGSAP, ScrollTrigger);
 ScrollTrigger.defaults({ markers: { startColor: "green", endColor: "red", fontSize: "12px" } });
@@ -49,27 +51,30 @@ function App() {
 
   return (
     <ReactLenis root>
-      <main ref={mainRef} className="main h-screen relative w-screen z-2">
-        <section className="__home_main_text relative w-full h-full top-0 left-0">
+      <main ref={mainRef} className="main w-full h-screen relative z-2 overflow-hidden">
+        <section className="__home_main_text relative w-full h-full top-[15%] left-[10%] z-3 pointer-events-none">
           <SubText texts={subTexts} step={pageStep}></SubText>
 
-          <div className="my-6"></div>
+          <div className="my-3"></div>
           <MainText texts={mainTexts} step={pageStep}></MainText>
 
           <div className="my-6"></div>
           <DocsText></DocsText>
-        </section>
-      </main>
 
-      <BackgroundBubble
-        bubble={[
-          { x: "20%", y: "25%", blur: 25, color: "#FC1E4F", size: 500, depth: "20%", opacity: 0.2 },
-          { x: "80%", y: "70%", blur: 25, color: "#FC1E4F", size: 350, depth: "30%", opacity: 0.1 },
-          { x: "20%", y: "80%", blur: 25, color: "#FC1E4F", size: 360, depth: "40%", opacity: 0.1 },
-        ]}
-      ></BackgroundBubble>
+          <div className="mt-10"></div>
+        </section>
+
+        <HomeButtonBar></HomeButtonBar>
+
+        <BackgroundRect></BackgroundRect>
+      </main>
+      <BackgroundBubble bubble={bubbleList}></BackgroundBubble>
     </ReactLenis>
   );
+}
+
+function Test() {
+  return <div>Home</div>;
 }
 
 export default App;

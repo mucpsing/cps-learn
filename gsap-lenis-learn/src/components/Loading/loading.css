@@ -1,8 +1,15 @@
+<<<<<<< HEAD
+html {
+  font-size: 16px;
+}
+
+#__cps_loading-background {
+=======
 #__cps_loading-warp {
+>>>>>>> c3b4187aa9430f034b319736ac7d17c6e6f6eaf4
   position: fixed;
   display: flex;
   flex-flow: column;
-  font-family: "Lato", sans-serif;
   width: 100%;
   height: 100vh;
   top: 0;
@@ -10,21 +17,36 @@
   justify-content: space-between;
   align-items: center;
   color: #eee;
-  z-index: 9999;
+  z-index: 9998;
   pointer-events: none;
+  animation: show 1.2s cubic-bezier(1, 0.03, 0.2, 1.18);
   background: linear-gradient(60deg, rgba(84, 58, 183, 1) 0%, rgba(0, 172, 193, 1) 100%);
+}
+
+#__cps_loading-mainTextWarp {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100vh;
+  display: flex;
+  align-items: center;
+  font-family: "Lato", sans-serif;
+  z-index: 9999;
 }
 
 #__cps_loading-mainText {
   position: absolute;
   top: 40%;
-  font-size: 3rem;
+  left: 50%;
+  transform: translateX(-50%);
+  font-size: 2rem;
   font-weight: 1;
   letter-spacing: 0.2rem;
 }
 
 #__cps_loading-subText {
-  font-size: 1.2rem;
+  font-size: 0.7rem;
 }
 
 #__cps_loading-colorSlash {
@@ -87,10 +109,6 @@
   }
 }
 
-#__cps_loading-warp {
-  animation: show 1.2s cubic-bezier(1, 0.03, 0.2, 1.18);
-}
-
 @keyframes show {
   0% {
     opacity: 0;
@@ -127,23 +145,29 @@
     transform: translateY(0);
   }
 }
-.wavesWarp {
+#__cps_loading-wavesWarp {
+  position: fixed;
+  bottom: 0;
+  left: 0;
   width: 100%;
+  height: 25vh;
+  display: flex;
+  flex-direction: column;
+  z-index: 9999;
 }
+
 .waves {
   width: 100%;
-  height: 100%;
-
-  margin-bottom: -7px; /*Fix for safari gap*/
-  min-height: 100px;
-  max-height: 150px;
+  height: 50%;
+  flex-grow: 1;
+  /* margin-bottom: -7px; Fix for safari gap */
 }
 
 .wavesFooter {
   width: 100%;
-  height: 25vh;
+  height: 50%;
+  flex-grow: 999;
   background-color: #fff;
-  min-height: 200px;
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -171,6 +195,7 @@
   animation-delay: -5s;
   animation-duration: 20s;
 }
+
 @keyframes move-forever {
   0% {
     transform: translate3d(-90px, 0, 0);
@@ -179,6 +204,7 @@
     transform: translate3d(85px, 0, 0);
   }
 }
+
 /*Shrinking for mobile*/
 @media (max-width: 768px) {
   .waves {

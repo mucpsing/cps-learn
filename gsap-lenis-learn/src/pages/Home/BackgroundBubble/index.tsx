@@ -2,7 +2,7 @@
  * @Author: Capsion 373704015@qq.com
  * @Date: 2025-03-27 21:14:24
  * @LastEditors: Capsion 373704015@qq.com
- * @LastEditTime: 2025-04-14 21:35:56
+ * @LastEditTime: 2025-04-19 22:21:40
  * @FilePath: \gsap-lenis-learn\src\components\BackgroundBubble\index.tsx
  * @Description: 背景泡泡，这里暂时没有对MacOS进行适配
  */
@@ -43,14 +43,13 @@ const getRandomFloat = (min: number, max: number, step: number): number => {
 };
 export default function GlowBackground(props: GlowBackgroundProps = {}) {
   const bubble: Required<BubbleOptions[]> = props.bubble?.map((item) => ({ ...DEFAULT_BUBBLE, ...item })) || [DEFAULT_BUBBLE];
-
-  console.log({ bubble });
   const backgroundRef = useRef<HTMLDivElement | null>(null);
   const ballRef = useRef<Array<HTMLDivElement | null>>([]);
 
   useGSAP(
     (_context, contextSafe) => {
-      console.log("GlowBackground init");
+      // console.log("GlowBackground init");
+      if (!contextSafe) return;
 
       const onMouseMove = contextSafe((e: MouseEvent) => {
         const x = e.clientX;
@@ -90,7 +89,7 @@ export default function GlowBackground(props: GlowBackgroundProps = {}) {
   );
 
   return (
-    <div onMouseLeave={(e) => onMouseLeave(e)} ref={backgroundRef} className="overflow-hidden absolute top-0 left-0 w-full h-screen">
+    <div ref={backgroundRef} className="overflow-hidden absolute top-0 left-0 w-full h-screen">
       {bubble.map((item, key) => {
         return (
           <div
