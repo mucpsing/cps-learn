@@ -2,7 +2,7 @@
  * @Author: cpasion-office-win10 373704015@qq.com
  * @Date: 2025-04-21 09:44:37
  * @LastEditors: cpasion-office-win10 373704015@qq.com
- * @LastEditTime: 2025-04-22 16:21:08
+ * @LastEditTime: 2025-04-22 16:32:49
  * @FilePath: \gsap-lenis-learn\src\pages\Home\BackgroundRect\index.tsx
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
  */
@@ -132,6 +132,9 @@ export default function BackgroundRect(_props: BackgroundRectPorpsT) {
             width: newW,
             ease: "power4.out",
             duration: 0.8,
+          })
+          .set(el.current, {
+            width: "calc(3/12 * 100%)", // 与样式一致，如果直接写到to中两次连续的calc对width会出现动画起始位置异常
           });
 
         break;
@@ -139,7 +142,7 @@ export default function BackgroundRect(_props: BackgroundRectPorpsT) {
         console.log("step1");
         break;
     }
-  }, []);
+  }, [props.setp]);
 
   // "calc(80vw - 50%)px"
   return (
