@@ -1,6 +1,16 @@
+/*
+ * @Author: cpasion-office-win10 373704015@qq.com
+ * @Date: 2025-04-21 09:44:37
+ * @LastEditors: cpasion-office-win10 373704015@qq.com
+ * @LastEditTime: 2025-04-22 16:21:08
+ * @FilePath: \gsap-lenis-learn\src\pages\Home\BackgroundRect\index.tsx
+ * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
+ */
 import { useState, useRef, useEffect } from "react";
 import PerspectiveTransform from "./PerspectiveTransform";
 import { hexToRgba } from "@site/src/utils";
+
+import gsap from "gsap";
 
 // import OnDragElement from "./onDragElement";
 import OnDragElement from "@site/src/components/DraggableEl";
@@ -15,8 +25,8 @@ const DEFAULT_PROPS: Required<BackgroundRectPorpsT> = {
   color: "#FF4058",
 };
 
-export default function BackgroundRect<BackgroundRectPorpsT>(props) {
-  props = { ...DEFAULT_PROPS, ...props };
+export default function BackgroundRect(_props: BackgroundRectPorpsT) {
+  const props: Required<BackgroundRectPorpsT> = { ...DEFAULT_PROPS, ..._props };
 
   const el = useRef<HTMLDivElement>(null);
   const leftTopRef = useRef<HTMLDivElement>(null);
@@ -86,23 +96,57 @@ export default function BackgroundRect<BackgroundRectPorpsT>(props) {
     };
   }, []);
 
-  const eachItemStyle = ["absolute rounded-full bg-amber-200 w-10 h-10 cursor-pointer", "hover:bg-amber-500"].join(" ");
+  // calc(3/12 * 100%)
 
-  // const onDrag = (coords: { x: number; y: number }, el: HTMLDivElement) => {
-  //   el.style.top = coords.x;
-  //   el.style.y = coords.y;
-  // };
+  useEffect(() => {
+    if (!el.current) return;
+
+    const rect = el.current.getBoundingClientRect();
+    switch (props.setp) {
+      case 0:
+        console.log("init");
+        const timeline = gsap.timeline();
+
+        const newX = window.innerWidth * 0.7;
+        const newW = (window.innerWidth / 12) * 3;
+        timeline
+          .set(el.current, {
+            left: -window.innerWidth,
+            width: "calc(100vw)",
+            ease: "power1",
+            opacity: 0,
+          })
+          .to(el.current, {
+            left: 0,
+            ease: "power4.in",
+            duration: 1,
+            opacity: 1,
+          })
+          .to(el.current, {
+            left: "calc(70vw)",
+            width: newW * 1.5,
+            ease: "power4.out",
+            duration: 0.8,
+          })
+          .to(el.current, {
+            width: newW,
+            ease: "power4.out",
+            duration: 0.8,
+          });
+
+        break;
+      case 1:
+        console.log("step1");
+        break;
+    }
+  }, []);
+
+  // "calc(80vw - 50%)px"
   return (
-    <>
-      <OnDragElement>
-        <div className={["w-[50px] h-[50px] bg-amber-200 rounded-full cursor-pointer", "hover:bg-amber-300"].join(" ")}></div>
-      </OnDragElement>
-      <div ref={el} style={{ backgroundColor: hexToRgba(props.color, 0.7) }} className={["fixed top-0 right-[10%] w-3/12 h-screen"].join(" ")}>
-        {/* <div ref={leftTopRef} style={{ top: `${leftTop.y}px`, left: `${leftTop.x}px` }} className={["absolute rounded-full bg-amber-200 w-10 h-10 cursor-pointer", "hover:bg-amber-500"].join(" ")}></div> */}
-        {/* <div ref={rightTopRef} className={eachItemStyle}></div> */}
-        {/* <div ref={rightDownRef} className={eachItemStyle}></div> */}
-        {/* <div ref={leftDownRef} className={eachItemStyle}></div> */}
-      </div>
-    </>
+    <div
+      ref={el}
+      style={{ backgroundColor: hexToRgba(props.color, 0.7), left: "calc(70vw)" }}
+      className={["fixed top-0 w-3/12 h-screen"].join(" ")}
+    ></div>
   );
 }

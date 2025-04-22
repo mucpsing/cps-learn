@@ -2,7 +2,7 @@
  * @Author: cpasion-office-win10 373704015@qq.com
  * @Date: 2025-03-13 10:14:49
  * @LastEditors: cpasion-office-win10 373704015@qq.com
- * @LastEditTime: 2025-04-22 09:34:53
+ * @LastEditTime: 2025-04-22 09:49:13
  * @FilePath: \gsap-lenis-learn\src\App.tsx
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
  */
@@ -52,7 +52,7 @@ function App() {
   return (
     <ReactLenis root>
       <main ref={mainRef} className="main w-full h-screen relative z-2 overflow-hidden">
-        <section className="__home_main_text relative w-full h-full top-[15%] left-[10%] z-3 pointer-events-none">
+        <section className="__home_main_text relative w-full top-[15%] left-[10%] z-3 pointer-events-none">
           <SubText texts={subTexts} step={pageStep}></SubText>
 
           <div className="my-3"></div>
@@ -62,11 +62,8 @@ function App() {
           <DocsText></DocsText>
 
           <div className="mt-10"></div>
+          <HomeButtonBar></HomeButtonBar>
         </section>
-
-        <HomeButtonBar></HomeButtonBar>
-
-        {/* <DragEl>1</DragEl> */}
 
         <BackgroundRect></BackgroundRect>
       </main>
