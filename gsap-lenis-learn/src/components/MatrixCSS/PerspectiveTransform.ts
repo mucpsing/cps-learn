@@ -1,3 +1,16 @@
+/*
+ * @Author: Capsion 373704015@qq.com
+ * @Date: 2025-04-02 12:14:23
+ * @LastEditors: Capsion 373704015@qq.com
+ * @LastEditTime: 2025-04-22 22:59:50
+ * @FilePath: \gsap-lenis-learn\src\components\MatrixCSS\PerspectiveTransform2.ts
+ * @Description: 
+ * @example:
+ *  const ms = new PerspectiveTransform(testRef.current, 200, 200, false);
+    ms.topLeft = { x: -100, y: 0 };
+    const tr = ms.current.update();
+ */
+
 let aM: number[][] = [
   [0, 0, 1, 0, 0, 0, 0, 0],
   [0, 0, 1, 0, 0, 0, 0, 0],
@@ -59,14 +72,14 @@ export default class PerspectiveTransform {
     return 0;
   }
 
-  update(offset: string): string {
+  update(): string {
     console.log("update");
     const width = this.width;
     const height = this.height;
 
     let offsetX = 0;
     let offsetY = 0;
-    // const offset = this.computedStyle.getPropertyValue(_transformOriginDomStyleName);
+    const offset = this.computedStyle.getPropertyValue(_transformOriginDomStyleName);
     console.log({ offset });
 
     if (offset.includes("px")) {
@@ -133,7 +146,10 @@ export default class PerspectiveTransform {
       for (let i = 0; i < k; i++) arr[i] -= arr[k] * aM[i][k];
     }
 
-    let style = `matrix3d(${arr[0].toFixed(9)},${arr[3].toFixed(9)},0,${arr[6].toFixed(9)},` + `${arr[1].toFixed(9)},${arr[4].toFixed(9)},0,${arr[7].toFixed(9)},0,0,1,0,` + `${arr[2].toFixed(9)},${arr[5].toFixed(9)},0,1)`;
+    let style =
+      `matrix3d(${arr[0].toFixed(9)},${arr[3].toFixed(9)},0,${arr[6].toFixed(9)},` +
+      `${arr[1].toFixed(9)},${arr[4].toFixed(9)},0,${arr[7].toFixed(9)},0,0,1,0,` +
+      `${arr[2].toFixed(9)},${arr[5].toFixed(9)},0,1)`;
 
     if (PerspectiveTransform.useDPRFix) {
       const dpr = PerspectiveTransform.dpr;
@@ -141,7 +157,7 @@ export default class PerspectiveTransform {
     }
 
     console.log("_transformStyleName: ", _transformStyleName);
-    // (this.style as any)[_transformStyleName] = style;
+    (this.style as any)[_transformStyleName] = style;
     return style;
   }
 

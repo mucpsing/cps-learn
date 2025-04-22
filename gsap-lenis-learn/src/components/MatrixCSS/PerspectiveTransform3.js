@@ -1,3 +1,17 @@
+/*
+ * @Author: Capsion 373704015@qq.com
+ * @Date: 2025-04-02 12:14:23
+ * @LastEditors: Capsion 373704015@qq.com
+ * @LastEditTime: 2025-04-22 23:00:02
+ * @FilePath: \gsap-lenis-learn\src\components\MatrixCSS\PerspectiveTransform2.ts
+ * @Description: 
+ * @example:
+ *  const ms = new PerspectiveTransform(testRef.current, 200, 200, false);
+    ms.topLeft = { x: -100, y: 0 };
+    const tr = ms.current.update();
+ */
+
+
 export default function PerspectiveTransform(element, width, height, useBackFacing) {
   this.element = element;
   this.style = element.style;

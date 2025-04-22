@@ -1,8 +1,8 @@
 /*
  * @Author: cpasion-office-win10 373704015@qq.com
  * @Date: 2025-04-21 09:44:37
- * @LastEditors: cpasion-office-win10 373704015@qq.com
- * @LastEditTime: 2025-04-22 16:32:49
+ * @LastEditors: Capsion 373704015@qq.com
+ * @LastEditTime: 2025-04-22 21:35:10
  * @FilePath: \gsap-lenis-learn\src\pages\Home\BackgroundRect\index.tsx
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
  */
@@ -14,6 +14,7 @@ import gsap from "gsap";
 
 // import OnDragElement from "./onDragElement";
 import OnDragElement from "@site/src/components/DraggableEl";
+import { useGSAP } from "@gsap/react";
 
 interface BackgroundRectPorpsT {
   setp?: number;
@@ -27,6 +28,8 @@ const DEFAULT_PROPS: Required<BackgroundRectPorpsT> = {
 
 export default function BackgroundRect(_props: BackgroundRectPorpsT) {
   const props: Required<BackgroundRectPorpsT> = { ...DEFAULT_PROPS, ..._props };
+
+  const martrixInstance = useRef<PerspectiveTransform>(null);
 
   const el = useRef<HTMLDivElement>(null);
   const leftTopRef = useRef<HTMLDivElement>(null);
@@ -70,6 +73,22 @@ export default function BackgroundRect(_props: BackgroundRectPorpsT) {
   useEffect(() => {
     if (!el.current) return;
 
+    martrixInstance.current = new PerspectiveTransform(el.current, 200, 200, true);
+
+    if (martrixInstance.current) {
+      const tr = martrixInstance.current.update();
+      console.log(tr);
+      console.log(martrixInstance.current.checkError());
+    }
+
+    return () => {
+      martrixInstance.current = null;
+    };
+  }, []);
+
+  useEffect(() => {
+    if (!el.current) return;
+
     // 获取当前的四角坐标
     updateCorners();
 
@@ -96,60 +115,61 @@ export default function BackgroundRect(_props: BackgroundRectPorpsT) {
     };
   }, []);
 
-  // calc(3/12 * 100%)
+  // 动画部分
+  useGSAP(
+    () => {
+      if (!el.current) return;
 
-  useEffect(() => {
-    if (!el.current) return;
+      const timeline = gsap.timeline();
+      const rect = el.current.getBoundingClientRect();
 
-    const rect = el.current.getBoundingClientRect();
-    switch (props.setp) {
-      case 0:
-        console.log("init");
-        const timeline = gsap.timeline();
+      switch (props.setp) {
+        case 0:
+          const newW = (window.innerWidth / 12) * 3;
+          timeline
+            .set(el.current, {
+              left: -window.innerWidth,
+              width: "calc(100vw)",
+              ease: "power1",
+              opacity: 0,
+            })
+            .to(el.current, {
+              left: 0,
+              ease: "power4.in",
+              duration: 1,
+              opacity: 1,
+            })
+            .to(el.current, {
+              left: "calc(70vw)",
+              width: newW * 1.5,
+              ease: "power4.out",
+              delay: 0.2,
+              duration: 0.6,
+            })
+            .to(el.current, {
+              width: newW,
+              ease: "power4.out",
+              duration: 0.4,
+            })
+            .set(el.current, {
+              width: "calc(3/12 * 100%)", // 与样式一致，如果直接写到to中两次连续的calc对width会出现动画起始位置异常
+            })
+            .eventCallback("onComplete", () => {
+              console.log("完成了，进行下一步");
+            });
 
-        const newX = window.innerWidth * 0.7;
-        const newW = (window.innerWidth / 12) * 3;
-        timeline
-          .set(el.current, {
-            left: -window.innerWidth,
-            width: "calc(100vw)",
-            ease: "power1",
-            opacity: 0,
-          })
-          .to(el.current, {
-            left: 0,
-            ease: "power4.in",
-            duration: 1,
-            opacity: 1,
-          })
-          .to(el.current, {
-            left: "calc(70vw)",
-            width: newW * 1.5,
-            ease: "power4.out",
-            duration: 0.8,
-          })
-          .to(el.current, {
-            width: newW,
-            ease: "power4.out",
-            duration: 0.8,
-          })
-          .set(el.current, {
-            width: "calc(3/12 * 100%)", // 与样式一致，如果直接写到to中两次连续的calc对width会出现动画起始位置异常
-          });
+          break;
+        case 1:
+          console.log("step1");
+          break;
+      }
 
-        break;
-      case 1:
-        console.log("step1");
-        break;
-    }
-  }, [props.setp]);
-
-  // "calc(80vw - 50%)px"
-  return (
-    <div
-      ref={el}
-      style={{ backgroundColor: hexToRgba(props.color, 0.7), left: "calc(70vw)" }}
-      className={["fixed top-0 w-3/12 h-screen"].join(" ")}
-    ></div>
+      return () => {
+        timeline.reverse();
+      };
+    },
+    { scope: el, dependencies: [props.setp] }
   );
+
+  return <div ref={el} style={{ backgroundColor: hexToRgba(props.color, 0.7), left: "calc(70vw)" }} className={["fixed top-0 w-3/12 h-screen"].join(" ")}></div>;
 }

@@ -74,6 +74,16 @@ export class MatrixCSS {
     return style;
   }
 
+  /**
+   * 渲染变换矩阵样式
+   * @param points 变换点位参数
+   * @param points.leftTop 左上角点位
+   * @param points.rightTop 右上角点位
+   * @param points.leftDown 左下角点位
+   * @param points.rightDown 右下角点位
+   * @param points.ratio 缩放比例
+   * @returns 当前实例,支持链式调用
+   */
   public render(points: { leftTop?: ResizablePoint; rightTop?: ResizablePoint; leftDown?: ResizablePoint; rightDown?: ResizablePoint; ratio?: number }): this {
     let style = this.getTransformOrigin(points);
 

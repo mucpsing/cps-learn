@@ -42,7 +42,7 @@ export default class PerspectiveTransform {
     this.element = element;
     this.style = element.style;
     this.computedStyle = window.getComputedStyle(element);
-    console.log(this.computedStyle);
+    // console.log(this.computedStyle);
     this.width = width;
     this.height = height;
     this.useBackFacing = !!useBackFacing;
@@ -59,21 +59,21 @@ export default class PerspectiveTransform {
     return 0;
   }
 
-  update(offset: string): string {
-    console.log("update");
+  update(): string {
+    // console.log("update");
     const width = this.width;
     const height = this.height;
 
     let offsetX = 0;
     let offsetY = 0;
-    // const offset = this.computedStyle.getPropertyValue(_transformOriginDomStyleName);
-    console.log({ offset });
+    const offset = this.computedStyle.getPropertyValue(_transformOriginDomStyleName);
+    // console.log({ offset });
 
-    if (offset.includes("px")) {
+    if (offset.indexOf("px") !== -1) {
       const parts = offset.split("px");
       offsetX = -parseFloat(parts[0]);
       offsetY = -parseFloat(parts[1]);
-    } else if (offset.includes("%")) {
+    } else if (offset.indexOf("%") !== -1) {
       const parts = offset.split("%");
       offsetX = (-parseFloat(parts[0]) * width) / 100;
       offsetY = (-parseFloat(parts[1]) * height) / 100;
@@ -133,14 +133,17 @@ export default class PerspectiveTransform {
       for (let i = 0; i < k; i++) arr[i] -= arr[k] * aM[i][k];
     }
 
-    let style = `matrix3d(${arr[0].toFixed(9)},${arr[3].toFixed(9)},0,${arr[6].toFixed(9)},` + `${arr[1].toFixed(9)},${arr[4].toFixed(9)},0,${arr[7].toFixed(9)},0,0,1,0,` + `${arr[2].toFixed(9)},${arr[5].toFixed(9)},0,1)`;
+    let style =
+      `matrix3d(${arr[0].toFixed(9)},${arr[3].toFixed(9)},0,${arr[6].toFixed(9)},` +
+      `${arr[1].toFixed(9)},${arr[4].toFixed(9)},0,${arr[7].toFixed(9)},0,0,1,0,` +
+      `${arr[2].toFixed(9)},${arr[5].toFixed(9)},0,1)`;
 
     if (PerspectiveTransform.useDPRFix) {
       const dpr = PerspectiveTransform.dpr;
       style = `scale(${dpr},${dpr})perspective(1000px)${style}translateZ(${(1 - dpr) * 1000}px)`;
     }
 
-    console.log("_transformStyleName: ", _transformStyleName);
+    // console.log("_transformStyleName: ", _transformStyleName);
     // (this.style as any)[_transformStyleName] = style;
     return style;
   }
