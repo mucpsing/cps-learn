@@ -2,7 +2,8 @@ import { useState, useRef, useEffect } from "react";
 import PerspectiveTransform from "./PerspectiveTransform";
 import { hexToRgba } from "@site/src/utils";
 
-import OnDragElement from "./onDragElement";
+// import OnDragElement from "./onDragElement";
+import OnDragElement from "@site/src/components/DraggableEl";
 
 interface BackgroundRectPorpsT {
   setp?: number;
@@ -92,12 +93,16 @@ export default function BackgroundRect<BackgroundRectPorpsT>(props) {
   //   el.style.y = coords.y;
   // };
   return (
-    <div ref={el} style={{ backgroundColor: hexToRgba(props.color, 0.7) }} className={["fixed top-0 right-[10%] w-3/12 h-screen"].join(" ")}>
-      {/* <div ref={leftTopRef} style={{ top: `${leftTop.y}px`, left: `${leftTop.x}px` }} className={["absolute rounded-full bg-amber-200 w-10 h-10 cursor-pointer", "hover:bg-amber-500"].join(" ")}></div> */}
-      {/* <div ref={rightTopRef} className={eachItemStyle}></div> */}
-      {/* <div ref={rightDownRef} className={eachItemStyle}></div> */}
-      {/* <div ref={leftDownRef} className={eachItemStyle}></div> */}
-      <OnDragElement></OnDragElement>
-    </div>
+    <>
+      <OnDragElement>
+        <div className={["w-[50px] h-[50px] bg-amber-200 rounded-full cursor-pointer", "hover:bg-amber-300"].join(" ")}></div>
+      </OnDragElement>
+      <div ref={el} style={{ backgroundColor: hexToRgba(props.color, 0.7) }} className={["fixed top-0 right-[10%] w-3/12 h-screen"].join(" ")}>
+        {/* <div ref={leftTopRef} style={{ top: `${leftTop.y}px`, left: `${leftTop.x}px` }} className={["absolute rounded-full bg-amber-200 w-10 h-10 cursor-pointer", "hover:bg-amber-500"].join(" ")}></div> */}
+        {/* <div ref={rightTopRef} className={eachItemStyle}></div> */}
+        {/* <div ref={rightDownRef} className={eachItemStyle}></div> */}
+        {/* <div ref={leftDownRef} className={eachItemStyle}></div> */}
+      </div>
+    </>
   );
 }
