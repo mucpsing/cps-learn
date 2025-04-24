@@ -2,7 +2,7 @@
  * @Author: Capsion 373704015@qq.com
  * @Date: 2025-04-02 12:14:23
  * @LastEditors: Capsion 373704015@qq.com
- * @LastEditTime: 2025-04-24 22:13:42
+ * @LastEditTime: 2025-04-25 01:11:29
  * @FilePath: \gsap-lenis-learn\src\components\MatrixCSS\PerspectiveTransform2.ts
  * @Description: 
  * @example:
@@ -50,19 +50,20 @@ export default class PerspectiveTransform {
   ];
   bM: number[] = [0, 0, 0, 0, 0, 0, 0, 0];
 
-  constructor(element: HTMLElement, width: number, height: number, useBackFacing?: boolean) {
+  constructor(element: HTMLElement, useBackFacing?: boolean) {
     this.element = element;
     this.style = element.style;
     this.computedStyle = window.getComputedStyle(element);
 
-    this.width = width;
-    this.height = height;
+    const rect = element.getBoundingClientRect();
+    this.width = rect.width;
+    this.height = rect.height;
     this.useBackFacing = !!useBackFacing;
 
     this.topLeft = { x: 0, y: 0 };
-    this.topRight = { x: width, y: 0 };
-    this.bottomLeft = { x: 0, y: height };
-    this.bottomRight = { x: width, y: height };
+    this.topRight = { x: rect.width, y: 0 };
+    this.bottomLeft = { x: 0, y: rect.height };
+    this.bottomRight = { x: rect.width, y: rect.height };
 
     this.stylePrefix = "";
     this.drp = 1;
@@ -122,6 +123,8 @@ export default class PerspectiveTransform {
     let offsetY = 0;
     const offset = this.computedStyle.getPropertyValue(this.transformOriginDomStyleName);
 
+    console.log({ offset });
+
     if (offset.includes("px")) {
       const parts = offset.split("px");
       offsetX = -parseFloat(parts[0]);
@@ -131,9 +134,9 @@ export default class PerspectiveTransform {
       offsetX = (-parseFloat(parts[0]) * width) / 100;
       offsetY = (-parseFloat(parts[1]) * height) / 100;
     }
+    console.log({ offsetX, offsetY });
 
     const dst = [this.topLeft, this.topRight, this.bottomLeft, this.bottomRight];
-    console.log(dst);
     const arr: number[] = [0, 1, 2, 3, 4, 5, 6, 7];
     for (let i = 0; i < 4; i++) {
       aM[i][0] = aM[i + 4][3] = i & 1 ? width + offsetX : offsetX;
@@ -186,14 +189,21 @@ export default class PerspectiveTransform {
       for (let i = 0; i < k; i++) arr[i] -= arr[k] * aM[i][k];
     }
 
-    const ft = (arr: number[], i: number) => arr[i].toFixed(9);
-    const style = `matrix3d(${[ft(arr, 0), ft(arr, 3), "0", ft(arr, 6), ft(arr, 1), ft(arr, 4), "0", ft(arr, 7), "0,0,1,0", ft(arr, 2), ft(arr, 5), "0", "1"].join(", ")})`;
+    // const ft = (tar: number[], i: number) => tar[i].toFixed(9);
+    console.log(arr);
+    // const style = `matrix3d(${[ft(arr, 0), ft(arr, 3), "0", ft(arr, 6), ft(arr, 1), ft(arr, 4), "0", ft(arr, 7), "0,0,1,0", ft(arr, 2), ft(arr, 5), "0", "1"].join(", ")})`;
+    const style = `matrix3d(${arr[0].toFixed(9)},${arr[3].toFixed(9)},0,${arr[6].toFixed(9)},${arr[1].toFixed(9)},${arr[4].toFixed(9)},0,${arr[7].toFixed(9)},0,0,1,0,${arr[2].toFixed(
+      9
+    )},${arr[5].toFixed(9)},0,1)`;
 
     return style;
   }
 
   update(): void {
-    (this.style as any)[this.transformStyleName] = this.createTransformStyle();
+    const style = this.createTransformStyle();
+    console.log("this.transformStyleName:", this.transformStyleName, style);
+
+    this.element.style[this.transformStyleName] = style;
   }
 
   render({ topLeft, topRight, bottomLeft, bottomRight }: CoordsT): void {
@@ -203,23 +213,30 @@ export default class PerspectiveTransform {
     if (bottomLeft) this.coordsAppend(this.bottomLeft, bottomLeft);
     if (bottomRight) this.coordsAppend(this.bottomRight, bottomRight);
 
-    console.log(this);
     this.update();
   }
 
+  /**
+   * @description: 通过相对偏移量来实现对元素的矩阵变换，另外一种方法是修改实例的topLeft、topRight、bottomLeft、bottomRight
+   * @param {object} sourcsCoords
+   * @param {object} appCoords
+   * @example
+   *martrixInstance.current = new PerspectiveTransform(el.current as HTMLDivElement, rect.width, rect.height, false);
+   * 
+   *martrixInstance.render({
+      topLeft: { x: 50, y: 0 },
+      topRight: { x: 50, y: 0 },
+      bottomLeft: { x: -50, y: 0 },
+      bottomRight: { x: -50, y: 0 },
+    });
+   */
   private coordsAppend(sourcsCoords: { x: number; y: number }, appCoords: { x: number; y: number } | [x: number, y: number]) {
     if (Array.isArray(appCoords)) {
       appCoords = { x: appCoords[0], y: appCoords[1] };
     }
     sourcsCoords.x += appCoords.x;
     sourcsCoords.y += appCoords.y;
-    // return sourcsCoords;
   }
-
-  // private getTransformOrigin(): { x: number; y: number } {
-  //   const origin = this.computedStyle.getPropertyValue(this.transformOriginDomStyleName);
-  //   return origin;
-  // }
 
   private hasDistancesError(): boolean {
     const points = [

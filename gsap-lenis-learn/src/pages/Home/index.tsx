@@ -1,13 +1,4 @@
-/*
- * @Author: cpasion-office-win10 373704015@qq.com
- * @Date: 2025-03-13 10:14:49
- * @LastEditors: Capsion 373704015@qq.com
- * @LastEditTime: 2025-04-24 22:14:41
- * @FilePath: \gsap-lenis-learn\src\App.tsx
- * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
- */
-
-import { useState, useRef, useEffect } from "react";
+import { useState, useRef, useEffect, useMemo } from "react";
 
 import "@site/src/assets/font/fonts.css";
 
@@ -29,7 +20,7 @@ import DocsText from "./DocsText";
 import BackgroundBubble from "./BackgroundBubble";
 import BackgroundRect from "./BackgroundRect";
 
-import PerspectiveTransform from "@site/src/utils/PerspectiveTransform";
+import { PageStepContext } from "@src/store/pageStepContext";
 
 // 手动定义有首页有多少step
 // step_0 加载状态
@@ -45,37 +36,58 @@ function App() {
   const mainRef = useRef<HTMLDivElement>(null);
   const [pageStep, setPageStep] = useState<number>(0);
 
-  useEffect(() => {
-    console.log("init useEffect app");
-    const id = setTimeout(() => {
-      setPageStep(() => 1);
-    }, 1200);
+  const [childCount, setChildCount] = useState(0); // 子组件数量
+  const [completedCount, setCompletedCount] = useState(0); // 已完成子组件数量
 
-    return () => clearInterval(id);
-  }, []);
+  // 当所有子组件完成时触发
+  useEffect(() => {
+    if (childCount > 0 && completedCount === childCount) {
+      // 当所有子组件完成动画后，触发页面进入下一阶段动画
+      setPageStep((s) => s + 1);
+
+      console.log("所有子组件完成动画");
+
+      // 重置计数器（暂定是否必须添加）
+      setChildCount(0);
+      setCompletedCount(0);
+    }
+  }, [completedCount, childCount]);
+
+  // 创建上下文值
+  const contextValue = useMemo(
+    () => ({
+      register: (msg?: string) => {
+        if (msg) console.info(msg);
+        setChildCount((c) => c + 1);
+        return () => setChildCount((c) => c - 1);
+      },
+      reportCompletion: () => setCompletedCount((c) => c + 1),
+    }),
+    []
+  );
 
   return (
-    <>
-      <ReactLenis root>
-        <main ref={mainRef} className="main w-full h-screen relative z-2 overflow-hidden">
-          <section className="__home_main_text relative w-full top-[15%] left-[10%] z-3 pointer-events-none">
-            <SubText texts={subTexts} step={pageStep}></SubText>
+    <ReactLenis root>
+      {/* <PageStepContext.Provider value={contextValue}> */}
+      <main ref={mainRef} className="main w-full h-screen relative z-2 overflow-hidden">
+        <section className="__home_main_text relative w-full top-[15%] left-[10%] z-3 pointer-events-none">
+          <SubText texts={subTexts} step={pageStep}></SubText>
 
-            <div className="my-3"></div>
-            <MainText texts={mainTexts} step={pageStep}></MainText>
+          <div className="my-3"></div>
+          <MainText texts={mainTexts} step={pageStep}></MainText>
 
-            <div className="my-6"></div>
-            <DocsText></DocsText>
+          <div className="my-6"></div>
+          <DocsText></DocsText>
 
-            <div className="mt-10"></div>
-            <HomeButtonBar></HomeButtonBar>
-          </section>
+          <div className="mt-10"></div>
+          <HomeButtonBar></HomeButtonBar>
+        </section>
 
-          <BackgroundRect></BackgroundRect>
-        </main>
-        <BackgroundBubble bubble={bubbleList}></BackgroundBubble>
-      </ReactLenis>
-    </>
+        <BackgroundRect></BackgroundRect>
+      </main>
+      <BackgroundBubble bubble={bubbleList}></BackgroundBubble>
+      {/* </PageStepContext.Provider> */}
+    </ReactLenis>
   );
 }
 

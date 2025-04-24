@@ -2,21 +2,15 @@
  * @Author: cpasion-office-win10 373704015@qq.com
  * @Date: 2025-04-21 09:44:37
  * @LastEditors: Capsion 373704015@qq.com
- * @LastEditTime: 2025-04-24 22:22:42
+ * @LastEditTime: 2025-04-25 01:14:34
  * @FilePath: \gsap-lenis-learn\src\pages\Home\BackgroundRect\index.tsx
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
  */
-import { useState, useRef, useEffect } from "react";
+import { useRef, useEffect } from "react";
 import PerspectiveTransform from "@site/src/utils/PerspectiveTransform";
 
 import { hexToRgba } from "@site/src/utils";
-
 import gsap from "gsap";
-
-// import OnDragElement from "./onDragElement";
-// import OnDragElement from "@site/src/components/DraggableEl";
-import { useGSAP } from "@gsap/react";
-
 interface BackgroundRectPorpsT {
   setp?: number;
   color?: string;
@@ -30,97 +24,14 @@ const DEFAULT_PROPS: Required<BackgroundRectPorpsT> = {
 export default function BackgroundRect(_props: BackgroundRectPorpsT) {
   const props: Required<BackgroundRectPorpsT> = { ...DEFAULT_PROPS, ..._props };
 
+  const transformMatrix = "matrix3d(1, 0, 0, 0, -0.121065, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1)";
+
   const martrixInstance = useRef<PerspectiveTransform>(null);
-
   const el = useRef<HTMLDivElement>(null);
-  // const leftTopRef = useRef<HTMLDivElement>(null);
-  // const rightTopRef = useRef<HTMLDivElement>(null);
-  // const rightDownRef = useRef<HTMLDivElement>(null);
-  // const leftDownRef = useRef<HTMLDivElement>(null);
-
-  // const [leftTop, setLeftTop] = useState({ x: 0, y: 0 });
-  // const [rightTop, setRightTop] = useState({ x: 0, y: 0 });
-  // const [rightDown, setRightDown] = useState({ x: 0, y: 0 });
-  // const [leftDown, setLeftDown] = useState({ x: 0, y: 0 });
-  // const updateCorners = () => {
-  //   if (!el.current) return;
-  //   const element = el.current;
-  //   // 获取元素相对于视口的坐标和尺寸
-  //   const rect = element.getBoundingClientRect();
-
-  //   // 获取文档滚动的偏移量
-  //   const scrollX = window.scrollX || window.pageXOffset;
-  //   const scrollY = window.scrollY || window.pageYOffset;
-
-  // 计算四角绝对坐标
-  //   setLeftTop({
-  //     x: Math.round(rect.left + scrollX),
-  //     y: Math.round(rect.top + scrollY),
-  //   });
-  //   setRightTop({
-  //     x: Math.round(rect.right + scrollX),
-  //     y: Math.round(rect.top + scrollY),
-  //   });
-  //   setRightDown({
-  //     x: Math.round(rect.right + scrollX),
-  //     y: Math.round(rect.bottom + scrollY),
-  //   });
-  //   setLeftDown({
-  //     x: Math.round(rect.left + scrollX),
-  //     y: Math.round(rect.bottom + scrollY),
-  //   });
-  // };
-
-  // useEffect(() => {
-  //   console.log("init2");
-
-  //   if (!el.current) return;
-
-  //   // 获取当前的四角坐标
-  //   updateCorners();
-
-  //   // 监听窗口变化
-  //   window.addEventListener("resize", updateCorners);
-  //   window.addEventListener("scroll", updateCorners);
-
-  //   // 监听元素自身变化
-  //   const element = el.current;
-  //   const resizeObserver = new ResizeObserver(updateCorners);
-  //   const mutationObserver = new MutationObserver(updateCorners);
-  //   resizeObserver.observe(element);
-  //   mutationObserver.observe(element, {
-  //     attributes: true,
-  //     childList: false,
-  //     subtree: false,
-  //   });
-
-  //   return () => {
-  //     window.removeEventListener("resize", updateCorners);
-  //     window.removeEventListener("scroll", updateCorners);
-  //     resizeObserver.disconnect();
-  //     mutationObserver.disconnect();
-  //   };
-  // }, []);
-
-  useEffect(() => {
-    console.log("init1");
-
-    if (!el.current) return;
-
-    if (!martrixInstance.current) {
-      const rect = el.current.getBoundingClientRect();
-      martrixInstance.current = new PerspectiveTransform(el.current as HTMLDivElement, rect.width, rect.height, false);
-    }
-
-    return () => {
-      martrixInstance.current = null;
-    };
-  }, []);
 
   // 动画部分
   useEffect(() => {
     if (!el.current) return;
-    if (!martrixInstance.current) return console.warn("martrixInstance is null");
 
     const timeline = gsap.timeline();
     switch (props.setp) {
@@ -155,12 +66,16 @@ export default function BackgroundRect(_props: BackgroundRectPorpsT) {
             width: "calc(3/12 * 100%)", // 与样式一致，如果直接写到to中两次连续的calc对width会出现动画起始位置异常
           })
           .eventCallback("onComplete", () => {
-            if (!martrixInstance.current) return;
+            // TODO 需要添加缓存
+            if (!martrixInstance.current) {
+              martrixInstance.current = new PerspectiveTransform(el.current as HTMLDivElement, false);
+            }
+
             martrixInstance.current.render({
-              topLeft: { x: 50, y: 0 },
-              topRight: { x: 50, y: 0 },
-              bottomLeft: { x: -50, y: 0 },
-              bottomRight: { x: -50, y: 0 },
+              topLeft: { x: 70, y: 0 },
+              topRight: { x: 70, y: 0 },
+              bottomLeft: { x: -70, y: 0 },
+              bottomRight: { x: -70, y: 0 },
             });
           });
 
@@ -178,8 +93,8 @@ export default function BackgroundRect(_props: BackgroundRectPorpsT) {
   return (
     <div
       ref={el}
-      style={{ backgroundColor: hexToRgba(props.color, 0.7), left: "calc(70vw)" }}
-      className={["absolute top-0 w-[400px] h-screen", "transition-[transform] will-change-transform duration-700"].join(" ")}
+      style={{ backgroundColor: hexToRgba(props.color, 0.7), left: "calc(70vw)", position: "absolute" }}
+      className={["top-0 w-[calc(3/12 * 100%)] h-screen", "transition-[transform] will-change-transform duration-700"].join(" ")}
     ></div>
   );
 }

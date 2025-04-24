@@ -2,7 +2,7 @@
  * @Author: Capsion 373704015@qq.com
  * @Date: 2025-03-25 20:12:12
  * @LastEditors: Capsion 373704015@qq.com
- * @LastEditTime: 2025-04-19 10:51:49
+ * @LastEditTime: 2025-04-25 00:48:45
  * @FilePath: \gsap-lenis-learn\src\components\CapsionText\index.tsx
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
  */
@@ -13,6 +13,7 @@ import { useGSAP } from "@gsap/react";
 import "./CapsionText.css";
 
 import { ScrollTrigger } from "gsap/ScrollTrigger";
+import { usePageStep } from "@src/store/pageStepContext";
 
 gsap.registerPlugin(useGSAP, ScrollTrigger);
 
@@ -21,6 +22,8 @@ const CapsionTextLogo: React.FC<{ texts: string[]; step?: number; className?: st
   step = 0,
   className = [],
 }) => {
+  const { register, reportCompletion } = usePageStep();
+
   const capsionTextLogoRef = useRef<HTMLDivElement>(null);
   const textContainerRef = useRef<HTMLDivElement>(null);
 
@@ -33,8 +36,6 @@ const CapsionTextLogo: React.FC<{ texts: string[]; step?: number; className?: st
   const [nextIndex, setNextIndex] = useState<number>(1);
 
   const upDownAnimation = () => {
-    // console.log("upDownAnimation");
-
     if (!animation.current) {
       animation.current = gsap
         .timeline({ paused: true, repeat: -1, repeatDelay: 1 })
@@ -70,21 +71,27 @@ const CapsionTextLogo: React.FC<{ texts: string[]; step?: number; className?: st
     return animation.current;
   };
 
-  useEffect(() => {
-    return () => {};
-  });
-
   useGSAP(
     () => {
+      register("SubTextConpent register");
+
       switch (step) {
         case 0:
           // gsap.from(capsionTextLogoRef.current, {
-          //   x: window.innerWidth * 0.07,
-          //   y: window.innerHeight * 0.15,
+          //   xPercent: -200,
+          //   opacity: 0,
+          //   direction: 20,
+          //   ease: "power1.in",
           // });
-
+          // gsap.set(capsionTextLogoRef.current, {
+          //   xPercent: "-200%",
+          //   opacity: 0,
+          // });
           // gsap.to(capsionTextLogoRef.current, {
-          //   xPercent: -100,
+          //   x: 0,
+          //   direction: 5.8,
+          //   ease: "power1.in",
+          //   opacity: 1,
           // });
 
           // 文字循环
@@ -108,10 +115,7 @@ const CapsionTextLogo: React.FC<{ texts: string[]; step?: number; className?: st
 
   return (
     <section ref={capsionTextLogoRef} className={[className, "text-left overflow-hidden w-full relative", "text-[60px]"].join(" ")}>
-      <div
-        ref={textContainerRef}
-        className={["overflow-hidden leading-none", "xl:h-[70px]", "lg:h-[70px]", "text-black mix-blend-difference"].join(" ")}
-      >
+      <div ref={textContainerRef} className={["overflow-hidden leading-none", "xl:h-[70px]", "lg:h-[70px]", "text-black mix-blend-difference"].join(" ")}>
         <div ref={currentTextRef} className={["up py-[5px] eachChar"].join(" ")}>
           {texts[currentIndex]}
         </div>
