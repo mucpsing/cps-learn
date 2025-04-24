@@ -2,7 +2,7 @@
  * @Author: Capsion 373704015@qq.com
  * @Date: 2025-04-02 12:14:23
  * @LastEditors: Capsion 373704015@qq.com
- * @LastEditTime: 2025-04-24 12:48:57
+ * @LastEditTime: 2025-04-24 22:13:42
  * @FilePath: \gsap-lenis-learn\src\components\MatrixCSS\PerspectiveTransform2.ts
  * @Description: 
  * @example:
@@ -11,6 +11,12 @@
     const tr = ms.current.update();
  */
 
+export interface CoordsT {
+  topLeft?: { x: number; y: number } | [x: number, y: number];
+  topRight?: { x: number; y: number } | [x: number, y: number];
+  bottomLeft?: { x: number; y: number } | [x: number, y: number];
+  bottomRight?: { x: number; y: number } | [x: number, y: number];
+}
 export default class PerspectiveTransform {
   element: HTMLElement;
   style: CSSStyleDeclaration;
@@ -110,8 +116,7 @@ export default class PerspectiveTransform {
    * @return {string} :`matrix3d(1.2, 0, 0, 0, 0.2, 1, 0, 0.002, 0, 0, 1, 0, -20, 20, 0, 1)`
    */
   createTransformStyle(): string {
-    const width = this.width;
-    const height = this.height;
+    const { width, height, aM, bM } = this;
 
     let offsetX = 0;
     let offsetY = 0;
@@ -128,11 +133,8 @@ export default class PerspectiveTransform {
     }
 
     const dst = [this.topLeft, this.topRight, this.bottomLeft, this.bottomRight];
+    console.log(dst);
     const arr: number[] = [0, 1, 2, 3, 4, 5, 6, 7];
-
-    const aM = this.aM;
-    const bM = this.bM;
-
     for (let i = 0; i < 4; i++) {
       aM[i][0] = aM[i + 4][3] = i & 1 ? width + offsetX : offsetX;
       aM[i][1] = aM[i + 4][4] = i > 1 ? height + offsetY : offsetY;
@@ -184,14 +186,8 @@ export default class PerspectiveTransform {
       for (let i = 0; i < k; i++) arr[i] -= arr[k] * aM[i][k];
     }
 
-    // 处理矩阵数组，使用formatNumber想解决抖动问题，但是暂时无法解决，还是存在抖动问题
-    const formattedArr = arr.map((num) => this.formatNumber(num));
-    let style = `matrix3d(
-      ${formattedArr[0]},${formattedArr[3]},0,${formattedArr[6]},
-      ${formattedArr[1]},${formattedArr[4]},0,${formattedArr[7]},
-      0,0,1,0,
-      ${formattedArr[2]},${formattedArr[5]},0,1
-    )`.replace(/\n\s+/g, ""); // 清除换行和缩进
+    const ft = (arr: number[], i: number) => arr[i].toFixed(9);
+    const style = `matrix3d(${[ft(arr, 0), ft(arr, 3), "0", ft(arr, 6), ft(arr, 1), ft(arr, 4), "0", ft(arr, 7), "0,0,1,0", ft(arr, 2), ft(arr, 5), "0", "1"].join(", ")})`;
 
     return style;
   }
@@ -199,6 +195,31 @@ export default class PerspectiveTransform {
   update(): void {
     (this.style as any)[this.transformStyleName] = this.createTransformStyle();
   }
+
+  render({ topLeft, topRight, bottomLeft, bottomRight }: CoordsT): void {
+    console.log("render");
+    if (topLeft) this.coordsAppend(this.topLeft, topLeft);
+    if (topRight) this.coordsAppend(this.topRight, topRight);
+    if (bottomLeft) this.coordsAppend(this.bottomLeft, bottomLeft);
+    if (bottomRight) this.coordsAppend(this.bottomRight, bottomRight);
+
+    console.log(this);
+    this.update();
+  }
+
+  private coordsAppend(sourcsCoords: { x: number; y: number }, appCoords: { x: number; y: number } | [x: number, y: number]) {
+    if (Array.isArray(appCoords)) {
+      appCoords = { x: appCoords[0], y: appCoords[1] };
+    }
+    sourcsCoords.x += appCoords.x;
+    sourcsCoords.y += appCoords.y;
+    // return sourcsCoords;
+  }
+
+  // private getTransformOrigin(): { x: number; y: number } {
+  //   const origin = this.computedStyle.getPropertyValue(this.transformOriginDomStyleName);
+  //   return origin;
+  // }
 
   private hasDistancesError(): boolean {
     const points = [
