@@ -2,7 +2,7 @@
  * @Author: Capsion 373704015@qq.com
  * @Date: 2025-04-02 12:14:23
  * @LastEditors: Capsion 373704015@qq.com
- * @LastEditTime: 2025-04-22 22:53:04
+ * @LastEditTime: 2025-04-24 12:48:57
  * @FilePath: \gsap-lenis-learn\src\components\MatrixCSS\PerspectiveTransform2.ts
  * @Description: 
  * @example:
@@ -10,31 +10,8 @@
     ms.topLeft = { x: -100, y: 0 };
     const tr = ms.current.update();
  */
-let aM: number[][] = [
-  [0, 0, 1, 0, 0, 0, 0, 0],
-  [0, 0, 1, 0, 0, 0, 0, 0],
-  [0, 0, 1, 0, 0, 0, 0, 0],
-  [0, 0, 1, 0, 0, 0, 0, 0],
-  [0, 0, 0, 0, 0, 1, 0, 0],
-  [0, 0, 0, 0, 0, 1, 0, 0],
-  [0, 0, 0, 0, 0, 1, 0, 0],
-  [0, 0, 0, 0, 0, 1, 0, 0],
-];
-let bM: number[] = [0, 0, 0, 0, 0, 0, 0, 0];
-let _transformStyleName: string;
-let _transformOriginDomStyleName: string;
-let stylePrefix = "";
 
-function setTransformStyleName() {
-  const testStyle = document.createElement("div").style;
-  stylePrefix = "webkitTransform" in testStyle ? "webkit" : "MozTransform" in testStyle ? "Moz" : "msTransform" in testStyle ? "ms" : "";
-  _transformStyleName = stylePrefix ? `${stylePrefix}Transform` : "transform";
-  _transformOriginDomStyleName = `-${stylePrefix.toLowerCase()}-transform-origin`;
-}
-
-setTransformStyleName();
-
-export class PerspectiveTransform {
+export default class PerspectiveTransform {
   element: HTMLElement;
   style: CSSStyleDeclaration;
   computedStyle: CSSStyleDeclaration;
@@ -47,13 +24,31 @@ export class PerspectiveTransform {
   bottomLeft: { x: number; y: number };
   bottomRight: { x: number; y: number };
 
-  static useDPRFix = false;
-  static dpr = 1;
+  stylePrefix: string;
+  drp: number;
+  useDPRFix: boolean;
+  transformStyleName: string;
+  transformDomStyleName: string;
+  transformOriginDomStyleName: string;
+  transformOrigin: string;
+
+  aM: number[][] = [
+    [0, 0, 1, 0, 0, 0, 0, 0],
+    [0, 0, 1, 0, 0, 0, 0, 0],
+    [0, 0, 1, 0, 0, 0, 0, 0],
+    [0, 0, 1, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 1, 0, 0],
+    [0, 0, 0, 0, 0, 1, 0, 0],
+    [0, 0, 0, 0, 0, 1, 0, 0],
+    [0, 0, 0, 0, 0, 1, 0, 0],
+  ];
+  bM: number[] = [0, 0, 0, 0, 0, 0, 0, 0];
 
   constructor(element: HTMLElement, width: number, height: number, useBackFacing?: boolean) {
     this.element = element;
     this.style = element.style;
     this.computedStyle = window.getComputedStyle(element);
+
     this.width = width;
     this.height = height;
     this.useBackFacing = !!useBackFacing;
@@ -62,6 +57,22 @@ export class PerspectiveTransform {
     this.topRight = { x: width, y: 0 };
     this.bottomLeft = { x: 0, y: height };
     this.bottomRight = { x: width, y: height };
+
+    this.stylePrefix = "";
+    this.drp = 1;
+    this.useDPRFix = false;
+    this.transformStyleName = "";
+    this.transformDomStyleName = "";
+    this.transformOriginDomStyleName = "";
+    this.transformOrigin = "";
+    this._setTransformStyleName();
+  }
+
+  _setTransformStyleName() {
+    const testStyle = this.element.style;
+    this.stylePrefix = "webkitTransform" in testStyle ? "webkit" : "MozTransform" in testStyle ? "Moz" : "msTransform" in testStyle ? "ms" : "";
+    this.transformStyleName = this.stylePrefix + (this.stylePrefix.length > 0 ? "Transform" : "transform");
+    this.transformOriginDomStyleName = "-" + this.stylePrefix.toLowerCase() + "-transform-origin";
   }
 
   checkError(): number {
@@ -70,13 +81,41 @@ export class PerspectiveTransform {
     return 0;
   }
 
-  update(): string {
+  formatNumber(num: number, threshold = 1e-6) {
+    // 处理极小的数值（防止科学计数法）
+    if (Math.abs(num) < 0.000001) {
+      return num === 0 ? "0" : num.toExponential().replace(/\.?0+e/, "e");
+    }
+
+    const integer = Math.round(num);
+    const decimal = num - integer;
+
+    // 当数值非常接近整数时直接返回整数
+    if (Math.abs(decimal) < threshold) {
+      return integer.toString();
+    }
+
+    // 处理非整数情况
+    const scale = 1e6; // 精度控制参数
+    const scaled = Math.round(num * scale);
+    const main = Math.trunc(scaled / scale);
+    const fraction = scaled % scale;
+
+    // 拼接整数和小数部分
+    return fraction === 0 ? main.toString() : `${main}.${Math.abs(fraction).toString().padStart(6, "0").replace(/0+$/, "")}`;
+  }
+
+  /**
+   * @description: 核心方法，将矩阵转换后的样式字符串返回，直接作用在transform属性上
+   * @return {string} :`matrix3d(1.2, 0, 0, 0, 0.2, 1, 0, 0.002, 0, 0, 1, 0, -20, 20, 0, 1)`
+   */
+  createTransformStyle(): string {
     const width = this.width;
     const height = this.height;
 
     let offsetX = 0;
     let offsetY = 0;
-    const offset = this.computedStyle.getPropertyValue(_transformOriginDomStyleName);
+    const offset = this.computedStyle.getPropertyValue(this.transformOriginDomStyleName);
 
     if (offset.includes("px")) {
       const parts = offset.split("px");
@@ -90,6 +129,9 @@ export class PerspectiveTransform {
 
     const dst = [this.topLeft, this.topRight, this.bottomLeft, this.bottomRight];
     const arr: number[] = [0, 1, 2, 3, 4, 5, 6, 7];
+
+    const aM = this.aM;
+    const bM = this.bM;
 
     for (let i = 0; i < 4; i++) {
       aM[i][0] = aM[i + 4][3] = i & 1 ? width + offsetX : offsetX;
@@ -142,20 +184,20 @@ export class PerspectiveTransform {
       for (let i = 0; i < k; i++) arr[i] -= arr[k] * aM[i][k];
     }
 
-    let style =
-      `matrix3d(${arr[0].toFixed(9)},${arr[3].toFixed(9)},0,${arr[6].toFixed(9)},` +
-      `${arr[1].toFixed(9)},${arr[4].toFixed(9)},0,${arr[7].toFixed(9)},0,0,1,0,` +
-      `${arr[2].toFixed(9)},${arr[5].toFixed(9)},0,1)`;
+    // 处理矩阵数组，使用formatNumber想解决抖动问题，但是暂时无法解决，还是存在抖动问题
+    const formattedArr = arr.map((num) => this.formatNumber(num));
+    let style = `matrix3d(
+      ${formattedArr[0]},${formattedArr[3]},0,${formattedArr[6]},
+      ${formattedArr[1]},${formattedArr[4]},0,${formattedArr[7]},
+      0,0,1,0,
+      ${formattedArr[2]},${formattedArr[5]},0,1
+    )`.replace(/\n\s+/g, ""); // 清除换行和缩进
 
-    console.log("_transformStyleName: ", _transformStyleName);
-
-    if (PerspectiveTransform.useDPRFix) {
-      const dpr = PerspectiveTransform.dpr;
-      style = `scale(${dpr},${dpr})perspective(1000px)${style}translateZ(${(1 - dpr) * 1000}px)`;
-    }
-
-    (this.style as any)[_transformStyleName] = style;
     return style;
+  }
+
+  update(): void {
+    (this.style as any)[this.transformStyleName] = this.createTransformStyle();
   }
 
   private hasDistancesError(): boolean {
@@ -202,5 +244,3 @@ export class PerspectiveTransform {
     return false;
   }
 }
-
-export default PerspectiveTransform;

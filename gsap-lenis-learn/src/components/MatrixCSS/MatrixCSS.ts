@@ -1,4 +1,4 @@
-import PerspectiveTransform from "./PerspectiveTransform";
+import PerspectiveTransform from "@site/src/utils/PerspectiveTransform";
 
 export interface MatrixCSSOptions {
   element: HTMLElement;

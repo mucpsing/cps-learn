@@ -2,18 +2,19 @@
  * @Author: cpasion-office-win10 373704015@qq.com
  * @Date: 2025-04-21 09:44:37
  * @LastEditors: Capsion 373704015@qq.com
- * @LastEditTime: 2025-04-22 21:35:10
+ * @LastEditTime: 2025-04-24 12:25:10
  * @FilePath: \gsap-lenis-learn\src\pages\Home\BackgroundRect\index.tsx
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
  */
 import { useState, useRef, useEffect } from "react";
-import PerspectiveTransform from "./PerspectiveTransform";
+import PerspectiveTransform from "@site/src/utils/PerspectiveTransform";
+
 import { hexToRgba } from "@site/src/utils";
 
 import gsap from "gsap";
 
 // import OnDragElement from "./onDragElement";
-import OnDragElement from "@site/src/components/DraggableEl";
+// import OnDragElement from "@site/src/components/DraggableEl";
 import { useGSAP } from "@gsap/react";
 
 interface BackgroundRectPorpsT {
