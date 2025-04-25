@@ -1,13 +1,14 @@
 /*
  * @Author: cpasion-office-win10 373704015@qq.com
  * @Date: 2025-04-21 09:44:37
- * @LastEditors: Capsion 373704015@qq.com
- * @LastEditTime: 2025-04-25 01:14:34
+ * @LastEditors: cpasion-office-win10 373704015@qq.com
+ * @LastEditTime: 2025-04-25 10:13:11
  * @FilePath: \gsap-lenis-learn\src\pages\Home\BackgroundRect\index.tsx
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
  */
 import { useRef, useEffect } from "react";
 import PerspectiveTransform from "@site/src/utils/PerspectiveTransform";
+import { usePageStep } from "@src/store/pageStepContext";
 
 import { hexToRgba } from "@site/src/utils";
 import gsap from "gsap";
@@ -21,7 +22,11 @@ const DEFAULT_PROPS: Required<BackgroundRectPorpsT> = {
   color: "#FF4058",
 };
 
+const clamp = (min: number, width: number, max: number) => Math.max(min, Math.min(width, max));
+
 export default function BackgroundRect(_props: BackgroundRectPorpsT) {
+  const { register, reportCompletion } = usePageStep();
+
   const props: Required<BackgroundRectPorpsT> = { ...DEFAULT_PROPS, ..._props };
 
   const transformMatrix = "matrix3d(1, 0, 0, 0, -0.121065, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1)";
@@ -31,12 +36,13 @@ export default function BackgroundRect(_props: BackgroundRectPorpsT) {
 
   // 动画部分
   useEffect(() => {
+    register("BackgroundRect");
     if (!el.current) return;
 
     const timeline = gsap.timeline();
     switch (props.setp) {
       case 0:
-        const newW = (window.innerWidth / 12) * 3;
+        const newW = clamp(200, window.innerWidth * 0.25, 400); // 这里要与样式统一
         timeline
           .set(el.current, {
             left: -window.innerWidth,
@@ -63,7 +69,7 @@ export default function BackgroundRect(_props: BackgroundRectPorpsT) {
             duration: 0.4,
           })
           .set(el.current, {
-            width: "calc(3/12 * 100%)", // 与样式一致，如果直接写到to中两次连续的calc对width会出现动画起始位置异常
+            width: "clamp(300px, calc(25%), 400px)", // 与样式一致，如果直接写到to中两次连续的calc对width会出现动画起始位置异常
           })
           .eventCallback("onComplete", () => {
             // TODO 需要添加缓存
@@ -72,11 +78,13 @@ export default function BackgroundRect(_props: BackgroundRectPorpsT) {
             }
 
             martrixInstance.current.render({
-              topLeft: { x: 70, y: 0 },
-              topRight: { x: 70, y: 0 },
-              bottomLeft: { x: -70, y: 0 },
-              bottomRight: { x: -70, y: 0 },
+              topLeft: { x: 30, y: 0 },
+              topRight: { x: 30, y: 0 },
+              bottomLeft: { x: -30, y: 0 },
+              bottomRight: { x: -30, y: 0 },
             });
+
+            reportCompletion()
           });
 
         break;
@@ -87,6 +95,8 @@ export default function BackgroundRect(_props: BackgroundRectPorpsT) {
 
     return () => {
       timeline.reverse();
+
+      if (martrixInstance.current) martrixInstance.current.reset();
     };
   }, [props.setp]);
 
@@ -94,7 +104,7 @@ export default function BackgroundRect(_props: BackgroundRectPorpsT) {
     <div
       ref={el}
       style={{ backgroundColor: hexToRgba(props.color, 0.7), left: "calc(70vw)", position: "absolute" }}
-      className={["top-0 w-[calc(3/12 * 100%)] h-screen", "transition-[transform] will-change-transform duration-700"].join(" ")}
+      className={["top-0 w-[clamp(300px, calc(25%), 400px)] h-screen", "transition-[transform] will-change-transform duration-700"].join(" ")}
     ></div>
   );
 }

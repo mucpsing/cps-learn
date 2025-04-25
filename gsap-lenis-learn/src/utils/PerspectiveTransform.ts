@@ -1,8 +1,8 @@
 /*
  * @Author: Capsion 373704015@qq.com
  * @Date: 2025-04-02 12:14:23
- * @LastEditors: Capsion 373704015@qq.com
- * @LastEditTime: 2025-04-25 01:11:29
+ * @LastEditors: cpasion-office-win10 373704015@qq.com
+ * @LastEditTime: 2025-04-25 09:06:59
  * @FilePath: \gsap-lenis-learn\src\components\MatrixCSS\PerspectiveTransform2.ts
  * @Description: 
  * @example:
@@ -37,6 +37,8 @@ export default class PerspectiveTransform {
   transformDomStyleName: string;
   transformOriginDomStyleName: string;
   transformOrigin: string;
+
+  resetStyle: string; // 记录初始状态，用来配置reset
 
   aM: number[][] = [
     [0, 0, 1, 0, 0, 0, 0, 0],
@@ -73,6 +75,8 @@ export default class PerspectiveTransform {
     this.transformOriginDomStyleName = "";
     this.transformOrigin = "";
     this._setTransformStyleName();
+
+    this.resetStyle = this.createTransformStyle();
   }
 
   _setTransformStyleName() {
@@ -80,6 +84,11 @@ export default class PerspectiveTransform {
     this.stylePrefix = "webkitTransform" in testStyle ? "webkit" : "MozTransform" in testStyle ? "Moz" : "msTransform" in testStyle ? "ms" : "";
     this.transformStyleName = this.stylePrefix + (this.stylePrefix.length > 0 ? "Transform" : "transform");
     this.transformOriginDomStyleName = "-" + this.stylePrefix.toLowerCase() + "-transform-origin";
+  }
+
+  reset(): void {
+    this.element.style.transform = this.resetStyle;
+    (this.element.style as any)[this.transformStyleName] = this.resetStyle;
   }
 
   checkError(): number {
@@ -123,8 +132,6 @@ export default class PerspectiveTransform {
     let offsetY = 0;
     const offset = this.computedStyle.getPropertyValue(this.transformOriginDomStyleName);
 
-    console.log({ offset });
-
     if (offset.includes("px")) {
       const parts = offset.split("px");
       offsetX = -parseFloat(parts[0]);
@@ -134,7 +141,6 @@ export default class PerspectiveTransform {
       offsetX = (-parseFloat(parts[0]) * width) / 100;
       offsetY = (-parseFloat(parts[1]) * height) / 100;
     }
-    console.log({ offsetX, offsetY });
 
     const dst = [this.topLeft, this.topRight, this.bottomLeft, this.bottomRight];
     const arr: number[] = [0, 1, 2, 3, 4, 5, 6, 7];
@@ -190,24 +196,50 @@ export default class PerspectiveTransform {
     }
 
     // const ft = (tar: number[], i: number) => tar[i].toFixed(9);
-    console.log(arr);
-    // const style = `matrix3d(${[ft(arr, 0), ft(arr, 3), "0", ft(arr, 6), ft(arr, 1), ft(arr, 4), "0", ft(arr, 7), "0,0,1,0", ft(arr, 2), ft(arr, 5), "0", "1"].join(", ")})`;
-    const style = `matrix3d(${arr[0].toFixed(9)},${arr[3].toFixed(9)},0,${arr[6].toFixed(9)},${arr[1].toFixed(9)},${arr[4].toFixed(9)},0,${arr[7].toFixed(9)},0,0,1,0,${arr[2].toFixed(
+    // const style = `matrix3d(${[
+    //   ft(arr, 0),
+    //   ft(arr, 3),
+    //   "0",
+    //   ft(arr, 6),
+    //   ft(arr, 1),
+    //   ft(arr, 4),
+    //   "0",
+    //   ft(arr, 7),
+    //   "0,0,1,0",
+    //   ft(arr, 2),
+    //   ft(arr, 5),
+    //   "0",
+    //   "1",
+    // ].join(", ")})`;
+    const style = `matrix3d(${arr[0].toFixed(9)},${arr[3].toFixed(9)},0,${arr[6].toFixed(9)},${arr[1].toFixed(9)},${arr[4].toFixed(
       9
-    )},${arr[5].toFixed(9)},0,1)`;
+    )},0,${arr[7].toFixed(9)},0,0,1,0,${arr[2].toFixed(9)},${arr[5].toFixed(9)},0,1)`;
 
     return style;
   }
 
+  /**
+   * @description: 使用绝对位置信息来生成矩阵变换
+   */
   update(): void {
     const style = this.createTransformStyle();
-    console.log("this.transformStyleName:", this.transformStyleName, style);
 
-    this.element.style[this.transformStyleName] = style;
+    (this.element.style as any)[this.transformStyleName] = style;
   }
 
+  /**
+   * @description: 相对偏移量来生成矩阵变换
+   * @example
+   *martrixInstance.current = new PerspectiveTransform(el.current as HTMLDivElement, false);
+   * 
+   *martrixInstance.render({
+      topLeft: { x: 50, y: 0 },
+      topRight: { x: 50, y: 0 },
+      bottomLeft: { x: -50, y: 0 },
+      bottomRight: { x: -50, y: 0 },
+    });
+   */
   render({ topLeft, topRight, bottomLeft, bottomRight }: CoordsT): void {
-    console.log("render");
     if (topLeft) this.coordsAppend(this.topLeft, topLeft);
     if (topRight) this.coordsAppend(this.topRight, topRight);
     if (bottomLeft) this.coordsAppend(this.bottomLeft, bottomLeft);
@@ -220,15 +252,6 @@ export default class PerspectiveTransform {
    * @description: 通过相对偏移量来实现对元素的矩阵变换，另外一种方法是修改实例的topLeft、topRight、bottomLeft、bottomRight
    * @param {object} sourcsCoords
    * @param {object} appCoords
-   * @example
-   *martrixInstance.current = new PerspectiveTransform(el.current as HTMLDivElement, rect.width, rect.height, false);
-   * 
-   *martrixInstance.render({
-      topLeft: { x: 50, y: 0 },
-      topRight: { x: 50, y: 0 },
-      bottomLeft: { x: -50, y: 0 },
-      bottomRight: { x: -50, y: 0 },
-    });
    */
   private coordsAppend(sourcsCoords: { x: number; y: number }, appCoords: { x: number; y: number } | [x: number, y: number]) {
     if (Array.isArray(appCoords)) {

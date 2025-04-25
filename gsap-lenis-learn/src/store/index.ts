@@ -2,7 +2,7 @@
  * @Author: Capsion 373704015@qq.com
  * @Date: 2025-03-31 20:31:45
  * @LastEditors: cpasion-office-win10 373704015@qq.com
- * @LastEditTime: 2025-04-18 15:59:08
+ * @LastEditTime: 2025-04-25 10:14:36
  * @FilePath: \gsap-lenis-learn\src\store\index.ts
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
  */
@@ -16,6 +16,6 @@ export const descriptionText =
 
 export const bubbleList = [
   { x: "20%", y: "25%", blur: 25, color: "#FC1E4F", size: 500, depth: "20%", opacity: 0.2 },
-  { x: "80%", y: "70%", blur: 25, color: "#FC1E4F", size: 350, depth: "30%", opacity: 0.1 },
+  { x: "70%", y: "55%", blur: 25, color: "#FC1E4F", size: 650, depth: "30%", opacity: 0.1 },
   { x: "20%", y: "80%", blur: 25, color: "#FC1E4F", size: 360, depth: "40%", opacity: 0.1 },
 ];
