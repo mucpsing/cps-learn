@@ -1,8 +1,8 @@
 /*
  * @Author: cpasion-office-win10 373704015@qq.com
  * @Date: 2025-04-21 09:44:37
- * @LastEditors: cpasion-office-win10 373704015@qq.com
- * @LastEditTime: 2025-04-25 10:13:11
+ * @LastEditors: Capsion 373704015@qq.com
+ * @LastEditTime: 2025-04-25 12:12:25
  * @FilePath: \gsap-lenis-learn\src\pages\Home\BackgroundRect\index.tsx
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
  */
@@ -18,7 +18,7 @@ interface BackgroundRectPorpsT {
 }
 
 const DEFAULT_PROPS: Required<BackgroundRectPorpsT> = {
-  setp: 0,
+  setp: -1,
   color: "#FF4058",
 };
 
@@ -36,13 +36,14 @@ export default function BackgroundRect(_props: BackgroundRectPorpsT) {
 
   // 动画部分
   useEffect(() => {
-    register("BackgroundRect");
+    register("BackgroundRect: ");
     if (!el.current) return;
 
     const timeline = gsap.timeline();
     switch (props.setp) {
       case 0:
-        const newW = clamp(200, window.innerWidth * 0.25, 400); // 这里要与样式统一
+        // const newW = clamp(200, window.innerWidth * 0.25, 400); // 这里要与样式统一
+        const newW = window.innerWidth * 0.25; // 这里要与样式统一
         timeline
           .set(el.current, {
             left: -window.innerWidth,
@@ -57,7 +58,7 @@ export default function BackgroundRect(_props: BackgroundRectPorpsT) {
             opacity: 1,
           })
           .to(el.current, {
-            left: "calc(70vw)",
+            left: "calc(65vw)",
             width: newW * 1.5,
             ease: "power4.out",
             delay: 0.2,
@@ -69,7 +70,8 @@ export default function BackgroundRect(_props: BackgroundRectPorpsT) {
             duration: 0.4,
           })
           .set(el.current, {
-            width: "clamp(300px, calc(25%), 400px)", // 与样式一致，如果直接写到to中两次连续的calc对width会出现动画起始位置异常
+            width: "calc(25vw)", // 与样式一致，如果直接写到to中两次连续的calc对width会出现动画起始位置异常
+            // width: "clamp(300px, calc(25%), 400px)", // 与样式一致，如果直接写到to中两次连续的calc对width会出现动画起始位置异常
           })
           .eventCallback("onComplete", () => {
             // TODO 需要添加缓存
@@ -78,13 +80,13 @@ export default function BackgroundRect(_props: BackgroundRectPorpsT) {
             }
 
             martrixInstance.current.render({
-              topLeft: { x: 30, y: 0 },
-              topRight: { x: 30, y: 0 },
-              bottomLeft: { x: -30, y: 0 },
-              bottomRight: { x: -30, y: 0 },
+              topLeft: { x: 70, y: 0 },
+              topRight: { x: 70, y: 0 },
+              bottomLeft: { x: -70, y: 0 },
+              bottomRight: { x: -70, y: 0 },
             });
 
-            reportCompletion()
+            reportCompletion("BackgroundRect");
           });
 
         break;
@@ -103,8 +105,8 @@ export default function BackgroundRect(_props: BackgroundRectPorpsT) {
   return (
     <div
       ref={el}
-      style={{ backgroundColor: hexToRgba(props.color, 0.7), left: "calc(70vw)", position: "absolute" }}
-      className={["top-0 w-[clamp(300px, calc(25%), 400px)] h-screen", "transition-[transform] will-change-transform duration-700"].join(" ")}
+      style={{ backgroundColor: hexToRgba(props.color, 0.7), left: "calc(65vw)", position: "absolute" }}
+      className={["top-0 w-[calc(25vw)] h-screen", "transition-[transform] will-change-transform duration-700"].join(" ")}
     ></div>
   );
 }

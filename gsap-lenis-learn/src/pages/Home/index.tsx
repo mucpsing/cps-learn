@@ -1,8 +1,8 @@
 /*
  * @Author: cpasion-office-win10 373704015@qq.com
  * @Date: 2025-04-25 08:53:06
- * @LastEditors: cpasion-office-win10 373704015@qq.com
- * @LastEditTime: 2025-04-25 09:36:47
+ * @LastEditors: Capsion 373704015@qq.com
+ * @LastEditTime: 2025-04-25 12:11:16
  * @FilePath: \gsap-lenis-learn\src\pages\Home\index.tsx
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
  */
@@ -42,7 +42,7 @@ gsap.defaults({ ease: "none" });
 
 function App() {
   const mainRef = useRef<HTMLDivElement>(null);
-  const [pageStep, setPageStep] = useState<number>(0);
+  const [pageStep, setPageStep] = useState<number>(-1);
 
   const [childCount, setChildCount] = useState(new Set<string>()); // 子组件数量
   const [completedCount, setCompletedCount] = useState(new Set<string>()); // 已完成子组件数量
@@ -91,7 +91,7 @@ function App() {
     <ReactLenis root>
       <PageStepContext.Provider value={contextValue}>
         <main ref={mainRef} className="main w-full h-screen relative z-2 overflow-hidden">
-          <section className="__home_main_text relative w-full top-[15%] left-[10%] z-3 pointer-events-none">
+          <section className="__home_main_text relative w-full top-[20%] left-[10%] z-3">
             <SubText texts={subTexts} step={pageStep}></SubText>
 
             <div className="my-3"></div>
@@ -100,7 +100,7 @@ function App() {
             <div className="my-6"></div>
             <DocsText></DocsText>
 
-            <div className="mt-10"></div>
+            <div className="mt-15"></div>
             <HomeButtonBar></HomeButtonBar>
           </section>
 
