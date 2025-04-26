@@ -1,8 +1,8 @@
 /*
  * @Author: cpasion-office-win10 373704015@qq.com
  * @Date: 2025-04-21 09:44:37
- * @LastEditors: Capsion 373704015@qq.com
- * @LastEditTime: 2025-04-25 12:12:25
+ * @LastEditors: cpasion-office-win10 373704015@qq.com
+ * @LastEditTime: 2025-04-25 15:34:15
  * @FilePath: \gsap-lenis-learn\src\pages\Home\BackgroundRect\index.tsx
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
  */
@@ -13,19 +13,17 @@ import { usePageStep } from "@src/store/pageStepContext";
 import { hexToRgba } from "@site/src/utils";
 import gsap from "gsap";
 interface BackgroundRectPorpsT {
-  setp?: number;
   color?: string;
 }
 
 const DEFAULT_PROPS: Required<BackgroundRectPorpsT> = {
-  setp: -1,
   color: "#FF4058",
 };
 
 const clamp = (min: number, width: number, max: number) => Math.max(min, Math.min(width, max));
 
 export default function BackgroundRect(_props: BackgroundRectPorpsT) {
-  const { register, reportCompletion } = usePageStep();
+  const { register, reportCompletion, animationStep } = usePageStep();
 
   const props: Required<BackgroundRectPorpsT> = { ...DEFAULT_PROPS, ..._props };
 
@@ -34,23 +32,33 @@ export default function BackgroundRect(_props: BackgroundRectPorpsT) {
   const martrixInstance = useRef<PerspectiveTransform>(null);
   const el = useRef<HTMLDivElement>(null);
 
+  const timeline = useRef<gsap.core.Timeline>(null);
+
   // 动画部分
   useEffect(() => {
     register("BackgroundRect: ");
     if (!el.current) return;
 
-    const timeline = gsap.timeline();
-    switch (props.setp) {
+    console.log("animationStep: ", animationStep);
+
+    switch (animationStep) {
+      case -1:
+        console.log("BackgroundRect: ", "准备阶段");
+
+        gsap.set(el.current, {
+          left: -window.innerWidth,
+          width: "calc(100vw)",
+          opacity: 0,
+        });
+
+        break;
       case 0:
         // const newW = clamp(200, window.innerWidth * 0.25, 400); // 这里要与样式统一
+        timeline.current = gsap.timeline({ paused: true });
+        console.log("BackgroundRect: ", "动画阶段");
+
         const newW = window.innerWidth * 0.25; // 这里要与样式统一
-        timeline
-          .set(el.current, {
-            left: -window.innerWidth,
-            width: "calc(100vw)",
-            ease: "power1",
-            opacity: 0,
-          })
+        (timeline.current as gsap.core.Timeline)
           .to(el.current, {
             left: 0,
             ease: "power4.in",
@@ -89,18 +97,19 @@ export default function BackgroundRect(_props: BackgroundRectPorpsT) {
             reportCompletion("BackgroundRect");
           });
 
+        timeline.current?.restart();
+
         break;
       case 1:
-        console.log("step1");
         break;
     }
 
     return () => {
-      timeline.reverse();
+      if (timeline.current) timeline.current.reverse();
 
       if (martrixInstance.current) martrixInstance.current.reset();
     };
-  }, [props.setp]);
+  }, [animationStep]);
 
   return (
     <div

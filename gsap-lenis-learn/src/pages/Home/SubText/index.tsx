@@ -2,7 +2,7 @@
  * @Author: Capsion 373704015@qq.com
  * @Date: 2025-03-25 20:12:12
  * @LastEditors: cpasion-office-win10 373704015@qq.com
- * @LastEditTime: 2025-04-25 09:28:19
+ * @LastEditTime: 2025-04-25 14:56:13
  * @FilePath: \gsap-lenis-learn\src\components\CapsionText\index.tsx
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
  */
@@ -19,10 +19,9 @@ gsap.registerPlugin(useGSAP, ScrollTrigger);
 
 const CapsionTextLogo: React.FC<{ texts: string[]; step?: number; className?: string }> = ({
   texts = ["WELLCOME TO", "This is My blog", "I'm Capsion", "I'm a Front-end Developer", "I'm a Designer", "I'm a Gamer"],
-  step = 0,
-  className = [],
+  className = "",
 }) => {
-  const { register, reportCompletion } = usePageStep();
+  const { register, reportCompletion, animationStep } = usePageStep();
 
   const capsionTextLogoRef = useRef<HTMLDivElement>(null);
   const textContainerRef = useRef<HTMLDivElement>(null);
@@ -75,7 +74,7 @@ const CapsionTextLogo: React.FC<{ texts: string[]; step?: number; className?: st
     () => {
       register("SubText");
 
-      switch (step) {
+      switch (animationStep) {
         case 0:
           // gsap.from(capsionTextLogoRef.current, {
           //   xPercent: -200,
@@ -94,6 +93,7 @@ const CapsionTextLogo: React.FC<{ texts: string[]; step?: number; className?: st
           //   opacity: 1,
           // });
 
+          reportCompletion("SubText");
           // 文字循环
           break;
         case 1:
@@ -110,7 +110,7 @@ const CapsionTextLogo: React.FC<{ texts: string[]; step?: number; className?: st
 
       // return () => context.revert();
     },
-    { scope: textContainerRef, dependencies: [step] }
+    { scope: textContainerRef, dependencies: [animationStep] }
   );
 
   return (
