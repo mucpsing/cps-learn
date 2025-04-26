@@ -1,8 +1,8 @@
 /*
  * @Author: cpasion-office-win10 373704015@qq.com
  * @Date: 2025-04-25 08:53:06
- * @LastEditors: cpasion-office-win10 373704015@qq.com
- * @LastEditTime: 2025-04-25 16:55:53
+ * @LastEditors: Capsion 373704015@qq.com
+ * @LastEditTime: 2025-04-26 11:36:08
  * @FilePath: \gsap-lenis-learn\src\pages\Home\index.tsx
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
  */
@@ -28,7 +28,7 @@ import DocsText from "./DocsText";
 import BackgroundBubble from "./BackgroundBubble";
 import BackgroundRect from "./BackgroundRect";
 
-import { PageStepContext } from "@src/store/pageStepContext";
+import { PageStepContext } from "@src/store/animationContext";
 
 // 手动定义有首页有多少step
 // step_0 加载状态
@@ -42,6 +42,10 @@ gsap.defaults({ ease: "none" });
 
 function App() {
   const mainRef = useRef<HTMLDivElement>(null);
+
+  // -1 动画前准备状态，loading状态
+  // 0  进场动画，loading正式开始动画，所有动画完成后进入
+  // 1  循环动画，页面持续状态
   const [animationStep, setAnimationStep] = useState<number>(-1);
 
   const [childCount, setChildCount] = useState(new Set<string>()); // 子组件数量
@@ -109,21 +113,15 @@ function App() {
               "min-[1920px]:top-[25%] min-[1920px]:left-[13%]",
             ].join(" ")}
           >
-            <SubText
-              className={["lg:h-[6rem] lg:text-[4rem]", "xl:h-[3.5rem] xl:text-[3rem]", "2xl:h-[4rem] 2xl:text-[3.5rem]"].join(" ")}
-              texts={subTexts}
-            ></SubText>
+            <SubText className={["lg:h-[3rem] lg:text-[2.6rem]", "xl:h-[3.5rem] xl:text-[3rem]", "2xl:h-[4rem] 2xl:text-[3.5rem]"].join(" ")} texts={subTexts}></SubText>
 
             <div className="my-3"></div>
 
-            <MainText
-              className={["lg:h-[6rem] lg:text-[4rem]", "xl:h-[5.5rem] xl:text-[5rem]", "2xl:h-[6.5rem] 2xl:text-[6rem]"].join(" ")}
-              texts={mainTexts}
-            ></MainText>
+            <MainText className={["lg:h-[6rem] lg:text-[4rem]", "xl:h-[5.5rem] xl:text-[5rem]", "2xl:h-[6.5rem] 2xl:text-[6rem]"].join(" ")} texts={mainTexts}></MainText>
 
             <div className="my-6"></div>
 
-            <DocsText></DocsText>
+            <DocsText className={["lg:text-[1rem] xl:max-w-[500px]", "xl:text-[1rem] xl:max-w-[600px]", "2xl:text-[1.2rem] 2xl:max-w-[800px]"].join(" ")}></DocsText>
 
             <div className="mt-15"></div>
 

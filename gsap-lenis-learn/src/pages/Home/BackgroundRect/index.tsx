@@ -8,7 +8,7 @@
  */
 import { useRef, useEffect } from "react";
 import PerspectiveTransform from "@site/src/utils/PerspectiveTransform";
-import { usePageStep } from "@src/store/pageStepContext";
+import { usePageStep } from "@src/store/animationContext";
 
 import { hexToRgba } from "@site/src/utils";
 import gsap from "gsap";

@@ -1,8 +1,8 @@
 /*
  * @Author: Capsion 373704015@qq.com
  * @Date: 2025-03-25 20:12:12
- * @LastEditors: cpasion-office-win10 373704015@qq.com
- * @LastEditTime: 2025-04-25 14:56:13
+ * @LastEditors: Capsion 373704015@qq.com
+ * @LastEditTime: 2025-04-26 11:19:18
  * @FilePath: \gsap-lenis-learn\src\components\CapsionText\index.tsx
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
  */
@@ -13,7 +13,7 @@ import { useGSAP } from "@gsap/react";
 import "./CapsionText.css";
 
 import { ScrollTrigger } from "gsap/ScrollTrigger";
-import { usePageStep } from "@src/store/pageStepContext";
+import { usePageStep } from "@src/store/animationContext";
 
 gsap.registerPlugin(useGSAP, ScrollTrigger);
 
@@ -114,11 +114,8 @@ const CapsionTextLogo: React.FC<{ texts: string[]; step?: number; className?: st
   );
 
   return (
-    <section ref={capsionTextLogoRef} className={[className, "text-left overflow-hidden w-full relative", "text-[60px]"].join(" ")}>
-      <div
-        ref={textContainerRef}
-        className={["overflow-hidden leading-none", "xl:h-[70px]", "lg:h-[70px]", "text-black mix-blend-difference"].join(" ")}
-      >
+    <section ref={capsionTextLogoRef} className={[className, "h-[2rem] text-[1.8rem]", "text-left overflow-hidden w-full relative"].join(" ")}>
+      <div ref={textContainerRef} className={["overflow-hidden leading-none", "text-black mix-blend-difference"].join(" ")}>
         <div ref={currentTextRef} className={["up py-[5px] eachChar"].join(" ")}>
           {texts[currentIndex]}
         </div>
