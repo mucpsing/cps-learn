@@ -34,3 +34,14 @@ export function hexToRgba(hex: string, alpha: number = 1): string {
   // 返回RGBA格式字符串
   return `rgba(${r}, ${g}, ${b}, ${alpha})`;
 }
+
+/**
+ * 更新:root中的CSS自定义属性（变量）
+ * @param {Object} variables 包含要修改的变量名和对应值的对象，例如 { '--color-primary': '#f00', '--spacing': '16px' }
+ */
+export function updateRootVariables(variables: Record<string, string>) {
+  const root = document.documentElement;
+  Object.entries(variables).forEach(([key, value]) => {
+    root.style.setProperty(key, value);
+  });
+}

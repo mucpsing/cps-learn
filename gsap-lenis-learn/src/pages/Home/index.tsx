@@ -1,12 +1,12 @@
 /*
  * @Author: cpasion-office-win10 373704015@qq.com
  * @Date: 2025-04-25 08:53:06
- * @LastEditors: Capsion 373704015@qq.com
- * @LastEditTime: 2025-04-26 11:36:08
+ * @LastEditors: cpasion-office-win10 373704015@qq.com
+ * @LastEditTime: 2025-04-28 09:42:05
  * @FilePath: \gsap-lenis-learn\src\pages\Home\index.tsx
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
  */
-import { useState, useRef, useEffect, useMemo } from "react";
+import { useState, useRef, useEffect } from "react";
 
 import "@site/src/assets/font/fonts.css";
 
@@ -18,8 +18,6 @@ import "lenis/dist/lenis.css";
 
 import { mainTexts, subTexts, bubbleList } from "@site/src/store";
 
-// import MouseTracker from "./components/MouseIconsTracker";
-
 import MainText from "./mainText";
 import SubText from "./SubText";
 import HomeButtonBar from "./HomeButtonBar";
@@ -29,6 +27,8 @@ import BackgroundBubble from "./BackgroundBubble";
 import BackgroundRect from "./BackgroundRect";
 
 import { PageStepContext } from "@src/store/animationContext";
+
+import MouseTracker from "@site/src/components/MouseIconsTracker";
 
 // 手动定义有首页有多少step
 // step_0 加载状态
@@ -103,29 +103,45 @@ function App() {
     <ReactLenis root>
       <PageStepContext.Provider value={contextValue}>
         <main ref={mainRef} className="main w-full h-screen relative z-2 overflow-hidden">
+          <section className={["border-2 border-red-400 rounded-4xl w-[500px] h-[400px]", "absolute bottom-4 right-4"].join(" ")}>
+
+          </section>
+
           <section
             className={[
               "__home_main_text relative w-full z-3",
               "top-[10%] left-[5%]",
-              "lg:top-[14%] lg:left-[7%]",
-              "xl:top-[16%] xl:left-[8%]",
-              "2xl:top-[20%] 2xl:left-[10%]",
-              "min-[1920px]:top-[25%] min-[1920px]:left-[13%]",
+              "lg:top-[13%] lg:left-[4%]",
+              "xl:top-[14%] xl:left-[5%]",
+              "2xl:top-[15%] 2xl:left-[6%]",
+              "min-[1920px]:top-[20%] min-[1920px]:left-[10%]",
             ].join(" ")}
           >
-            <SubText className={["lg:h-[3rem] lg:text-[2.6rem]", "xl:h-[3.5rem] xl:text-[3rem]", "2xl:h-[4rem] 2xl:text-[3.5rem]"].join(" ")} texts={subTexts}></SubText>
+            <SubText
+              className={["lg:h-[3rem] lg:text-[2.6rem]", "xl:h-[3.5rem] xl:text-[3rem]", "2xl:h-[3.5rem] 2xl:text-[3rem]"].join(" ")}
+              texts={subTexts}
+            ></SubText>
 
             <div className="my-3"></div>
 
-            <MainText className={["lg:h-[6rem] lg:text-[4rem]", "xl:h-[5.5rem] xl:text-[5rem]", "2xl:h-[6.5rem] 2xl:text-[6rem]"].join(" ")} texts={mainTexts}></MainText>
+            <MainText
+              className={["lg:h-[4.5rem] lg:text-[4rem]", "xl:h-[5rem] xl:text-[4.5rem]", "2xl:h-[5.5rem] 2xl:text-[5rem]"].join(" ")}
+              texts={mainTexts}
+            ></MainText>
 
             <div className="my-6"></div>
 
-            <DocsText className={["lg:text-[1rem] xl:max-w-[500px]", "xl:text-[1rem] xl:max-w-[600px]", "2xl:text-[1.2rem] 2xl:max-w-[800px]"].join(" ")}></DocsText>
+            <DocsText
+              className={["lg:text-[.9rem] lg:max-w-[500px]", "xl:text-[1rem] xl:max-w-[600px]", "2xl:text-[1.1rem] 2xl:max-w-[700px]"].join(" ")}
+            ></DocsText>
 
             <div className="mt-15"></div>
 
             <HomeButtonBar></HomeButtonBar>
+
+            <div className={["w-[700px] h-[320px]"].join(" ")}>
+              <MouseTracker DEBUG={false}></MouseTracker>
+            </div>
           </section>
 
           <BackgroundRect></BackgroundRect>

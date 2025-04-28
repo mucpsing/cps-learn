@@ -1,8 +1,8 @@
 /*
  * @Author: Capsion 373704015@qq.com
  * @Date: 2025-03-25 20:12:12
- * @LastEditors: Capsion 373704015@qq.com
- * @LastEditTime: 2025-04-26 11:40:10
+ * @LastEditors: cpasion-office-win10 373704015@qq.com
+ * @LastEditTime: 2025-04-27 09:17:30
  * @FilePath: \gsap-lenis-learn\src\components\CapsionText\index.tsx
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
  */
@@ -53,7 +53,15 @@ const CapsionTextLogo: React.FC<{ texts: string[]; step?: number; className?: st
   );
 
   return (
-    <section ref={capsionTextLogoRef} className={[className, "h-[3rem] text-[3rem]", "__cps_mainText text-left overflow-hidden w-full"].join(" ")}>
+    <section
+      ref={capsionTextLogoRef}
+      className={[
+        className,
+        "flex items-center justify-start flex-row",
+        "h-[3rem] text-[3rem]",
+        "__cps_mainText text-left overflow-hidden w-full",
+      ].join(" ")}
+    >
       <div ref={textContainerRef} className={["eachChar overflow-hidden leading-none", "mix-blend-difference text-black"].join(" ")}>
         <span>
           {"Capsion".split("").map((char, index) => {
