@@ -2,7 +2,7 @@
  * @Author: Capsion 373704015@qq.com
  * @Date: 2025-03-24 20:41:58
  * @LastEditors: cpasion-office-win10 373704015@qq.com
- * @LastEditTime: 2025-03-25 10:41:42
+ * @LastEditTime: 2025-04-28 09:32:53
  * @FilePath: \gsap-lenis-learn\src\components\MouseFlowerElCreator\test.tsx
  * @Description: 这是一个仿照gsap官方文档网站中跟随鼠标生成元素的组件
  * @example:
@@ -23,9 +23,18 @@ import type { Point, directionT } from "./utils";
 gsap.registerPlugin(CustomEase);
 
 interface MouseTrackerProps {
-  threshold?: number; // 间隔，每到累计到一个间隔阈值，则记录坐标
-  count?: number;
+  threshold?: number; // 间隔：每到累计到一个间隔阈值，则记录坐标
+  count?: number; // 数量：创建多少个粒子
+  parentId?: string; // 父容器：指定一个容器挂载到里面，默认挂载在body，但是会让视口高度被撑开，
+  DEBUG?: boolean;
 }
+
+const DEFAULT_PROPS: Required<MouseTrackerProps> = {
+  threshold: 120,
+  count: 30,
+  parentId: "",
+  DEBUG: false,
+};
 
 // Add the global type declaration
 declare global {
@@ -36,7 +45,11 @@ declare global {
 
 const pointContainerId = "__MouseTracker_Container";
 
-const MouseTracker: React.FC<MouseTrackerProps> = ({ threshold = 120, count = 30 }) => {
+const MouseTracker: React.FC<MouseTrackerProps> = (_props) => {
+  const props: Required<MouseTrackerProps> = { ...DEFAULT_PROPS, ..._props };
+  const parentEl = useRef<HTMLElement>(document.getElementById(props.parentId) || document.body);
+  const pointContainerRef = useRef<HTMLElement>((document.getElementById(pointContainerId) as HTMLDivElement) || document.createElement("div"));
+
   const lastPoint = useRef<Point | null>(null);
   const distanceTraveled = useRef<number>(0);
   const recordedPoints = useRef<Point[]>([]);
@@ -101,7 +114,8 @@ const MouseTracker: React.FC<MouseTrackerProps> = ({ threshold = 120, count = 30
 
   // Handle mouse movement
   const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
-    const rect = document.body.getBoundingClientRect();
+    // const rect = document.body.getBoundingClientRect();
+    const rect = parentEl.current.getBoundingClientRect();
     const currentPoint: Point = { x: e.clientX - rect.x, y: e.clientY - rect.y };
 
     if (!lastPoint.current) return (lastPoint.current = currentPoint);
@@ -109,7 +123,7 @@ const MouseTracker: React.FC<MouseTrackerProps> = ({ threshold = 120, count = 30
     const distance = calculateDistance(currentPoint, lastPoint.current);
     distanceTraveled.current += distance.distance;
 
-    if (distanceTraveled.current >= threshold) {
+    if (distanceTraveled.current >= props.threshold) {
       recordedPoints.current.push({ ...currentPoint });
 
       distanceTraveled.current = 0;
@@ -123,9 +137,8 @@ const MouseTracker: React.FC<MouseTrackerProps> = ({ threshold = 120, count = 30
   };
 
   useEffect(() => {
-    const pointContainerRef = (document.getElementById(pointContainerId) as HTMLDivElement) || document.createElement("div");
-    pointContainerRef.id = pointContainerId;
-    Object.assign(pointContainerRef.style, { position: "absolute", top: 0, left: 0 });
+    pointContainerRef.current.id = pointContainerId;
+    Object.assign(pointContainerRef.current.style, { position: "absolute", top: 0, left: 0 });
 
     const pointInitStyle = {
       position: "absolute",
@@ -138,24 +151,31 @@ const MouseTracker: React.FC<MouseTrackerProps> = ({ threshold = 120, count = 30
     };
 
     pointPool.current.length = 0;
-    for (let i = 1; i <= count; i++) {
+    for (let i = 1; i <= props.count; i++) {
       const eachPointRef = document.createElement("div");
       Object.assign(eachPointRef.style, pointInitStyle);
       pointPool.current.push(eachPointRef);
-      pointContainerRef.appendChild(eachPointRef);
+      pointContainerRef.current.appendChild(eachPointRef);
     }
 
-    document.body.appendChild(pointContainerRef);
+    parentEl.current.appendChild(pointContainerRef.current);
 
     return () => {
       document.getElementById(pointContainerId)?.remove();
     };
-  }, []);
+  }, [_props]);
 
   return (
     // 触发区域
     <div ref={containerRef} onMouseMove={handleMouseMove} className="w-full h-full relative">
-      {process.env.NODE_ENV === "development" && <div style={{ padding: "20px", position: "absolute", top: 0, left: 0, background: "rgba(255,255,255,0.7)" }}>Recorded points: {pointCount}</div>}
+      {process.env.NODE_ENV === "development" && props.DEBUG && (
+        <>
+          <div style={{ padding: "20px", position: "absolute", top: 0, left: 0, background: "rgba(255,255,255,0.7)" }}>
+            Recorded points: {pointCount}
+          </div>
+          <div className={["w-full h-full bg-amber-100 absolute top-0 left-0"].join(" ")}></div>
+        </>
+      )}
     </div>
   );
 };

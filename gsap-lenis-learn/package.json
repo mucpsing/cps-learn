@@ -13,16 +13,21 @@
     "@gsap/react": "^2.1.2",
     "@tailwindcss/vite": "^4.0.9",
     "@types/gsap": "^3.0.0",
+    "clean-css": "^5.3.3",
     "gsap": "^3.12.7",
+    "html-minifier": "^4.0.0",
     "lenis": "^1.2.1",
     "lodash": "^4.17.21",
+    "prism-react-renderer": "^2.4.1",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
-    "react-perspective-transform": "^2.0.3"
+    "react-perspective-transform": "^2.0.3",
+    "typed.js": "^2.1.0"
   },
   "devDependencies": {
     "@eslint/js": "^9.21.0",
     "@tailwindcss/postcss": "^4.0.9",
+    "@types/html-minifier": "^4.0.5",
     "@types/lodash": "^4.17.16",
     "@types/node": "20",
     "@types/react": "^19.0.10",
