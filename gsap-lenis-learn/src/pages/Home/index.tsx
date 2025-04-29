@@ -2,7 +2,7 @@
  * @Author: cpasion-office-win10 373704015@qq.com
  * @Date: 2025-04-25 08:53:06
  * @LastEditors: cpasion-office-win10 373704015@qq.com
- * @LastEditTime: 2025-04-28 09:42:05
+ * @LastEditTime: 2025-04-29 09:58:49
  * @FilePath: \gsap-lenis-learn\src\pages\Home\index.tsx
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
  */
@@ -29,6 +29,8 @@ import BackgroundRect from "./BackgroundRect";
 import { PageStepContext } from "@src/store/animationContext";
 
 import MouseTracker from "@site/src/components/MouseIconsTracker";
+
+import DraggableElement from "@src/components/DraggableEl";
 
 // 手动定义有首页有多少step
 // step_0 加载状态
@@ -103,9 +105,9 @@ function App() {
     <ReactLenis root>
       <PageStepContext.Provider value={contextValue}>
         <main ref={mainRef} className="main w-full h-screen relative z-2 overflow-hidden">
-          <section className={["border-2 border-red-400 rounded-4xl w-[500px] h-[400px]", "absolute bottom-4 right-4"].join(" ")}>
-
-          </section>
+          <DraggableElement>
+            <section className={["border-2 border-red-400 rounded-4xl w-[500px] h-[400px]"].join(" ")}></section>
+          </DraggableElement>
 
           <section
             className={[
