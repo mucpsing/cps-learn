@@ -1,8 +1,8 @@
 /*
  * @Author: cpasion-office-win10 373704015@qq.com
  * @Date: 2025-04-21 09:56:53
- * @LastEditors: capsion_surfacePro7 capsion@surfacePro2.com
- * @LastEditTime: 2025-04-29 17:55:23
+ * @LastEditors: Capsion 373704015@qq.com
+ * @LastEditTime: 2025-05-01 08:36:14
  * @FilePath: \gsap-lenis-learn\src\components\DraggableEl\index.tsx
  * @Description: 这是一个拖拽组件，让传入的元素支持拖拽，基于绝对定位，可以通过style传入fiexd来改变
  * @example:
@@ -15,100 +15,9 @@
 import React, { useState, useRef, useEffect, forwardRef, useImperativeHandle, useMemo } from "react";
 import { type CSSProperties } from "react";
 
-import Typed from "typed.js";
 import { Highlight, themes } from "prism-react-renderer";
 import codeSnippetsBlocks from "@site/src/components/CodeSwiper/data";
 
-interface CodeTyperProps {
-  staticCode: string;
-  language: string;
-  typeSpeed?: number;
-  cursorChar?: string;
-}
-
-function CodeTyper({ staticCode, language, typeSpeed = 40 }: CodeTyperProps) {
-  const [dynamicCode, setDynamicCode] = useState("");
-  const typedTarget = useRef<HTMLSpanElement>(null);
-  const containerRef = useRef<HTMLDivElement>(null);
-  const typedInstance = useRef<Typed | null>(null);
-
-  // 修复1：正确初始化Typed.js
-  useEffect(() => {
-    if (typedTarget.current && containerRef.current) {
-      // 修复2：确保容器可见后再初始化
-      const observer = new IntersectionObserver(([entry]) => {
-        if (entry.isIntersecting && !typedInstance.current) {
-          typedInstance.current = new Typed(typedTarget.current!, {
-            strings: [staticCode],
-            typeSpeed,
-            showCursor: false, // 隐藏默认光标
-            onCharTyped: () => {
-              setDynamicCode(typedInstance.current!.text!);
-            },
-          });
-        }
-      });
-
-      observer.observe(containerRef.current);
-      return () => {
-        observer.disconnect();
-        typedInstance.current?.destroy();
-      };
-    }
-  }, [staticCode, typeSpeed]);
-
-  return (
-    // 修复3：添加必要布局容器
-    <div
-      ref={containerRef}
-      className="code-typer-container"
-      style={{
-        position: "relative",
-        minWidth: "600px", // 重要：设置最小宽度
-        backgroundColor: "#011627",
-      }}
-    >
-      {/* 修复4：使用visibility隐藏替代display:none */}
-      <span
-        ref={typedTarget}
-        style={{
-          visibility: "hidden",
-          position: "absolute",
-          whiteSpace: "pre-wrap",
-          fontFamily: "monospace",
-        }}
-      />
-
-      {/* 修复5：添加尺寸保障机制 */}
-      <Highlight theme={themes.nightOwl} code={dynamicCode} language={language}>
-        {({ className, style, tokens, getLineProps, getTokenProps }) => (
-          <pre
-            className={className}
-            style={{
-              ...style,
-              margin: 0,
-              padding: "1rem",
-              overflow: "auto",
-              // 修复6：确保代码块撑满容器
-              width: "100%",
-              boxSizing: "border-box",
-            }}
-          >
-            {/* 修复7：添加占位空行 */}
-            {tokens.length === 0 && <div>&nbsp;</div>}
-            {tokens.map((line, i) => (
-              <div key={i} {...getLineProps({ line })}>
-                {line.map((token, key) => (
-                  <span key={key} {...getTokenProps({ token })} />
-                ))}
-              </div>
-            ))}
-          </pre>
-        )}
-      </Highlight>
-    </div>
-  );
-}
 export interface DraggableElementProps {
   children?: React.ReactNode;
   parentElementId?: string;
@@ -145,6 +54,7 @@ const DraggableElement = forwardRef<DraggableElementHandle, DraggableElementProp
 
   const codeBlocks = Object.values(codeSnippetsBlocks);
   const codeKeys = Object.keys(codeSnippetsBlocks);
+  const codeStep = useRef(1);
 
   useEffect(() => {
     console.log("123123123");
@@ -238,13 +148,13 @@ const DraggableElement = forwardRef<DraggableElementHandle, DraggableElementProp
       }}
       onMouseDown={handleMouseDown}
     >
-      <section className={["w-full h-full text-start p-5"].join(" ")}>
-        {/* <Highlight theme={themes.okaidia} code={codeBlocks[0]} language={codeKeys[0]}>
+      <section className={["w-full h-full text-start p-5 transition-all duration-700"].join(" ")}>
+        <Highlight theme={themes.okaidia} code={codeBlocks[codeStep.current]} language={codeKeys[codeStep.current]}>
           {({ className, style, tokens, getLineProps, getTokenProps }) => (
             <pre style={style}>
               {tokens.map((line, i) => (
                 <div key={i} {...getLineProps({ line })}>
-                  <span>{i + 1}</span>
+                  <span className={["mr-3"].join(" ")}>{i + 1}</span>
                   {line.map((token, key) => (
                     <span key={key} {...getTokenProps({ token })} />
                   ))}
@@ -252,15 +162,7 @@ const DraggableElement = forwardRef<DraggableElementHandle, DraggableElementProp
               ))}
             </pre>
           )}
-        </Highlight> */}
-
-        <CodeTyper
-          staticCode={`function greet() {
-  console.log('Welcome to CAPSION.HUB');
-}`}
-          language="javascript"
-          typeSpeed={30}
-        />
+        </Highlight>
       </section>
     </div>
   );

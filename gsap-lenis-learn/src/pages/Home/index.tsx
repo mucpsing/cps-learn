@@ -1,8 +1,8 @@
 /*
  * @Author: cpasion-office-win10 373704015@qq.com
  * @Date: 2025-04-25 08:53:06
- * @LastEditors: capsion_surfacePro7 capsion@surfacePro2.com
- * @LastEditTime: 2025-04-29 17:01:14
+ * @LastEditors: Capsion 373704015@qq.com
+ * @LastEditTime: 2025-05-01 08:37:39
  * @FilePath: \gsap-lenis-learn\src\pages\Home\index.tsx
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
  */
@@ -105,9 +105,18 @@ function App() {
     <ReactLenis root>
       <PageStepContext.Provider value={contextValue}>
         <main ref={mainRef} className="main w-full h-screen relative z-2 overflow-hidden">
-          <DraggableElement>{/* <section className={["border-2 border-red-400 rounded-4xl w-[500px] h-[400px]"].join(" ")}></section> */}</DraggableElement>
+          {/* <DraggableElement></DraggableElement> */}
 
-          <section className={["__home_main_text relative w-full z-3", "top-[10%] left-[5%]", "lg:top-[13%] lg:left-[4%]", "xl:top-[14%] xl:left-[5%]", "2xl:top-[15%] 2xl:left-[6%]", "min-[1920px]:top-[20%] min-[1920px]:left-[10%]"].join(" ")}>
+          <section
+            className={[
+              "__home_main_text relative w-full z-3",
+              "top-[10%] left-[5%]",
+              "lg:top-[13%] lg:left-[4%]",
+              "xl:top-[14%] xl:left-[5%]",
+              "2xl:top-[15%] 2xl:left-[6%]",
+              "min-[1920px]:top-[20%] min-[1920px]:left-[10%]",
+            ].join(" ")}
+          >
             <SubText className={["lg:h-[3rem] lg:text-[2.6rem]", "xl:h-[3.5rem] xl:text-[3rem]", "2xl:h-[3.5rem] 2xl:text-[3rem]"].join(" ")} texts={subTexts}></SubText>
 
             <div className="my-3"></div>

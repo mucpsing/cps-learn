@@ -1,21 +1,11 @@
 /*
  * @Author: capsion_surfacePro7 capsion@surfacePro2.com
  * @Date: 2025-04-29 17:03:36
- * @LastEditors: capsion_surfacePro7 capsion@surfacePro2.com
- * @LastEditTime: 2025-04-29 17:35:10
+ * @LastEditors: Capsion 373704015@qq.com
+ * @LastEditTime: 2025-05-01 08:34:58
  * @FilePath: \gsap-lenis-learn\src\components\CodeSwiper\data.ts
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
  */
-const reactWithComponent = `
-const GroceryItem: React.FC<GroceryItemProps> = ({ item }) => {
-  return (
-    <div>
-      <h2>{item.name}</h2>
-      <p>Price: {item.price}</p>
-      <p>Quantity: {item.quantity}</p>
-    </div>
-  );
-}`;
 
 export const codeSnippets = {
   go: `
@@ -102,7 +92,7 @@ console.log(createHeader({
 }));
   `.trim(),
 
-  react: `
+  tsx: `
 import React from 'react';
 
 export default function MyBlog() {
