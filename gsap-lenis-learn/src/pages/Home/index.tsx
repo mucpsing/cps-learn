@@ -2,7 +2,7 @@
  * @Author: cpasion-office-win10 373704015@qq.com
  * @Date: 2025-04-25 08:53:06
  * @LastEditors: Capsion 373704015@qq.com
- * @LastEditTime: 2025-05-01 08:37:39
+ * @LastEditTime: 2025-05-02 09:44:18
  * @FilePath: \gsap-lenis-learn\src\pages\Home\index.tsx
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
  */
@@ -17,6 +17,7 @@ import { ReactLenis } from "lenis/react";
 import "lenis/dist/lenis.css";
 
 import { mainTexts, subTexts, bubbleList } from "@site/src/store";
+import { skillIcons } from "@site/src/store/icons";
 
 import MainText from "./mainText";
 import SubText from "./SubText";
@@ -132,7 +133,7 @@ function App() {
             <HomeButtonBar></HomeButtonBar>
 
             <div className={["w-[700px] h-[320px]"].join(" ")}>
-              <MouseTracker DEBUG={false}></MouseTracker>
+              <MouseTracker DEBUG={false} iconsList={skillIcons} size={30} threshold={80}></MouseTracker>
             </div>
           </section>
 
