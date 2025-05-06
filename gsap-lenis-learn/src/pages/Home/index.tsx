@@ -2,7 +2,7 @@
  * @Author: cpasion-office-win10 373704015@qq.com
  * @Date: 2025-04-25 08:53:06
  * @LastEditors: Capsion 373704015@qq.com
- * @LastEditTime: 2025-05-02 09:44:18
+ * @LastEditTime: 2025-05-05 08:42:31
  * @FilePath: \gsap-lenis-learn\src\pages\Home\index.tsx
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
  */
@@ -133,11 +133,15 @@ function App() {
             <HomeButtonBar></HomeButtonBar>
 
             <div className={["w-[700px] h-[320px]"].join(" ")}>
-              <MouseTracker DEBUG={false} iconsList={skillIcons} size={30} threshold={80}></MouseTracker>
+              <MouseTracker DEBUG={false} iconsList={skillIcons} size={30} count={skillIcons.length} threshold={100}></MouseTracker>
             </div>
           </section>
 
-          <BackgroundRect></BackgroundRect>
+          {/* <div className={["fixed bottom-1/6 left-1/2 -translate-x-1/2 w-4/5 h-[150px]"].join(" ")}>
+            <div className={["bg-red-400 rounded-3xl h-[10px] w-full"].join(" ")}></div>
+          </div> */}
+
+          <BackgroundRect className="pointer-events-none"></BackgroundRect>
         </main>
         <BackgroundBubble bubble={bubbleList}></BackgroundBubble>
       </PageStepContext.Provider>

@@ -2,7 +2,7 @@
  * @Author: Capsion 373704015@qq.com
  * @Date: 2025-03-24 20:41:58
  * @LastEditors: Capsion 373704015@qq.com
- * @LastEditTime: 2025-05-02 09:56:42
+ * @LastEditTime: 2025-05-04 11:24:48
  * @FilePath: \gsap-lenis-learn\src\components\MouseFlowerElCreator\test.tsx
  * @Description: 这是一个仿照gsap官方文档网站中跟随鼠标生成元素的组件
  * @example:
@@ -64,7 +64,7 @@ const pointContainerId = "__MouseTracker_Container";
 
 const MouseTracker: React.FC<MouseTrackerProps> = (_props) => {
   const props: Required<MouseTrackerProps> = { ...DEFAULT_PROPS, ..._props };
-  const parentEl = useRef<HTMLElement>(document.getElementById(props.parentId) || document.body);
+  const parentEl = useRef<HTMLElement>(document.getElementById(props.parentId) || document.parentElement || document.body);
   const pointContainerRef = useRef<HTMLElement>((document.getElementById(pointContainerId) as HTMLDivElement) || document.createElement("div"));
 
   const lastPoint = useRef<Point | null>(null);
