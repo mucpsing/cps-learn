@@ -2,13 +2,13 @@
  * @Author: cpasion-office-win10 373704015@qq.com
  * @Date: 2025-04-21 09:44:37
  * @LastEditors: Capsion 373704015@qq.com
- * @LastEditTime: 2025-05-04 11:47:31
+ * @LastEditTime: 2025-05-06 23:08:46
  * @FilePath: \gsap-lenis-learn\src\pages\Home\BackgroundRect\index.tsx
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
  */
 import { useRef, useEffect } from "react";
 import PerspectiveTransform from "@site/src/utils/PerspectiveTransform";
-import { usePageStep } from "@src/store/animationContext";
+import { usePageStepContext } from "@src/store/animationContext";
 
 import { hexToRgba, clamp } from "@site/src/utils";
 import DraggableElement from "@src/components/DraggableEl";
@@ -25,7 +25,7 @@ const DEFAULT_PROPS: Required<BackgroundRectPorpsT> = {
 };
 
 export default function BackgroundRect(_props: BackgroundRectPorpsT) {
-  const { register, reportCompletion, animationStep } = usePageStep();
+  const { register, reportCompletion, animationStep } = usePageStepContext();
 
   const props: Required<BackgroundRectPorpsT> = { ...DEFAULT_PROPS, ..._props };
 
@@ -38,20 +38,22 @@ export default function BackgroundRect(_props: BackgroundRectPorpsT) {
 
   // 动画部分
   useEffect(() => {
-    register("BackgroundRect: ");
+    register("BackgroundRect");
     if (!el.current) return;
-
-    console.log("animationStep: ", animationStep);
 
     switch (animationStep) {
       case -1:
         console.log("BackgroundRect: ", "准备阶段");
 
-        gsap.set(el.current, {
-          left: -window.innerWidth,
-          width: "calc(100vw)",
-          opacity: 0,
-        });
+        gsap
+          .set(el.current, {
+            left: -window.innerWidth,
+            width: "calc(100vw)",
+            opacity: 0,
+          })
+          .eventCallback("onComplete", () => {
+            reportCompletion("BackgroundRect");
+          });
 
         break;
       case 0:
@@ -95,8 +97,6 @@ export default function BackgroundRect(_props: BackgroundRectPorpsT) {
               bottomLeft: { x: -70, y: 0 },
               bottomRight: { x: -70, y: 0 },
             });
-
-            reportCompletion("BackgroundRect");
           });
 
         timeline.current?.restart();
