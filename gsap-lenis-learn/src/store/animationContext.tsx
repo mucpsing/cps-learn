@@ -1,7 +1,10 @@
+import { type } from "os";
 import { createContext, useContext } from "react";
 
+export type pageStepType = "loadding" | "start";
+
 export type PageStepContextType = {
-  pageStep: "loadding" | "start";
+  pageStep: pageStepType;
 
   animationStep: number;
 
