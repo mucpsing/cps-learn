@@ -1,8 +1,8 @@
 /*
  * @Author: cpasion-office-win10 373704015@qq.com
  * @Date: 2025-04-25 08:53:06
- * @LastEditors: Capsion 373704015@qq.com
- * @LastEditTime: 2025-05-06 22:41:32
+ * @LastEditors: cpasion-office-win10 373704015@qq.com
+ * @LastEditTime: 2025-05-07 15:46:04
  * @FilePath: \gsap-lenis-learn\src\pages\Home\index.tsx
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
  */
@@ -84,6 +84,8 @@ function App() {
 
   // 创建上下文值
   const contextValue = {
+    pageStep: "loadding" as "loadding" | "start",
+
     animationStep: animationStep,
 
     register: (strID: string) => {
@@ -107,7 +109,14 @@ function App() {
       <PageStepContext.Provider value={contextValue}>
         <main ref={mainRef} className="main w-full h-screen relative z-2 overflow-hidden">
           {/* <DraggableElement></DraggableElement> */}
-
+          <div className={["bg-amber-300 w-[200px] h-[60px] fixed top-0 left-0 flex justify-center items-center"].join(" ")}>
+            <button
+              onClick={() => {
+                console.log("contextValue: ", contextValue);
+              }}
+              className={"bg-red-500 px-5 py-2 rounded-lg text-white cursor-pointer"}
+            >{`动画按钮_${contextValue.pageStep}_${contextValue.animationStep}`}</button>
+          </div>
           <section
             className={[
               "__home_main_text relative w-fit z-3",
@@ -118,15 +127,23 @@ function App() {
               "min-[1920px]:top-[20%] min-[1920px]:left-[10%]",
             ].join(" ")}
           >
-            <SubText className={["lg:h-[3rem] lg:text-[2.6rem]", "xl:h-[3.5rem] xl:text-[3rem]", "2xl:h-[3.5rem] 2xl:text-[3rem]"].join(" ")} texts={subTexts}></SubText>
+            <SubText
+              className={["lg:h-[3rem] lg:text-[2.6rem]", "xl:h-[3.5rem] xl:text-[3rem]", "2xl:h-[3.5rem] 2xl:text-[3rem]"].join(" ")}
+              texts={subTexts}
+            ></SubText>
 
             <div className="my-3"></div>
 
-            <MainText className={["lg:h-[4.5rem] lg:text-[4rem]", "xl:h-[5rem] xl:text-[4.5rem]", "2xl:h-[5.5rem] 2xl:text-[5rem]"].join(" ")} texts={mainTexts}></MainText>
+            <MainText
+              className={["lg:h-[4.5rem] lg:text-[4rem]", "xl:h-[5rem] xl:text-[4.5rem]", "2xl:h-[5.5rem] 2xl:text-[5rem]"].join(" ")}
+              texts={mainTexts}
+            ></MainText>
 
             <div className="my-6"></div>
 
-            <DocsText className={["lg:text-[.9rem] lg:max-w-[500px]", "xl:text-[1rem] xl:max-w-[600px]", "2xl:text-[1.1rem] 2xl:max-w-[700px]"].join(" ")}></DocsText>
+            <DocsText
+              className={["lg:text-[.9rem] lg:max-w-[500px]", "xl:text-[1rem] xl:max-w-[600px]", "2xl:text-[1.1rem] 2xl:max-w-[700px]"].join(" ")}
+            ></DocsText>
 
             <div className="mt-15"></div>
 

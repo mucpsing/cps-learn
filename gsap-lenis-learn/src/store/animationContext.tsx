@@ -1,9 +1,9 @@
 import { createContext, useContext } from "react";
 
 export type PageStepContextType = {
-  animationStep: number;
-
   pageStep: "loadding" | "start";
+
+  animationStep: number;
 
   /**
    * @description: 注册组件
