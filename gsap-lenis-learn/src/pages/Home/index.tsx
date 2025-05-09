@@ -2,8 +2,8 @@
  * @Author: cpasion-office-win10 373704015@qq.com
  * @Date: 2025-04-25 08:53:06
 <<<<<<< HEAD
- * @LastEditors: cpasion-office-win10 373704015@qq.com
- * @LastEditTime: 2025-05-09 12:10:02
+ * @LastEditors: Capsion 373704015@qq.com
+ * @LastEditTime: 2025-05-09 12:16:04
 =======
  * @LastEditors: Capsion 373704015@qq.com
  * @LastEditTime: 2025-05-07 22:26:54
@@ -169,7 +169,7 @@ function App() {
             </div>
           </section> */}
 
-          <div className="flex justify-between items-center mx-20 h-full">
+          <div className="flex justify-between items-center mx-10 h-full">
             <section>
               {/* <SubText
                 className={["lg:h-[3rem] lg:text-[2.6rem]", "xl:h-[3.5rem] xl:text-[3rem]", "2xl:h-[3.5rem] 2xl:text-[3rem]"].join(" ")}
@@ -177,10 +177,7 @@ function App() {
               ></SubText>
               <div className="my-3"></div> */}
 
-              <MainText
-                className={["lg:h-[4.5rem] lg:text-[4rem]", "xl:h-[5rem] xl:text-[4.5rem]", "2xl:h-[5.5rem] 2xl:text-[5rem]"].join(" ")}
-                texts={mainTexts}
-              ></MainText>
+              <MainText className={["lg:h-[4.5rem] lg:text-[4rem]", "xl:h-[5rem] xl:text-[4.5rem]", "2xl:h-[5.5rem] 2xl:text-[5rem]"].join(" ")} texts={mainTexts}></MainText>
 
               {/* <div className="my-6"></div>
 
@@ -202,10 +199,7 @@ function App() {
               {/* <DraggableElement>
               </DraggableElement> */}
 
-              <div
-                className={["rounded-[55px] p-[4px] bg-white", "w-full h-[550px] relative", "shadow-xl"].join(" ")}
-                style={{ backgroundColor: globalContextValue.mainColor }}
-              >
+              <div className={["rounded-[55px] p-[4px] bg-white", "w-full h-[550px] relative", "shadow-xl"].join(" ")} style={{ backgroundColor: globalContextValue.mainColor }}>
                 <div
                   style={{
                     borderRadius: "55px",
@@ -218,9 +212,9 @@ function App() {
             </section>
           </div>
 
-          {/* <div className={["fixed bottom-1/6 left-1/2 -translate-x-1/2 w-4/5 h-[150px]"].join(" ")}>
-            <div className={["bg-red-400 rounded-3xl h-[10px] w-full"].join(" ")}></div>
-          </div> */}
+          <div className={["fixed bottom-20 left-1/2 -translate-x-1/2 w-4/5"].join(" ")}>
+            <div className={["bg-red-400 rounded-3xl h-[8px] w-full"].join(" ")}></div>
+          </div>
 
           <BackgroundRect className="pointer-events-none -z-[1]"></BackgroundRect>
         </main>
