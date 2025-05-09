@@ -2,7 +2,7 @@
  * @Author: Capsion 373704015@qq.com
  * @Date: 2025-03-24 20:41:58
  * @LastEditors: Capsion 373704015@qq.com
- * @LastEditTime: 2025-05-04 11:24:48
+ * @LastEditTime: 2025-05-07 22:19:31
  * @FilePath: \gsap-lenis-learn\src\components\MouseFlowerElCreator\test.tsx
  * @Description: 这是一个仿照gsap官方文档网站中跟随鼠标生成元素的组件
  * @example:
@@ -152,8 +152,6 @@ const MouseTracker: React.FC<MouseTrackerProps> = (_props) => {
   };
 
   useEffect(() => {
-    console.log("init: ", props.iconsList);
-
     pointContainerRef.current.id = pointContainerId;
     Object.assign(pointContainerRef.current.style, { position: "absolute", top: 0, left: 0 });
 
@@ -171,7 +169,8 @@ const MouseTracker: React.FC<MouseTrackerProps> = (_props) => {
     const iconList = extendArray(props.count, props.iconsList);
 
     iconList.forEach((iconPath) => {
-      console.log(iconPath);
+      // console.log(iconPath);
+
       const eachPointRef = document.createElement("div");
       const eachImgEl = document.createElement("img");
       eachImgEl.src = `/icons/skill-icons/${iconPath}`;

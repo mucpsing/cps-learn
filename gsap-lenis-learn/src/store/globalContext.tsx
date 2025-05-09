@@ -9,12 +9,14 @@
 import { createContext, useContext } from "react";
 import { DEFAULT_MAIN_COLOR, DEFAULT_SUB_COLOR } from "./config";
 
+export type pageStepType = "loadding" | "start";
+
 export type GlobalContextType = {
   colorIndex: number;
   mainColor: string | (() => string);
   subColor: string | (() => string);
 
-  pageStep: "loadding" | "start";
+  pageStep: pageStepType;
 
   animationStep: number;
 
