@@ -19,15 +19,16 @@
     "lenis": "^1.2.1",
     "lodash": "^4.17.21",
     "prism-react-renderer": "^2.4.1",
-    "prismjs": "^1.30.0",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
     "react-perspective-transform": "^2.0.3",
-    "typed.js": "^2.1.0"
+    "typed.js": "^2.1.0",
+    "vanilla-tilt": "^1.8.1"
   },
   "devDependencies": {
     "@eslint/js": "^9.21.0",
     "@tailwindcss/postcss": "^4.0.9",
+    "@types/cheerio": "^1.0.0",
     "@types/html-minifier": "^4.0.5",
     "@types/lodash": "^4.17.16",
     "@types/node": "20",
@@ -36,6 +37,7 @@
     "@types/react-dom": "^19.0.4",
     "@vitejs/plugin-react": "^4.3.4",
     "autoprefixer": "^10.4.20",
+    "cheerio": "^1.0.0",
     "eslint": "^9.21.0",
     "eslint-plugin-react-hooks": "^5.1.0",
     "eslint-plugin-react-refresh": "^0.4.19",

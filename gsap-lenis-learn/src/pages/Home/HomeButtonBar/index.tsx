@@ -1,8 +1,8 @@
 /*
  * @Author: Capsion 373704015@qq.com
  * @Date: 2025-04-18 23:43:54
- * @LastEditors: Capsion 373704015@qq.com
- * @LastEditTime: 2025-05-06 23:07:43
+ * @LastEditors: cpasion-office-win10 373704015@qq.com
+ * @LastEditTime: 2025-05-09 09:52:07
  * @FilePath: \gsap-lenis-learn\src\pages\Home\HomeButtonBar\index.tsx
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
  */
@@ -11,13 +11,20 @@ import gsap from "gsap";
 import { useGSAP } from "@gsap/react";
 
 import Iconfont from "@site/src/components/Iconfont";
-import { usePageStepContext } from "@src/store/animationContext";
+import { useGlobalContext } from "@src/store";
 
 function IconBar() {
-  const { register, reportCompletion, animationStep } = usePageStepContext();
+  const { register, reportCompletion, animationStep } = useGlobalContext();
 
   const gsapI = useRef<gsap.core.Tween>(null);
-  const iconsList = ["logoicon-bilibili-line", "logoicon-juejin", "logoicon-github-fill", "logoicon-gitee", "logoicon-QQ-circle-fill", "logoicon-weixin"];
+  const iconsList = [
+    "logoicon-bilibili-line",
+    "logoicon-juejin",
+    "logoicon-github-fill",
+    "logoicon-gitee",
+    "logoicon-QQ-circle-fill",
+    "logoicon-weixin",
+  ];
 
   useGSAP(() => {
     register("IconBar");
@@ -65,7 +72,7 @@ function IconBar() {
 }
 
 function HomeButtonBar() {
-  const { register, reportCompletion, animationStep } = usePageStepContext();
+  const { register, reportCompletion, animationStep } = useGlobalContext();
 
   return (
     <div className={["flex flex-col justify-start items-start"].join(" ")}>

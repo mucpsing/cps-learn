@@ -2,7 +2,7 @@
  * @Author: cpasion-office-win10 373704015@qq.com
  * @Date: 2025-04-25 08:53:06
  * @LastEditors: cpasion-office-win10 373704015@qq.com
- * @LastEditTime: 2025-05-07 15:46:04
+ * @LastEditTime: 2025-05-09 11:11:23
  * @FilePath: \gsap-lenis-learn\src\pages\Home\index.tsx
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
  */
@@ -16,8 +16,9 @@ import { useGSAP } from "@gsap/react";
 import { ReactLenis } from "lenis/react";
 import "lenis/dist/lenis.css";
 
+import { GlobalContext, skillIcons } from "@site/src/store";
 import { mainTexts, subTexts, bubbleList } from "@site/src/store";
-import { skillIcons } from "@site/src/store/icons";
+import { DEFAULT_SUB_COLOR, DEFAULT_MAIN_COLOR } from "@site/src/store";
 
 import MainText from "./mainText";
 import SubText from "./SubText";
@@ -26,8 +27,6 @@ import HomeButtonBar from "./HomeButtonBar";
 import DocsText from "./DocsText";
 import BackgroundBubble from "./BackgroundBubble";
 import BackgroundRect from "./BackgroundRect";
-
-import { PageStepContext } from "@src/store/animationContext";
 
 import MouseTracker from "@site/src/components/MouseIconsTracker";
 
@@ -53,6 +52,9 @@ function App() {
 
   const [childCount, setChildCount] = useState(new Set<string>()); // 子组件数量
   const [completedCount, setCompletedCount] = useState(new Set<string>()); // 已完成子组件数量
+
+  // 颜色配置
+  const [colorIndex, setColorIndex] = useState<number>(0);
 
   useEffect(() => {
     const t = setTimeout(() => {
@@ -83,7 +85,11 @@ function App() {
   }, [completedCount]);
 
   // 创建上下文值
-  const contextValue = {
+  const globalContextValue = {
+    colorIndex,
+    mainColor: DEFAULT_MAIN_COLOR[colorIndex],
+    subColor: DEFAULT_SUB_COLOR[colorIndex],
+
     pageStep: "loadding" as "loadding" | "start",
 
     animationStep: animationStep,
@@ -106,18 +112,20 @@ function App() {
 
   return (
     <ReactLenis root>
-      <PageStepContext.Provider value={contextValue}>
+      <GlobalContext.Provider value={globalContextValue}>
         <main ref={mainRef} className="main w-full h-screen relative z-2 overflow-hidden">
           {/* <DraggableElement></DraggableElement> */}
           <div className={["bg-amber-300 w-[200px] h-[60px] fixed top-0 left-0 flex justify-center items-center"].join(" ")}>
             <button
               onClick={() => {
-                console.log("contextValue: ", contextValue);
+                console.log("globalContextValue: ", globalContextValue);
+
+                setColorIndex((prev) => prev + 1);
               }}
               className={"bg-red-500 px-5 py-2 rounded-lg text-white cursor-pointer"}
-            >{`动画按钮_${contextValue.pageStep}_${contextValue.animationStep}`}</button>
+            >{`动画按钮_${globalContextValue.pageStep}_${globalContextValue.animationStep}`}</button>
           </div>
-          <section
+          {/* <section
             className={[
               "__home_main_text relative w-fit z-3",
               "top-[10%] left-[5%]",
@@ -152,16 +160,65 @@ function App() {
             <div className={["w-[700px] h-[320px]"].join(" ")}>
               <MouseTracker DEBUG={false} iconsList={skillIcons} size={30} count={skillIcons.length} threshold={100}></MouseTracker>
             </div>
-          </section>
+          </section> */}
+
+          <div className="flex justify-between items-center mx-20 h-full">
+            <section>
+              {/* <SubText
+                className={["lg:h-[3rem] lg:text-[2.6rem]", "xl:h-[3.5rem] xl:text-[3rem]", "2xl:h-[3.5rem] 2xl:text-[3rem]"].join(" ")}
+                texts={subTexts}
+              ></SubText>
+              <div className="my-3"></div> */}
+
+              <MainText
+                className={["lg:h-[4.5rem] lg:text-[4rem]", "xl:h-[5rem] xl:text-[4.5rem]", "2xl:h-[5.5rem] 2xl:text-[5rem]"].join(" ")}
+                texts={mainTexts}
+              ></MainText>
+
+              {/* <div className="my-6"></div>
+
+              <DocsText
+                className={["lg:text-[.9rem] lg:max-w-[500px]", "xl:text-[1rem] xl:max-w-[600px]", "2xl:text-[1.1rem] 2xl:max-w-[700px]"].join(" ")}
+              ></DocsText>
+
+              <div className="mt-15"></div>
+
+              <HomeButtonBar></HomeButtonBar> */}
+
+              {/* 暂时因为排版问题，无法出现 */}
+              {/* <div className={["w-[700px] h-[320px]"].join(" ")}>
+                <MouseTracker DEBUG={false} iconsList={skillIcons} size={30} count={skillIcons.length} threshold={100}></MouseTracker>
+              </div> */}
+            </section>
+
+            <section className={["w-1/2 h-full flex justify-center items-center"].join(" ")}>
+              {/* <DraggableElement>
+              </DraggableElement> */}
+
+              <div
+                className={["rounded-[55px] p-[4px] bg-white", "w-full h-[550px] relative", "shadow-xl"].join(" ")}
+                style={{ backgroundColor: globalContextValue.mainColor }}
+              >
+                <div
+                  style={{
+                    borderRadius: "55px",
+                    borderTopRightRadius: "100%",
+                    background: "linear-gradient(0deg, rgba(255, 255, 255, 0.349) 0%, rgba(255, 255, 255, 0.815) 100%)",
+                  }}
+                  className={["transition-all", "border-l-[1px] border-b-[1px] border-white border-solid", "inset-2 h-full"].join(" ")}
+                ></div>
+              </div>
+            </section>
+          </div>
 
           {/* <div className={["fixed bottom-1/6 left-1/2 -translate-x-1/2 w-4/5 h-[150px]"].join(" ")}>
             <div className={["bg-red-400 rounded-3xl h-[10px] w-full"].join(" ")}></div>
           </div> */}
 
-          <BackgroundRect className="pointer-events-none"></BackgroundRect>
+          <BackgroundRect className="pointer-events-none -z-[1]"></BackgroundRect>
         </main>
         <BackgroundBubble bubble={bubbleList}></BackgroundBubble>
-      </PageStepContext.Provider>
+      </GlobalContext.Provider>
     </ReactLenis>
   );
 }

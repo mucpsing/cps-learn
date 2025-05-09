@@ -1,8 +1,8 @@
 /*
  * @Author: Capsion 373704015@qq.com
  * @Date: 2025-03-25 20:12:12
- * @LastEditors: Capsion 373704015@qq.com
- * @LastEditTime: 2025-05-06 22:58:17
+ * @LastEditors: cpasion-office-win10 373704015@qq.com
+ * @LastEditTime: 2025-05-09 09:51:44
  * @FilePath: \gsap-lenis-learn\src\components\CapsionText\index.tsx
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
  */
@@ -13,7 +13,7 @@ import { useGSAP } from "@gsap/react";
 import "./CapsionText.css";
 
 import { ScrollTrigger } from "gsap/ScrollTrigger";
-import { usePageStepContext } from "@src/store/animationContext";
+import { useGlobalContext } from "@src/store";
 
 gsap.registerPlugin(useGSAP, ScrollTrigger);
 
@@ -21,7 +21,7 @@ const CapsionTextLogo: React.FC<{ texts: string[]; step?: number; className?: st
   texts = ["WELLCOME TO", "This is My blog", "I'm Capsion", "I'm a Front-end Developer", "I'm a Designer", "I'm a Gamer"],
   className = "",
 }) => {
-  const { register, reportCompletion, animationStep } = usePageStepContext();
+  const { register, reportCompletion, animationStep } = useGlobalContext();
 
   const capsionTextLogoRef = useRef<HTMLDivElement>(null);
   const textContainerRef = useRef<HTMLDivElement>(null);
