@@ -1,13 +1,8 @@
 /*
- * @Author: cpasion-office-win10 373704015@qq.com
- * @Date: 2025-04-25 08:53:06
-<<<<<<< HEAD
+ * @Author: Capsion 373704015@qq.com
+ * @Date: 2025-05-09 12:10:40
  * @LastEditors: Capsion 373704015@qq.com
- * @LastEditTime: 2025-05-09 12:16:04
-=======
- * @LastEditors: Capsion 373704015@qq.com
- * @LastEditTime: 2025-05-07 22:26:54
->>>>>>> 426771d72684b1931d919521de4b323e9576d106
+ * @LastEditTime: 2025-05-11 22:35:06
  * @FilePath: \gsap-lenis-learn\src\pages\Home\index.tsx
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
  */
@@ -32,9 +27,10 @@ import HomeButtonBar from "./HomeButtonBar";
 import DocsText from "./DocsText";
 import BackgroundBubble from "./BackgroundBubble";
 import BackgroundRect from "./BackgroundRect";
+import CoderSwiper from "./CoderSwiper";
+import HomeCards from "./HomeCards";
 
 import MouseTracker from "@site/src/components/MouseIconsTracker";
-
 import DraggableElement from "@src/components/DraggableEl";
 
 // 手动定义有首页有多少step
@@ -47,7 +43,7 @@ gsap.registerPlugin(useGSAP, ScrollTrigger);
 ScrollTrigger.defaults({ markers: { startColor: "green", endColor: "red", fontSize: "12px" } });
 gsap.defaults({ ease: "none" });
 
-function App() {
+function Step_1() {
   const mainRef = useRef<HTMLDivElement>(null);
 
   // -1 动画前准备状态，loading状态
@@ -169,55 +165,40 @@ function App() {
             </div>
           </section> */}
 
-          <div className="flex justify-between items-center mx-10 h-full">
+          <div className={["flex justify-between items-center h-full", "mx-10 xl:mx-20"].join(" ")}>
             <section>
-              {/* <SubText
-                className={["lg:h-[3rem] lg:text-[2.6rem]", "xl:h-[3.5rem] xl:text-[3rem]", "2xl:h-[3.5rem] 2xl:text-[3rem]"].join(" ")}
-                texts={subTexts}
-              ></SubText>
-              <div className="my-3"></div> */}
+              <SubText className={["lg:h-[3rem] lg:text-[2.6rem]", "xl:h-[3.5rem] xl:text-[3rem]", "2xl:h-[3.5rem] 2xl:text-[3rem]"].join(" ")} texts={subTexts}></SubText>
+              <div className="my-3"></div>
 
               <MainText className={["lg:h-[4.5rem] lg:text-[4rem]", "xl:h-[5rem] xl:text-[4.5rem]", "2xl:h-[5.5rem] 2xl:text-[5rem]"].join(" ")} texts={mainTexts}></MainText>
 
-              {/* <div className="my-6"></div>
+              <div className="my-6"></div>
 
-              <DocsText
-                className={["lg:text-[.9rem] lg:max-w-[500px]", "xl:text-[1rem] xl:max-w-[600px]", "2xl:text-[1.1rem] 2xl:max-w-[700px]"].join(" ")}
-              ></DocsText>
+              <DocsText className={["lg:text-[.9rem] lg:max-w-[500px]", "xl:text-[1rem] xl:max-w-[600px]", "2xl:text-[1.1rem] 2xl:max-w-[700px]"].join(" ")}></DocsText>
 
               <div className="mt-15"></div>
 
-              <HomeButtonBar></HomeButtonBar> */}
+              <HomeButtonBar></HomeButtonBar>
 
               {/* 暂时因为排版问题，无法出现 */}
-              {/* <div className={["w-[700px] h-[320px]"].join(" ")}>
+              {/* <div className={["w-[500px] h-[220px]"].join(" ")}>
                 <MouseTracker DEBUG={false} iconsList={skillIcons} size={30} count={skillIcons.length} threshold={100}></MouseTracker>
               </div> */}
             </section>
 
             <section className={["w-1/2 h-full flex justify-center items-center"].join(" ")}>
-              {/* <DraggableElement>
-              </DraggableElement> */}
-
-              <div className={["rounded-[55px] p-[4px] bg-white", "w-full h-[550px] relative", "shadow-xl"].join(" ")} style={{ backgroundColor: globalContextValue.mainColor }}>
-                <div
-                  style={{
-                    borderRadius: "55px",
-                    borderTopRightRadius: "100%",
-                    background: "linear-gradient(0deg, rgba(255, 255, 255, 0.349) 0%, rgba(255, 255, 255, 0.815) 100%)",
-                  }}
-                  className={["transition-all", "border-l-[1px] border-b-[1px] border-white border-solid", "inset-2 h-full"].join(" ")}
-                ></div>
-              </div>
+              <HomeCards></HomeCards>
             </section>
           </div>
 
-          <div className={["fixed bottom-20 left-1/2 -translate-x-1/2 w-4/5"].join(" ")}>
+          {/* 动画进度条组件 */}
+          <div className={["fixed bottom-[5vh] left-1/2 -translate-x-1/2 w-4/5"].join(" ")}>
             <div className={["bg-red-400 rounded-3xl h-[8px] w-full"].join(" ")}></div>
           </div>
 
           <BackgroundRect className="pointer-events-none -z-[1]"></BackgroundRect>
         </main>
+
         <BackgroundBubble bubble={bubbleList}></BackgroundBubble>
       </GlobalContext.Provider>
     </ReactLenis>
@@ -228,4 +209,4 @@ function Test() {
   return <div>Home</div>;
 }
 
-export default App;
+export default Step_1;

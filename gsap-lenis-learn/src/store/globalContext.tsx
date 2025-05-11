@@ -13,8 +13,8 @@ export type pageStepType = "loadding" | "start";
 
 export type GlobalContextType = {
   colorIndex: number;
-  mainColor: string | (() => string);
-  subColor: string | (() => string);
+  mainColor: string;
+  subColor: string;
 
   pageStep: pageStepType;
 
