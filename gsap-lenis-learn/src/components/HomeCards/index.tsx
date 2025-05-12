@@ -1,10 +1,27 @@
 import { gsap } from "gsap";
+import { random } from "lodash";
 import { useGSAP } from "@gsap/react";
 
 import { useState, useRef, useEffect } from "react";
 
+const utils = {
+  generateSymmetricalArray(n: number): number[] {
+    if (!Number.isInteger(n) || n <= 0) return [];
+
+    const isOdd = n % 2 === 1;
+    const m = isOdd ? (n - 1) / 2 : n / 2;
+
+    return Array.from({ length: n }, (_, i) => (isOdd ? i - m : -(m - 0.5) + i));
+  },
+};
+
 export default function HomeCards() {
-  const tar = ["1", "2"];
+  const tar = Array.from({ length: 5 }, () => "🍎");
+  const t = utils.generateSymmetricalArray(tar.length);
+  const gap = 200;
+
+  const step_1 = useRef(gsap.timeline({ paued: true }));
+
   useGSAP(() => {
     gsap.set(".eachCard", {
       x: window.innerWidth / 2 - 150 / 2,
@@ -13,16 +30,31 @@ export default function HomeCards() {
       opacity: 0,
     });
 
-    gsap.to(".eachCard", {
-      direction: 2,
-      stagger: 0.2,
-      opacity: 1,
-      scale: 1.0,
-      rotate: 200,
-      y: window.innerHeight / 2 - 150 / 2,
-    });
+    step_1.current
+      .to(".eachCard", {
+        y: () => window.innerHeight / 2 - 150 / 2,
+        direction: 2,
+        stagger: 0.1,
+        opacity: 1,
+        scale: 1.2,
+        ease: "expo.inOut",
+      })
+      .to(".eachCard", {
+        direction: 0.4,
+        ease: "steps.inOut",
+        rotate: (index) => t[index] * random(0, 10),
+      })
+      .to(".eachCard", {
+        x: (index) => t[index] * gap + window.innerWidth / 2 - 150 / 2,
+        y: (index) => window.innerHeight / 2 - 150 / 2 + 30 * Math.abs(t[index]),
+        direction: 3,
+        ease: "elastic.inOut",
+      });
+
     // gsap.to(".eachCard", {
-    //   x: 500,
+    //   x: (index: number) => {
+    //     return index * 100 + 200;
+    //   },
     //   stagger: 0.2,
     //   scrollTrigger: {
     //     trigger: "#step_0",
