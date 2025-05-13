@@ -2,7 +2,7 @@
  * @Author: cpasion-office-win10 373704015@qq.com
  * @Date: 2025-05-12 09:12:18
  * @LastEditors: cpasion-office-win10 373704015@qq.com
- * @LastEditTime: 2025-05-12 17:05:03
+ * @LastEditTime: 2025-05-13 14:31:55
  * @FilePath: \gsap-lenis-learn\src\pages\Home\AllStep.tsx
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
  */
@@ -39,13 +39,13 @@ export default function App() {
         <div id="step_0" style={{ background: DEFAULT_SUB_COLOR[0] }} className={["w-full h-[100vh]"].join(" ")}>
           step_{0}
         </div>
-        <div style={{ background: DEFAULT_SUB_COLOR[1] }} className={["w-full h-[100vh]"].join(" ")}>
+        <div  id="step_1" style={{ background: DEFAULT_SUB_COLOR[1] }} className={["w-full h-[100vh]"].join(" ")}>
           step_{1}
         </div>
-        <div style={{ background: DEFAULT_SUB_COLOR[2] }} className={["w-full h-[100vh]"].join(" ")}>
+        <div id="step_2" style={{ background: DEFAULT_SUB_COLOR[2] }} className={["w-full h-[100vh]"].join(" ")}>
           step_{2}
         </div>
-        <div style={{ background: DEFAULT_SUB_COLOR[3] }} className={["w-full h-[100vh]"].join(" ")}>
+        <div id="step_3" style={{ background: DEFAULT_SUB_COLOR[3] }} className={["w-full h-[100vh]"].join(" ")}>
           step_{3}
         </div>
       </div>

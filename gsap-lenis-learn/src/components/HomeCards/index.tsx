@@ -20,49 +20,45 @@ export default function HomeCards() {
   const t = utils.generateSymmetricalArray(tar.length);
   const gap = 200;
 
-  const step_1 = useRef(gsap.timeline({ paued: true }));
+  const step_1 = useRef(
+    gsap.timeline({
+      scrollTrigger: {
+        trigger: "#step_0",
+        start: "center center",
+        end: window.innerHeight * 2,
+        markers: true,
+        scrub: true, // 滚动与动画进度联动
+      },
+    })
+  );
 
   useGSAP(() => {
-    gsap.set(".eachCard", {
-      x: window.innerWidth / 2 - 150 / 2,
-      y: window.innerHeight,
-      scale: 1.6,
-      opacity: 0,
-    });
-
-    step_1.current
-      .to(".eachCard", {
-        y: () => window.innerHeight / 2 - 150 / 2,
-        direction: 2,
-        stagger: 0.1,
-        opacity: 1,
-        scale: 1.2,
-        ease: "expo.inOut",
-      })
-      .to(".eachCard", {
-        direction: 0.4,
-        ease: "steps.inOut",
-        rotate: (index) => t[index] * random(0, 10),
-      })
-      .to(".eachCard", {
-        x: (index) => t[index] * gap + window.innerWidth / 2 - 150 / 2,
-        y: (index) => window.innerHeight / 2 - 150 / 2 + 30 * Math.abs(t[index]),
-        direction: 3,
-        ease: "elastic.inOut",
-      });
-
-    // gsap.to(".eachCard", {
-    //   x: (index: number) => {
-    //     return index * 100 + 200;
-    //   },
-    //   stagger: 0.2,
-    //   scrollTrigger: {
-    //     trigger: "#step_0",
-    //     start: "center 200",
-    //     end: "bottom bottom",
-    //     markers: true,
-    //   },
+    // gsap.set(".eachCard", {
+    //   x: window.innerWidth / 2 - 150 / 2,
+    //   y: window.innerHeight,
+    //   scale: 1.6,
+    //   opacity: 0,
     // });
+    // step_1.current
+    //   .to(".eachCard", {
+    //     y: () => window.innerHeight / 2 - 150 / 2,
+    //     direction: 2,
+    //     stagger: 0.1,
+    //     opacity: 1,
+    //     scale: 1.2,
+    //     ease: "expo.inOut",
+    //   })
+    //   .to(".eachCard", {
+    //     direction: 0.4,
+    //     ease: "steps.inOut",
+    //     rotate: (index) => t[index] * random(0, 10),
+    //   })
+    //   .to(".eachCard", {
+    //     x: (index) => t[index] * gap + window.innerWidth / 2 - 150 / 2,
+    //     y: (index) => window.innerHeight / 2 - 150 / 2 + 30 * Math.abs(t[index]),
+    //     direction: 3,
+    //     ease: "elastic.inOut",
+    //   });
   });
   return (
     <>
